@@ -84,9 +84,10 @@
         background-size: cover;
         background-repeat: repeat-x;
         box-shadow: inset 0 0 10px rgba(0, 0, 0, 1), 0 0 20px #4069ff;
+        box-shadow: inset 0 0 10px rgb(0, 0, 0, 1), 0 0 20px #3ef506;
+
         animation: animationEarth 20s linear infinite;
 
-        // padding: ;
         .planet {
           width: 100%;
           height: 100%;

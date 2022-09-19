@@ -2,14 +2,12 @@
 
 :root {
   --primary: #fe2c55;
-  --backGround-App: #9308ca;
-  --backGround-App2: #e723e7;
-  --black: #000;
-  --white: #fff;
-  --text-color: #333;
+  --backGround-App: #6e00ff;
+  --backGround-App2: #6e01fd;
+  --text-color: #2b3036;
   --text-chat: #333;
   --Icon-Color: #fff;
-  --backGround-chat: #b062dd;
+  --backGround--page: #f3f6ff;
   //defaultLayout
   --default-layout-header-height: 60px;
   --default-layout-width: 1150px;
@@ -36,16 +34,22 @@ body {
     var(--backGround-App),
     var(--backGround-App2)
   );
+  padding-right: 15px;
   // background-color: #d66767;
   display: flex;
   align-items: center;
   height: 100vh;
-  font-family: fontUtm;
-  // font-family: fontMain;
+  width: 100% !important;
+  // font-family: fontUtm;
+  font-family: fontMain;
   font-size: 1.6rem;
+  // letter-spacing: 1px;
   line-height: 1.5;
   text-rendering: optimizeSpeed;
   color: var(--text-color);
+}
+#root {
+  width: 100%;
 }
 button,
 input,

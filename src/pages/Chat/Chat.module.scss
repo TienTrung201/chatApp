@@ -1,0 +1,105 @@
+.wrapper {
+  background-color: var(--backGround--page);
+  height: 100%;
+  display: flex;
+  padding: 15px;
+  border-radius: 30px;
+  //   flex: 1;
+
+  .controlChat {
+    // flex: 1;
+    width: 200px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 30px;
+
+    .createNew {
+      display: flex;
+      align-items: center;
+      height: 53px;
+      padding-left: 12px;
+      cursor: pointer;
+      //   margin-bottom: 26px;
+      .createPlus {
+        width: 40px;
+        height: 40px;
+        background-color: #f3f6ff;
+        border-radius: 50%;
+        margin-right: 20px;
+        .creatPlusIcon {
+          font-size: 1.6rem;
+          color: var(--backGround-App);
+        }
+      }
+
+      .create__title {
+        font-size: 1.6rem;
+      }
+    }
+    .wrapperTitle {
+      height: 70px;
+      display: flex;
+      align-items: center;
+      .title__Chat {
+        font-size: 2.5rem;
+      }
+    }
+    .wrapperSearch {
+      height: 32px;
+      width: 100%;
+      position: relative;
+      background-color: #f3f6ff;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      .searchText {
+        width: 80%;
+        background-color: transparent;
+        height: 100%;
+        font-size: 1.2rem;
+        padding-left: 16px;
+        color: #8f97a4;
+      }
+      .searchIcon {
+        margin-right: 10px;
+        color: #8f97a4;
+        font-size: 1.3rem;
+      }
+    }
+    .wrapperListUser {
+      .user {
+        display: flex;
+        align-items: center;
+        height: 53.3px;
+        .avata {
+          width: 50px;
+          height: 50px;
+          img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+          }
+        }
+
+        .user__display {
+          padding-top: 1px;
+          .user__name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            line-height: 1.5rem;
+          }
+          .user__chatHistory {
+            font-size: 1rem;
+            color: #8f97a4;
+          }
+        }
+      }
+    }
+  }
+  //   .rooms {
+  //     flex: 4;
+  //     background-color: aqua;
+  //   }
+}
