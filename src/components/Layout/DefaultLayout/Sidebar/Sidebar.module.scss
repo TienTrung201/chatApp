@@ -1,0 +1,178 @@
+.wrapper {
+  width: 100px;
+  // height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .logoApp {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    // .face {
+    //   width: 50px;
+    //   height: 50px;
+    //   border-radius: 50%;
+    //   background-color: #d8c557;
+    //   background-color: #e2e055;
+
+    //   box-shadow: inset -1.5px 0 0 2px rgba(255, 102, 0, 0.15);
+    //   position: relative;
+    //   .eye {
+    //     width: 15px;
+    //     height: 15px;
+    //     background-color: #fff;
+    //     border-radius: 50%;
+    //     position: absolute;
+    //     top: 16px;
+    //     left: 6px;
+    //     &::after {
+    //       content: "";
+    //       width: 6px;
+    //       height: 6px;
+    //       background-color: #000;
+    //       border-radius: 50%;
+    //       position: absolute;
+    //       top: 50%;
+    //       left: 50%;
+    //       transform: translate(-50%, -50%);
+    //       animation: rolleyes 1.5s ease-in-out infinite;
+    //     }
+    //   }
+    //   .mouth {
+    //     width: 10px;
+    //     height: 2.5px;
+    //     background-color: #884d0e;
+    //     border-radius: 2.5px;
+    //     position: absolute;
+    //     bottom: 10px;
+    //     left: 50%;
+    //     transform: translateX(-50%);
+    //   }
+    //   .eye:last-child {
+    //     left: auto;
+    //     right: 6px;
+    //   }
+    //   @keyframes rolleyes {
+    //     10% {
+    //       transform: translate(-7px, -50%);
+    //     }
+    //     15% {
+    //       transform: translate(-7px, -5px);
+    //     }
+    //     20% {
+    //       transform: translate(-50%, -7.5px);
+    //     }
+    //     100% {
+    //       transform: translate(-50%, -7.5px);
+    //     }
+    //   }
+    // }
+    transform-style: preserve-3d;
+    .wrapperEarth {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 70%; // quỹ đạo quay
+
+      position: relative;
+      .earth {
+        width: 50px;
+        height: 50px;
+        background: url("../../../../assets/images/world.png");
+        border-radius: 50%;
+        background-size: cover;
+        background-repeat: repeat-x;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 1), 0 0 20px #4069ff;
+        animation: animationEarth 20s linear infinite;
+
+        // padding: ;
+        .planet {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          left: 0;
+          img {
+            width: 12%;
+          }
+        }
+        .mars {
+          animation: spin 12s linear infinite;
+        }
+        .jupiter {
+          animation: spin-reverse 7s linear infinite;
+          img {
+            top: -6px;
+            position: absolute;
+          }
+        }
+        .mercury {
+          animation: spin 3s linear infinite;
+        }
+      }
+      @keyframes animationEarth {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: -300px 0;
+        }
+      }
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes spin-reverse {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(-360deg);
+        }
+      }
+    }
+
+    img {
+      width: 60%;
+    }
+  }
+
+  .navigation {
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+    .line {
+      position: absolute;
+      left: 0;
+      // top: 0px;
+      width: 3px;
+      height: 53px;
+      background-color: #fff;
+      transition: all 0.3s ease;
+    }
+    .nav__list {
+      width: 100%;
+      .nav__listItem {
+        height: 53px;
+        width: 100%;
+
+        .listItem__Link {
+          width: 100%;
+          height: 100%;
+          z-index: 999;
+
+          .iconNav {
+            // display: block;
+            z-index: 1;
+            color: var(--Icon-Color);
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+}

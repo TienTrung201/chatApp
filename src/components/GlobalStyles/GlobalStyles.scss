@@ -1,0 +1,68 @@
+// npm install --save normalize.css reset css
+
+:root {
+  --primary: #fe2c55;
+  --backGround-App: #9308ca;
+  --backGround-App2: #e723e7;
+  --black: #000;
+  --white: #fff;
+  --text-color: #333;
+  --text-chat: #333;
+  --Icon-Color: #fff;
+  --backGround-chat: #b062dd;
+  //defaultLayout
+  --default-layout-header-height: 60px;
+  --default-layout-width: 1150px;
+}
+@font-face {
+  font-family: fontMain;
+  src: url("../../assets/font/roboto/Roboto-Regular.ttf");
+}
+@font-face {
+  font-family: fontUtm;
+  src: url("../../assets/font/fontUTM/UTM\ Swiss\ Condensed.ttf");
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  font-size: 62.5%;
+}
+
+body {
+  background-image: linear-gradient(
+    var(--backGround-App),
+    var(--backGround-App2)
+  );
+  // background-color: #d66767;
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  font-family: fontUtm;
+  // font-family: fontMain;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  text-rendering: optimizeSpeed;
+  color: var(--text-color);
+}
+button,
+input,
+[tabindex] {
+  outline: none;
+  border: none;
+}
+
+a[href] {
+  color: var(--text-color);
+  text-decoration: none;
+}
+li {
+  list-style: none;
+}
+.autoCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
