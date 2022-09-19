@@ -76,6 +76,42 @@ function Chat() {
               <p className={cx("user__chatHistory")}>Hello</p>
             </div>
           </div>
+          <div className={cx("user")}>
+            <div className={cx("avata", "autoCenter")}>
+              <img src={require("../../assets/images/avata.jpg")} alt="" />
+            </div>
+            <div className={cx("user__display")}>
+              <h5 className={cx("user__name")}>Tien trung</h5>
+              <p className={cx("user__chatHistory")}>Hello</p>
+            </div>
+          </div>
+          <div className={cx("user")}>
+            <div className={cx("avata", "autoCenter")}>
+              <img src={require("../../assets/images/avata.jpg")} alt="" />
+            </div>
+            <div className={cx("user__display")}>
+              <h5 className={cx("user__name")}>Tien trung</h5>
+              <p className={cx("user__chatHistory")}>Hello</p>
+            </div>
+          </div>
+          <div className={cx("user")}>
+            <div className={cx("avata", "autoCenter")}>
+              <img src={require("../../assets/images/avata.jpg")} alt="" />
+            </div>
+            <div className={cx("user__display")}>
+              <h5 className={cx("user__name")}>Tien trung</h5>
+              <p className={cx("user__chatHistory")}>Hello</p>
+            </div>
+          </div>
+          <div className={cx("user")}>
+            <div className={cx("avata", "autoCenter")}>
+              <img src={require("../../assets/images/avata.jpg")} alt="" />
+            </div>
+            <div className={cx("user__display")}>
+              <h5 className={cx("user__name")}>Tien trung</h5>
+              <p className={cx("user__chatHistory")}>Hello</p>
+            </div>
+          </div>
         </div>
       </article>
       <article className={cx("rooms")}></article>
