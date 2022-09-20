@@ -10,16 +10,33 @@ import // faMessage,
 import { faCirclePlay, faMessage } from "@fortawesome/free-regular-svg-icons";
 // import {  } from "@fortawesome/free-brands-svg-icons";
 import { faEarthAsia } from "@fortawesome/free-solid-svg-icons";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 // import {} from "@fortawesome/free-solid-svg-icons";
 //npm i classnames ...........cssBY
 
 const cx = classNames.bind(styles);
-function Sidebar() {
-  const activeNav = useRef();
+function Sidebar({ activeNav }) {
+  const navItem = useRef();
+  // const heightNavItem = navItem.current.offsetHeight;
+  // const getItem = Document.querySelectorById("getItem");
+  useEffect(() => {
+    const heightNavItem = navItem.current.offsetHeight;
+    if (activeNav === "Chat") {
+      setStyleLine({ top: heightNavItem, height: heightNavItem });
+    }
+    if (activeNav === "Music") {
+      setStyleLine({ top: heightNavItem * 2 });
+    }
+    if (activeNav === "Home") {
+      setStyleLine({ top: 0 });
+    }
+  }, []);
   const [styleLine, setStyleLine] = useState({
     top: 0,
   });
+  // if (activeNav === "Chat") {
+  //   setStyleLine({ top: heightNavItem });
+  // }
   const handleActiveNav = (e) => {
     if (e.target.tagName === "A") {
       setStyleLine({ top: e.target.offsetTop });
@@ -68,8 +85,9 @@ function Sidebar() {
       </div>
       <nav className={cx("navigation", "autoCenter")}>
         <ul className={cx("nav__list")}>
-          <li className={cx("nav__listItem")}>
+          <li id={"getItem"} className={cx("nav__listItem")}>
             <NavLink
+              ref={navItem}
               onClick={handleActiveNav}
               className={cx("listItem__Link", "autoCenter")}
               to={"/"}
@@ -96,7 +114,7 @@ function Sidebar() {
             </NavLink>
           </li>
         </ul>
-        <div ref={activeNav} style={styleLine} className={cx("line")}></div>
+        <div style={styleLine} className={cx("line")}></div>
       </nav>{" "}
     </aside>
   );

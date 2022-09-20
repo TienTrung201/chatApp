@@ -9,8 +9,7 @@
   --Icon-Color: #fff;
   --backGround--page: #f3f6ff;
   //defaultLayout
-  --default-layout-header-height: 60px;
-  --default-layout-width: 1150px;
+  --default-layout-Nav-height: 53px;
 }
 @font-face {
   font-family: fontMain;
@@ -47,6 +46,7 @@ body {
   line-height: 1.5;
   text-rendering: optimizeSpeed;
   color: var(--text-color);
+  scrollbar-width: none;
 }
 #root {
   width: 100%;

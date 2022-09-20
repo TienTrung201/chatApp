@@ -23,8 +23,8 @@ function App() {
                 key={index}
                 path={route.path}
                 element={
-                  <Layout>
-                    <Page />
+                  <Layout active={route.active}>
+                    <Page active={route.active} />
                   </Layout>
                 }
               />
