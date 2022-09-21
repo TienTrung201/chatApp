@@ -15,7 +15,8 @@
         .navigate__item {
           flex: 1;
           .navigate__item-link {
-            border-radius: 30px;
+            border-top-right-radius: 30px;
+            border-top-left-radius: 30px;
             font-size: 1.5rem;
             // display: block;
             height: 100%;
