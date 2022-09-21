@@ -6,7 +6,7 @@
   padding: 15px;
   .profile {
     .profile__Navigate {
-      height: 100px;
+      height: 80px;
       .navigate__List {
         position: relative;
 
@@ -23,10 +23,17 @@
             .iconUser {
               color: #b7df96;
               margin-right: 10px;
+              font-size: 2rem;
             }
             .iconUserEdit {
-              color: #e2a8fd;
+              color: #74c8f4;
               margin-right: 10px;
+              font-size: 2rem;
+            }
+            .iconMyMusic {
+              color: #e4a254;
+              margin-right: 10px;
+              font-size: 2rem;
             }
           }
         }
@@ -35,7 +42,8 @@
           bottom: 0;
           height: 5px;
           //   width: 50%;
-          background-color: #e2a8fd;
+          background-color: var(--backGround-App2);
+          opacity: 0.6;
           border-radius: 20px;
           transition: all 0.3s ease;
         }
