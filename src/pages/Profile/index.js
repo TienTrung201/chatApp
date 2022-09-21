@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIdCard, faMusic, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
+import MyProfile from "./MyProfile";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
 
@@ -60,6 +61,7 @@ function Profile() {
           </ul>
         </div>
       </article>
+      <MyProfile />
     </section>
   );
 }
