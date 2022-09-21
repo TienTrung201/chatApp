@@ -7,9 +7,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import // faMessage,
 // faCirclePlay,
 "@fortawesome/free-solid-svg-icons";
-import { faCirclePlay, faMessage } from "@fortawesome/free-regular-svg-icons";
+import {
+  faCirclePlay,
+  faMessage,
+  faUser,
+} from "@fortawesome/free-regular-svg-icons";
 // import {  } from "@fortawesome/free-brands-svg-icons";
-import { faEarthAsia } from "@fortawesome/free-solid-svg-icons";
+// import { faEarthAsia, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
 // import {} from "@fortawesome/free-solid-svg-icons";
 //npm i classnames ...........cssBY
@@ -27,10 +31,10 @@ function Sidebar({ activeNav }) {
     if (activeNav === "Music") {
       setStyleLine({ top: heightNavItem * 2 });
     }
-    if (activeNav === "Home") {
+    if (activeNav === "profile") {
       setStyleLine({ top: 0 });
     }
-  }, []);
+  }, [activeNav]);
   const [styleLine, setStyleLine] = useState({
     top: 0,
   });
@@ -90,16 +94,16 @@ function Sidebar({ activeNav }) {
               ref={navItem}
               onClick={handleActiveNav}
               className={cx("listItem__Link", "autoCenter")}
-              to={"/"}
+              to={"/profile"}
             >
-              <FontAwesomeIcon className={cx("iconNav")} icon={faEarthAsia} />
+              <FontAwesomeIcon className={cx("iconNav")} icon={faUser} />
             </NavLink>
           </li>
           <li className={cx("nav__listItem")}>
             <NavLink
               onClick={handleActiveNav}
               className={cx("listItem__Link", "autoCenter")}
-              to={"/Chat"}
+              to={"/"}
             >
               <FontAwesomeIcon className={cx("iconNav")} icon={faMessage} />
             </NavLink>

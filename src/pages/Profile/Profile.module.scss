@@ -1,0 +1,45 @@
+.wrapper {
+  background-color: var(--backGround--page);
+  height: 100%;
+  padding: 15px;
+  border-radius: 30px;
+  padding: 15px;
+  .profile {
+    .profile__Navigate {
+      height: 100px;
+      .navigate__List {
+        position: relative;
+
+        height: 100%;
+        display: flex;
+        .navigate__item {
+          flex: 1;
+          .navigate__item-link {
+            border-radius: 30px;
+            font-size: 1.5rem;
+            // display: block;
+            height: 100%;
+
+            .iconUser {
+              color: #b7df96;
+              margin-right: 10px;
+            }
+            .iconUserEdit {
+              color: #e2a8fd;
+              margin-right: 10px;
+            }
+          }
+        }
+        .line {
+          position: absolute;
+          bottom: 0;
+          height: 5px;
+          //   width: 50%;
+          background-color: #e2a8fd;
+          border-radius: 20px;
+          transition: all 0.3s ease;
+        }
+      }
+    }
+  }
+}
