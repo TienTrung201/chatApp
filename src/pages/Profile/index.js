@@ -1,6 +1,6 @@
 import styles from "./Profile.module.scss";
 import classNames from "classnames/bind";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIdCard, faMusic, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
@@ -37,13 +37,19 @@ function Profile() {
               onClick={handleActiveLine}
               className={cx("navigate__item")}
             >
-              <Link to="#" className={cx("navigate__item-link", "autoCenter")}>
+              <Link
+                to="myprofile"
+                className={cx("navigate__item-link", "autoCenter")}
+              >
                 <FontAwesomeIcon className={cx("iconUser")} icon={faUser} />
                 Profile
               </Link>
             </li>
             <li onClick={handleActiveLine} className={cx("navigate__item")}>
-              <Link to="#" className={cx("navigate__item-link", "autoCenter")}>
+              <Link
+                to="editprofile"
+                className={cx("navigate__item-link", "autoCenter")}
+              >
                 <FontAwesomeIcon
                   className={cx("iconUserEdit")}
                   icon={faIdCard}
@@ -52,7 +58,10 @@ function Profile() {
               </Link>
             </li>
             <li onClick={handleActiveLine} className={cx("navigate__item")}>
-              <Link to="#" className={cx("navigate__item-link", "autoCenter")}>
+              <Link
+                to="mymusic"
+                className={cx("navigate__item-link", "autoCenter")}
+              >
                 <FontAwesomeIcon className={cx("iconMyMusic")} icon={faMusic} />
                 My Music
               </Link>
@@ -61,7 +70,8 @@ function Profile() {
           </ul>
         </div>
       </article>
-      <MyProfile />
+      {/* <MyProfile /> */}
+      <Outlet />
     </section>
   );
 }

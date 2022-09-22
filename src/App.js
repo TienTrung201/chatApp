@@ -3,6 +3,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; //npm
 import { publicRoutes } from "@/routes";
 import { DefaultLayout } from "@/components/Layout";
 import { Fragment } from "react";
+import MyProfile from "./pages/Profile/MyProfile";
+import EditProfile from "./pages/Profile/EditProfile";
+import MyMusic from "./pages/Profile/MyMusic";
+
 function App() {
   return (
     <Router>
@@ -18,6 +22,25 @@ function App() {
             // } else if (route.layout === null) {
             //   Layout = Fragment;
             // }
+            if (route.path === "/profile") {
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    <Layout active={route.active}>
+                      <Page active={route.active} />
+                    </Layout>
+                  }
+                >
+                  <Route index element={<MyProfile />} />
+
+                  <Route path="myprofile" element={<MyProfile />} />
+                  <Route path="editprofile" element={<EditProfile />} />
+                  <Route path="mymusic" element={<MyMusic />} />
+                </Route>
+              );
+            }
             return (
               <Route
                 key={index}
