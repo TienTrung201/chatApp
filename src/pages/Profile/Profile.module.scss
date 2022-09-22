@@ -54,3 +54,28 @@
     }
   }
 }
+@media (max-width: 739px) {
+  .wrapper {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    .profile {
+      .profile__Navigate {
+        .navigate__List {
+          .navigate__item {
+            flex: 1;
+            .navigate__item-link {
+              .iconUser {
+              }
+              .iconUserEdit {
+              }
+              .iconMyMusic {
+              }
+            }
+          }
+          .line {
+          }
+        }
+      }
+    }
+  }
+}

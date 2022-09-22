@@ -188,3 +188,39 @@
     }
   }
 }
+@media (max-width: 739px) {
+  .wrapper {
+    width: 100%;
+    .logoApp {
+      display: none;
+    }
+
+    .navigation {
+      width: 100%;
+      .line {
+        display: none;
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        width: 3px;
+        height: var(--default-layout-Nav-height);
+        background-color: #fff;
+        transition: all 0.3s ease;
+        animation: toRight 0.8s linear;
+        // transition: toRightLine 2s ease;
+      }
+      @keyframes toRight {
+        from {
+          left: -500px;
+        }
+        to {
+          left: 0px;
+        }
+      }
+
+      .nav__list {
+        display: flex;
+      }
+    }
+  }
+}

@@ -48,6 +48,11 @@ body {
   color: var(--text-color);
   scrollbar-width: none;
 }
+@media (max-width: 739px) {
+  body {
+    padding-right: 0px;
+  }
+}
 #root {
   width: 100%;
 }
