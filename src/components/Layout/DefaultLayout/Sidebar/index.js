@@ -49,7 +49,7 @@ function Sidebar({ activeNav }) {
     }
   };
   return (
-    <aside className={cx("wrapper")}>
+    <article className={cx("wrapper")}>
       <div className={cx("logoApp", "autoCenter")}>
         {/* <img
           src={require("../../../../assets/images/logoApp.png")}
@@ -120,7 +120,7 @@ function Sidebar({ activeNav }) {
         </ul>
         <div style={styleLine} className={cx("line")}></div>
       </nav>{" "}
-    </aside>
+    </article>
   );
 }
 

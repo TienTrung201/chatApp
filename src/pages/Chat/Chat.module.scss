@@ -116,3 +116,71 @@
   //     background-color: aqua;
   //   }
 }
+
+@media (max-width: 739px) {
+  .wrapper {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    padding: 0 8px var(--default-layout-Nav-height) 8px;
+
+    padding-bottom: var(--default-layout-Nav-height);
+    .controlChat {
+      flex: 1;
+      .wrapperSearch {
+        height: 50px;
+        .searchText {
+          font-size: 1.3rem;
+        }
+        .searchIcon {
+          margin-right: 10px;
+          color: #8f97a4;
+          font-size: 1.5rem;
+        }
+      }
+      .wrapperListUser::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* Hide scrollbar for IE, Edge and Firefox */
+      .wrapperListUser {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+      .wrapperListUser {
+        overflow-y: scroll;
+
+        .user {
+          display: flex;
+          align-items: center;
+          height: 53.3px;
+          .avata {
+            width: 50px;
+            height: 50px;
+            img {
+              width: 35px;
+              height: 35px;
+              border-radius: 50%;
+            }
+          }
+
+          .user__display {
+            padding-top: 1px;
+            .user__name {
+              font-size: 1.3rem;
+              font-weight: 600;
+              line-height: 1.5rem;
+            }
+            .user__chatHistory {
+              font-size: 1rem;
+              color: #8f97a4;
+            }
+          }
+        }
+      }
+    }
+    // .rooms {
+    //   flex: 4;
+    //   background-color: aqua;
+    // }
+  }
+}

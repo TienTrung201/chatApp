@@ -191,6 +191,12 @@
 @media (max-width: 739px) {
   .wrapper {
     width: 100%;
+    position: absolute;
+    background-image: linear-gradient(
+      var(--backGround-App),
+      var(--backGround-App2)
+    );
+    // display: none;
     .logoApp {
       display: none;
     }

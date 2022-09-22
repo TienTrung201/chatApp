@@ -8,12 +8,12 @@ const cx = classNames.bind(styles);
 
 function DefaultLayout({ children, active }) {
   return (
-    <div className={cx("wrapper")}>
+    <section className={cx("wrapper")}>
       <Sidebar activeNav={active} />
-      <div className={cx("container")}>
+      <article className={cx("container")}>
         <div className={cx("content")}>{children}</div>
-      </div>
-    </div>
+      </article>
+    </section>
   );
 }
 
