@@ -3,10 +3,26 @@ import classNames from "classnames/bind";
 import images from "@/assets/images";
 import { FacebookAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/firebase/config";
+import { useSelector } from "react-redux";
+import { userLogin } from "@/components/redux/selector";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const fbLogin = new FacebookAuthProvider();
 const cx = classNames.bind(styles);
 function Login() {
+  const user = useSelector(userLogin);
+  const navigate = useNavigate();
+  useEffect(() => {
+    setTimeout(() => {
+      if (user.displayName) {
+        console.log(user);
+        navigate("/");
+      } else {
+        navigate("/login");
+      }
+    }, 2000);
+  }, [user, navigate]);
   const handleLoginFB = () => {
     signInWithPopup(auth, fbLogin)
       .then((result) => {

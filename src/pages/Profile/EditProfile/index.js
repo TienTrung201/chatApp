@@ -4,7 +4,7 @@ import classNames from "classnames/bind";
 const cx = classNames.bind(styles);
 
 function EditProfile() {
-  return <>EditProfile</>;
+  return <h1 className={cx("a")}>EditProfile</h1>;
 }
 
 export default EditProfile;

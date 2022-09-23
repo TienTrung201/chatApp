@@ -10,7 +10,10 @@
 .wrapper {
   padding: 40px 100px;
   display: flex;
+  // align-items: center;
+  justify-content: center;
   overflow-y: scroll;
+  height: 100%;
 
   .myProfileInfo {
     flex: 1;

@@ -1,10 +1,10 @@
 import styles from "./Profile.module.scss";
 import classNames from "classnames/bind";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIdCard, faMusic, faUser } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useRef, useState } from "react";
-import MyProfile from "./MyProfile";
+import { memo, useEffect, useRef, useState } from "react";
+// import MyProfile from "./MyProfile";
 import { useSelector } from "react-redux";
 import { userLogin } from "@/components/redux/selector";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,7 +14,15 @@ const cx = classNames.bind(styles);
 
 function Profile() {
   const user = useSelector(userLogin);
-  console.log(user);
+  const navigate = useNavigate();
+  const [navProfile, setNavProfile] = useState("/");
+  useEffect(() => {
+    if (user.displayName) {
+      navigate(navProfile);
+    } else {
+      navigate("/login");
+    }
+  }, [user, navigate, navProfile]);
   const headerProfile = useRef();
   const [styleLine, setStyleLine] = useState({});
   useEffect(() => {
@@ -38,7 +46,10 @@ function Profile() {
           <ul className={cx("navigate__List")}>
             <li
               ref={headerProfile}
-              onClick={handleActiveLine}
+              onClick={(e) => {
+                handleActiveLine(e);
+                setNavProfile("/");
+              }}
               className={cx("navigate__item")}
             >
               <Link
@@ -49,7 +60,13 @@ function Profile() {
                 Profile
               </Link>
             </li>
-            <li onClick={handleActiveLine} className={cx("navigate__item")}>
+            <li
+              onClick={(e) => {
+                handleActiveLine(e);
+                setNavProfile("/editprofile");
+              }}
+              className={cx("navigate__item")}
+            >
               <Link
                 to="editprofile"
                 className={cx("navigate__item-link", "autoCenter")}
@@ -61,7 +78,13 @@ function Profile() {
                 Edit Profile
               </Link>
             </li>
-            <li onClick={handleActiveLine} className={cx("navigate__item")}>
+            <li
+              onClick={(e) => {
+                handleActiveLine(e);
+                setNavProfile("/mymusic");
+              }}
+              className={cx("navigate__item")}
+            >
               <Link
                 to="mymusic"
                 className={cx("navigate__item-link", "autoCenter")}
@@ -80,4 +103,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default memo(Profile);

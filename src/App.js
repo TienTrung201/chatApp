@@ -2,17 +2,43 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; //npm i react-router-dom
 import { publicRoutes } from "@/routes";
 import { DefaultLayout } from "@/components/Layout";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import MyProfile from "./pages/Profile/MyProfile";
 import EditProfile from "./pages/Profile/EditProfile";
 import MyMusic from "./pages/Profile/MyMusic";
 import LayoutLogin from "./components/Layout/DefaultLayout/LoginLayout";
-// import { useSelector } from "react-redux";
-// import { user } from "./components/redux/selector";
+import { auth } from "./firebase/config";
+import { useDispatch } from "react-redux";
+import userSlice from "./pages/Login/UserSlice";
 
 function App() {
-  // const userLogin = useSelector(user);
-  // console.log(userLogin);
+  const Dispatch = useDispatch();
+  const [countCheckUser, setCountCheckUser] = useState(0);
+  useEffect(() => {
+    if (countCheckUser > 1) {
+      return;
+    }
+    const unsubscibed = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setCountCheckUser((prev) => prev + 1);
+        console.log({ user });
+        const { displayName, email, uid, photoURL } = user;
+        Dispatch(
+          userSlice.actions.setUser({
+            displayName,
+            email,
+            uid,
+            photoURL,
+          })
+        );
+        return;
+      }
+      return () => {
+        unsubscibed();
+      };
+    });
+  }, [Dispatch, countCheckUser]);
+
   return (
     <Router>
       <div className="App">
