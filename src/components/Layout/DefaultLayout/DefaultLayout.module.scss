@@ -1,6 +1,7 @@
 .wrapper {
   display: flex;
   height: 90vh;
+  padding-right: 15px;
   // width: 100%;
   // flex-direction: column;
   // align-items: center;
@@ -20,6 +21,8 @@
     flex-direction: column-reverse;
     height: 100vh;
     position: relative;
+    padding-right: 0px;
+
     // width: 100%;
     // flex-direction: column;
     // align-items: center;

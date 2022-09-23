@@ -4,19 +4,13 @@ import classNames from "classnames/bind";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import // faMessage,
-// faCirclePlay,
-"@fortawesome/free-solid-svg-icons";
-import {
-  faCirclePlay,
-  faMessage,
-  faUser,
-} from "@fortawesome/free-regular-svg-icons";
-// import {  } from "@fortawesome/free-brands-svg-icons";
-// import { faEarthAsia, faUser } from "@fortawesome/free-solid-svg-icons";
+import "@fortawesome/free-solid-svg-icons";
+// import {
+//   faCirclePlay,
+//   faMessage,
+//   faUser,
+// } from "@fortawesome/free-regular-svg-icons";
 import { useEffect, useRef, useState } from "react";
-// import {} from "@fortawesome/free-solid-svg-icons";
-//npm i classnames ...........cssBY
 
 const cx = classNames.bind(styles);
 function Sidebar({ activeNav }) {
@@ -96,7 +90,11 @@ function Sidebar({ activeNav }) {
               className={cx("listItem__Link", "autoCenter")}
               to={"/profile"}
             >
-              <FontAwesomeIcon className={cx("iconNav")} icon={faUser} />
+              <img
+                src={require("../../../../assets/images/man.png")}
+                alt="Facebook"
+              />
+              {/* <FontAwesomeIcon className={cx("iconNav")} icon={faUser} /> */}
             </NavLink>
           </li>
           <li className={cx("nav__listItem")}>
@@ -105,7 +103,11 @@ function Sidebar({ activeNav }) {
               className={cx("listItem__Link", "autoCenter")}
               to={"/"}
             >
-              <FontAwesomeIcon className={cx("iconNav")} icon={faMessage} />
+              <img
+                src={require("../../../../assets/images/message.png")}
+                alt="Facebook"
+              />
+              {/* <FontAwesomeIcon className={cx("iconNav")} icon={faMessage} /> */}
             </NavLink>
           </li>
           <li className={cx("nav__listItem")}>
@@ -114,7 +116,11 @@ function Sidebar({ activeNav }) {
               className={cx("listItem__Link", "autoCenter")}
               to={"/Music"}
             >
-              <FontAwesomeIcon className={cx("iconNav")} icon={faCirclePlay} />
+              <img
+                src={require("../../../../assets/images/headphones.png")}
+                alt="Facebook"
+              />
+              {/* <FontAwesomeIcon className={cx("iconNav")} icon={faCirclePlay} /> */}
             </NavLink>
           </li>
         </ul>
