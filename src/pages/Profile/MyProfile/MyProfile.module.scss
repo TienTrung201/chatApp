@@ -178,6 +178,59 @@
 
 @media (max-width: 739px) {
   .wrapper {
-    padding: 20px 20px;
+    padding: 10px;
+    flex-direction: column;
+    // align-items: center;
+    .myProfileInfo {
+      flex: 1;
+      height: 250px;
+      padding-top: 23.3px;
+      padding-bottom: 20.6px;
+      margin-right: 0px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+
+      .myProfileInfo--avata {
+        width: 86.66px;
+        height: 86.66px;
+        margin-bottom: 13.33px;
+      }
+      .myProfileInfo--contact {
+        font-size: 1rem;
+        .myProfileInfo--Name {
+          font-size: 1.4rem;
+          margin-bottom: 5px;
+        }
+        .myProfileInfo--Email {
+          margin-bottom: 2px;
+        }
+        .myProfileInfo--Nation {
+        }
+      }
+    }
+    .myProfileContent {
+      flex: 1.8;
+      // background-color: transparent !important;
+      border-radius: 10px;
+
+      .myProfileContent__Property {
+        border-radius: 10px;
+        display: flex;
+        padding: 0 15px;
+        font-size: 1.2rem;
+        //   flex-direction: column;
+        align-items: center;
+        height: 50px;
+        //   justify-content: center;
+      }
+      .PropertyName {
+        flex: 1;
+        color: #7d7d7d;
+      }
+      .Property--content {
+        flex: 1;
+        font-weight: 600;
+      }
+    }
   }
 }
