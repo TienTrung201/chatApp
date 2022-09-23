@@ -5,12 +5,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIdCard, faMusic, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
 import MyProfile from "./MyProfile";
+import { useSelector } from "react-redux";
+import { userLogin } from "@/components/redux/selector";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const cx = classNames.bind(styles);
 
 function Profile() {
+  const user = useSelector(userLogin);
+  console.log(user);
   const headerProfile = useRef();
   const [styleLine, setStyleLine] = useState({});
   useEffect(() => {

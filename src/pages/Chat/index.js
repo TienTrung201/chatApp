@@ -6,6 +6,7 @@ import { faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
 const cx = classNames.bind(styles);
 
 function Chat() {
+  console.log("Chat");
   return (
     <section className={cx("wrapper")}>
       <article className={cx("controlChat")}>

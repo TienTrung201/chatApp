@@ -6,8 +6,13 @@ import { Fragment } from "react";
 import MyProfile from "./pages/Profile/MyProfile";
 import EditProfile from "./pages/Profile/EditProfile";
 import MyMusic from "./pages/Profile/MyMusic";
+import LayoutLogin from "./components/Layout/DefaultLayout/LoginLayout";
+// import { useSelector } from "react-redux";
+// import { user } from "./components/redux/selector";
 
 function App() {
+  // const userLogin = useSelector(user);
+  // console.log(userLogin);
   return (
     <Router>
       <div className="App">
@@ -18,11 +23,11 @@ function App() {
             let Layout = DefaultLayout;
 
             if (route.layout) {
-              Layout = route.layout;
+              Layout = LayoutLogin;
             } else if (route.layout === null) {
               Layout = Fragment;
             }
-            if (route.path === "/profile") {
+            if (route.path === "/") {
               return (
                 <Route
                   key={index}

@@ -1,4 +1,5 @@
 function Music() {
+  console.log("Music");
   return <h2>Music Page</h2>;
 }
 

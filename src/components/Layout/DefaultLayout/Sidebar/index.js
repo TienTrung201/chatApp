@@ -2,7 +2,7 @@ import styles from "./Sidebar.module.scss";
 
 import classNames from "classnames/bind";
 import { NavLink } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import "@fortawesome/free-solid-svg-icons";
 // import {
@@ -88,7 +88,7 @@ function Sidebar({ activeNav }) {
               ref={navItem}
               onClick={handleActiveNav}
               className={cx("listItem__Link", "autoCenter")}
-              to={"/profile"}
+              to={"/"}
             >
               <img
                 src={require("../../../../assets/images/man.png")}
@@ -101,7 +101,7 @@ function Sidebar({ activeNav }) {
             <NavLink
               onClick={handleActiveNav}
               className={cx("listItem__Link", "autoCenter")}
-              to={"/"}
+              to={"/chat"}
             >
               <img
                 src={require("../../../../assets/images/message.png")}
