@@ -21,7 +21,6 @@ function App() {
     const unsubscibed = auth.onAuthStateChanged((user) => {
       if (user) {
         setCountCheckUser((prev) => prev + 1);
-        console.log({ user });
         const { displayName, email, uid, photoURL } = user;
         Dispatch(
           userSlice.actions.setUser({
@@ -32,6 +31,8 @@ function App() {
           })
         );
         return;
+      } else {
+        console.log({ user });
       }
       return () => {
         unsubscibed();

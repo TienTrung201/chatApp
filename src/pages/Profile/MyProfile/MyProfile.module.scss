@@ -84,6 +84,38 @@
       flex: 1;
       font-weight: 600;
     }
+    .logout {
+      // float: left;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 20px 20px 20px 0px;
+      .buttonLogout {
+        background-color: #6e00ff;
+        // opacity: 0.9;
+        height: 40px;
+        width: 140px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: #fff;
+        position: relative;
+
+        &:hover {
+          color: rgb(63, 62, 62);
+          background-color: #8c35fd;
+        }
+        .buttonContent {
+        }
+        .iconLogout {
+          position: absolute;
+          left: 15px;
+          font-size: 1.6rem;
+
+          // color: #fff;
+        }
+      }
+    }
   }
 }
 
