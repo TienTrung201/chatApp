@@ -30,6 +30,10 @@ function Login() {
         const user = result.user;
         console.log("Đăng nhập", { user });
         // ...
+
+        // const credential = FacebookAuthProvider.credentialFromResult(result);
+        // const token = credential.accessToken;
+        // console.log("Token", { token });
       })
       .catch((error) => {
         // Handle Errors here.
