@@ -205,6 +205,7 @@
         font-weight: 600;
       }
     }
+
     // Có thể xóa
   }
 }
@@ -268,6 +269,32 @@
         //git
         flex: 1;
         font-weight: 600;
+      }
+      .logout {
+        // float: left;
+        padding: 20px 20px 20px 0px;
+        .buttonLogout {
+          background-color: #6e00ff;
+          // opacity: 0.9;
+          height: 35px;
+          width: 120px;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          color: #fff;
+          position: relative;
+          font-size: 1.4rem;
+
+          .buttonContent {
+          }
+          .iconLogout {
+            position: absolute;
+            left: 5px;
+            font-size: 1.5rem;
+
+            // color: #fff;
+          }
+        }
       }
     }
   }

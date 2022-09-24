@@ -24,7 +24,7 @@ function MyProfile() {
         setIloading(false);
         Dispatch(userSlice.actions.logout({}));
         console.log("logged out...");
-      }, 2000);
+      }, 1200);
     });
   };
   return (

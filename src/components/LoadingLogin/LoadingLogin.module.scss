@@ -1,0 +1,49 @@
+.wrapper {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 999;
+  .loader {
+    top: 0;
+    text-align: center;
+    min-height: 100vh;
+    color: white;
+    @keyframes ring {
+      0% {
+        transform: rotate(0deg);
+        box-shadow: 0.5px 2.5px 1px #1a1a1a;
+      }
+      50% {
+        transform: rotate(180deg);
+        box-shadow: 0.5px 2.5px 1px #fff;
+      }
+      100% {
+        transform: rotate(360deg);
+        box-shadow: 0.5px 2.5px 1px #1a1a1a;
+      }
+    }
+    .ring {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      position: relative;
+      animation: ring 1.2s linear infinite;
+      // background-color: red;
+      &::before {
+        position: absolute;
+        content: "";
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+      }
+    }
+  }
+}

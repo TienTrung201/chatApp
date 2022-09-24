@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { userLogin } from "@/components/redux/selector";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import LoadingLogin from "@/components/LoadingLogin";
 
 const fbLogin = new FacebookAuthProvider();
 const cx = classNames.bind(styles);
@@ -16,12 +17,11 @@ function Login() {
   useEffect(() => {
     setTimeout(() => {
       if (user.displayName) {
-        console.log(user);
         navigate("/");
       } else {
         navigate("/login");
       }
-    }, 2000);
+    }, 1500);
   }, [user, navigate]);
   const handleLoginFB = () => {
     signInWithPopup(auth, fbLogin)
@@ -45,6 +45,7 @@ function Login() {
   };
   return (
     <section className={cx("wrapper")}>
+      {user.displayName === undefined ? <></> : <LoadingLogin />}
       <article className={cx("continer")}>
         <div className={cx("LoginContent")}>
           <div className={cx("logoApp", "autoCenter")}>
