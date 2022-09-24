@@ -13,14 +13,18 @@ import userSlice from "@/pages/Login/UserSlice";
 const cx = classNames.bind(styles);
 
 function MyProfile() {
+  const Dispatch = useDispatch();
+  const [isLoading, setIloading] = useState(false);
   const user = useSelector(userLogin);
   const handleLogout = () => {
     signOut(auth).then(() => {
+      setIloading(true);
       console.log("loading...");
       setTimeout(() => {
+        setIloading(false);
+        Dispatch(userSlice.actions.logout({}));
         console.log("logged out...");
       }, 2000);
-      // Dispatch(userSlice.actions.logout({}));
     });
   };
   return (
@@ -28,11 +32,12 @@ function MyProfile() {
     <section className={cx("wrapper")}>
       {user.displayName === undefined ? (
         <Loading />
+      ) : isLoading === true ? (
+        <Loading />
       ) : (
         <>
           <article className={cx("myProfileInfo")}>
             <div className={cx("myProfileInfo--avata")}>
-              {/* <img src={require("../../../assets/images/avata.jpg")} alt="" /> */}
               <img src={user.photoURL} alt="" />
             </div>
             <div className={cx("myProfileInfo--contact")}>

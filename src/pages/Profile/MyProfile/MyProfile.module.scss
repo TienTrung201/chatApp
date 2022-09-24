@@ -10,6 +10,8 @@
 .wrapper {
   padding: 40px 100px;
   display: flex;
+  height: 100%;
+  //bug ở đây height 100%
   // align-items: center;
   // justify-content: center;
   overflow-y: scroll;
