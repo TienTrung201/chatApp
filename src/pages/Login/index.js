@@ -1,7 +1,11 @@
 import styles from "./Login.module.scss";
 import classNames from "classnames/bind";
 import images from "@/assets/images";
-import { FacebookAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+  FacebookAuthProvider,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from "firebase/auth";
 import { auth } from "@/firebase/config";
 import { useSelector } from "react-redux";
 import { userLogin } from "@/components/redux/selector";
@@ -10,6 +14,7 @@ import { useEffect } from "react";
 import LoadingLogin from "@/components/LoadingLogin";
 
 const fbLogin = new FacebookAuthProvider();
+const googleLogin = new GoogleAuthProvider();
 const cx = classNames.bind(styles);
 function Login() {
   const user = useSelector(userLogin);
@@ -44,6 +49,30 @@ function Login() {
         // The AuthCredential type that was used.
         const credential = FacebookAuthProvider.credentialFromError(error);
         console.error({ errorCode, errorMessage, email, credential });
+        // ...
+      });
+  };
+  const handleLoginGoogle = () => {
+    signInWithPopup(auth, googleLogin)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        // const credential = GoogleAuthProvider.credentialFromResult(result);
+        // const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        console.log("Đăng nhập", { user });
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        console.error({ errorCode, errorMessage, email, credential });
+
         // ...
       });
   };
@@ -86,7 +115,10 @@ function Login() {
             <img className={cx("icon")} src={images.facebook} alt="Facebook" />
             <span className={cx("conectTitle")}>Tiếp tục với Facebook</span>
           </div>
-          <div className={cx("signinButton", "autoCenter")}>
+          <div
+            onClick={handleLoginGoogle}
+            className={cx("signinButton", "autoCenter")}
+          >
             <img className={cx("icon")} src={images.google} alt="Facebook" />
             <span className={cx("conectTitle")}>Tiếp tục với google</span>
           </div>
