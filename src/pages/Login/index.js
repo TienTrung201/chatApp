@@ -12,6 +12,7 @@ import { userLogin } from "@/components/redux/selector";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import LoadingLogin from "@/components/LoadingLogin";
+import { setDocument } from "@/firebase/services";
 
 const fbLogin = new FacebookAuthProvider();
 const googleLogin = new GoogleAuthProvider();
@@ -32,8 +33,18 @@ function Login() {
     signInWithPopup(auth, fbLogin)
       .then((result) => {
         // The signed-in user info.
-        const user = result.user;
+        const { user, _tokenResponse } = result;
         console.log("Đăng nhập", { user });
+        if (_tokenResponse.isNewUser) {
+          setDocument("users", {
+            name: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            uid: user.uid,
+            providerId: _tokenResponse.providerId,
+          });
+          setDocument("userChats", {});
+        }
         // ...
 
         // const credential = FacebookAuthProvider.credentialFromResult(result);
@@ -59,8 +70,18 @@ function Login() {
         // const credential = GoogleAuthProvider.credentialFromResult(result);
         // const token = credential.accessToken;
         // The signed-in user info.
-        const user = result.user;
+        const { user, _tokenResponse } = result;
         console.log("Đăng nhập", { user });
+        if (_tokenResponse.isNewUser) {
+          setDocument("users", {
+            name: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            uid: user.uid,
+            providerId: _tokenResponse.providerId,
+          });
+        }
+
         // ...
       })
       .catch((error) => {
