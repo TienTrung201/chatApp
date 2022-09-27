@@ -3,11 +3,15 @@ import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
 import BoxChat from "@/pages/Chat/BoxChat";
+import { Link } from "react-router-dom";
+import ModalInfoChat from "./ModalInfoChat";
+// import ModalInfoChat from "./ModalInfoChat";
 
 const cx = classNames.bind(styles);
 
 function Chat() {
   console.log("Chat");
+
   return (
     <section className={cx("wrapper")}>
       <article className={cx("controlChat")}>
@@ -33,7 +37,7 @@ function Chat() {
           />
         </div>
         <div className={cx("wrapperListUser")}>
-          <div className={cx("user")}>
+          <Link to={"#"} className={cx("user")}>
             <div className={cx("avata", "autoCenter")}>
               <img src={require("../../assets/images/avata.jpg")} alt="" />
             </div>
@@ -41,8 +45,8 @@ function Chat() {
               <h5 className={cx("user__name")}>Tien trung</h5>
               <p className={cx("user__chatHistory")}>Hello</p>
             </div>
-          </div>
-          <div className={cx("user")}>
+          </Link>
+          <Link to={"#"} className={cx("user")}>
             <div className={cx("avata", "autoCenter")}>
               <img src={require("../../assets/images/avata.jpg")} alt="" />
             </div>
@@ -50,8 +54,8 @@ function Chat() {
               <h5 className={cx("user__name")}>Tien trung</h5>
               <p className={cx("user__chatHistory")}>Hello</p>
             </div>
-          </div>
-          <div className={cx("user")}>
+          </Link>
+          <Link to={"#"} className={cx("user")}>
             <div className={cx("avata", "autoCenter")}>
               <img src={require("../../assets/images/avata.jpg")} alt="" />
             </div>
@@ -59,8 +63,8 @@ function Chat() {
               <h5 className={cx("user__name")}>Tien trung</h5>
               <p className={cx("user__chatHistory")}>Hello</p>
             </div>
-          </div>
-          <div className={cx("user")}>
+          </Link>
+          <Link to={"#"} className={cx("user")}>
             <div className={cx("avata", "autoCenter")}>
               <img src={require("../../assets/images/avata.jpg")} alt="" />
             </div>
@@ -68,8 +72,8 @@ function Chat() {
               <h5 className={cx("user__name")}>Tien trung</h5>
               <p className={cx("user__chatHistory")}>Hello</p>
             </div>
-          </div>
-          <div className={cx("user")}>
+          </Link>
+          <Link to={"#"} className={cx("user")}>
             <div className={cx("avata", "autoCenter")}>
               <img src={require("../../assets/images/avata.jpg")} alt="" />
             </div>
@@ -77,8 +81,8 @@ function Chat() {
               <h5 className={cx("user__name")}>Tien trung</h5>
               <p className={cx("user__chatHistory")}>Hello</p>
             </div>
-          </div>
-          <div className={cx("user")}>
+          </Link>
+          <Link to={"#"} className={cx("user")}>
             <div className={cx("avata", "autoCenter")}>
               <img src={require("../../assets/images/avata.jpg")} alt="" />
             </div>
@@ -86,8 +90,8 @@ function Chat() {
               <h5 className={cx("user__name")}>Tien trung</h5>
               <p className={cx("user__chatHistory")}>Hello</p>
             </div>
-          </div>
-          <div className={cx("user")}>
+          </Link>
+          <Link to={"#"} className={cx("user")}>
             <div className={cx("avata", "autoCenter")}>
               <img src={require("../../assets/images/avata.jpg")} alt="" />
             </div>
@@ -95,8 +99,8 @@ function Chat() {
               <h5 className={cx("user__name")}>Tien trung</h5>
               <p className={cx("user__chatHistory")}>Hello</p>
             </div>
-          </div>
-          <div className={cx("user")}>
+          </Link>
+          <Link to={"#"} className={cx("user")}>
             <div className={cx("avata", "autoCenter")}>
               <img src={require("../../assets/images/avata.jpg")} alt="" />
             </div>
@@ -104,8 +108,8 @@ function Chat() {
               <h5 className={cx("user__name")}>Tien trung</h5>
               <p className={cx("user__chatHistory")}>Hello</p>
             </div>
-          </div>
-          <div className={cx("user")}>
+          </Link>
+          <Link to={"#"} className={cx("user")}>
             <div className={cx("avata", "autoCenter")}>
               <img src={require("../../assets/images/avata.jpg")} alt="" />
             </div>
@@ -113,11 +117,14 @@ function Chat() {
               <h5 className={cx("user__name")}>Tien trung</h5>
               <p className={cx("user__chatHistory")}>Hello</p>
             </div>
-          </div>
+          </Link>
         </div>
       </article>
       <article className={cx("rooms")}>
         <BoxChat />
+      </article>
+      <article className={cx("ModalInfoChat")}>
+        <ModalInfoChat />
       </article>
     </section>
   );

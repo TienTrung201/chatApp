@@ -22,7 +22,7 @@
     // flex: 1;
     display: flex;
     flex-direction: column;
-    width: 300px;
+    width: 250px;
     background-color: #fff;
     padding: 15px;
     border-radius: 30px;
@@ -145,5 +145,10 @@
     @include mobile {
       flex: 0;
     }
+  }
+  .ModalInfoChat {
+    // flex: 1;
+    display: flex;
+    // background-color: var(--backGround--page);
   }
 }

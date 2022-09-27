@@ -1,3 +1,13 @@
+@mixin mobile {
+  @media screen and (max-width: 739px) {
+    @content;
+  }
+}
+@mixin tablet {
+  @media screen and (min-width: 740px) and (max-width: 1023px) {
+    @content;
+  }
+}
 .wrapper::-webkit-scrollbar {
   display: none;
 }
@@ -16,7 +26,13 @@
   // justify-content: center;
   overflow-y: scroll;
   // height: 100%;
-
+  @include tablet {
+    padding: 40px 20px;
+  }
+  @include mobile {
+    padding: 10px;
+    flex-direction: column;
+  }
   .myProfileInfo {
     flex: 1;
     background-color: var(--backGround--page);
@@ -29,13 +45,26 @@
     align-items: center;
     border-radius: 20px;
     box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.05);
-
+    @include mobile {
+      flex: 1;
+      height: 250px;
+      padding-top: 23.3px;
+      padding-bottom: 20.6px;
+      margin-right: 0px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+    }
     .myProfileInfo--avata {
       width: 130px;
       height: 130px;
       border-radius: 50%;
       overflow: hidden;
       margin-bottom: 20px;
+      @include mobile {
+        width: 86.66px;
+        height: 86.66px;
+        margin-bottom: 13.33px;
+      }
       img {
         width: 100%;
         height: 100%;
@@ -46,13 +75,23 @@
       text-align: center;
       font-size: 1.2rem;
       color: #7d7d7d;
+      @include mobile {
+        font-size: 1rem;
+      }
       .myProfileInfo--Name {
         font-size: 1.6rem;
         margin-bottom: 5px;
         color: var(--text-color);
+        @include mobile {
+          font-size: 1.4rem;
+          margin-bottom: 5px;
+        }
       }
       .myProfileInfo--Email {
         margin-bottom: 5px;
+        @include mobile {
+          margin-bottom: 2px;
+        }
       }
       .myProfileInfo--Nation {
       }
@@ -62,6 +101,9 @@
     flex: 1.8;
     // background-color: transparent !important;
     border-radius: 20px;
+    @include mobile {
+      border-radius: 10px;
+    }
     .backgroundSpecial {
       background-color: #e1edf5;
     }
@@ -77,6 +119,9 @@
       align-items: center;
       height: 50px;
       //   justify-content: center;
+      @include mobile {
+        padding: 0 15px;
+      }
     }
     .PropertyName {
       flex: 1;
@@ -93,7 +138,7 @@
       align-items: center;
       padding: 20px 20px 20px 0px;
       .buttonLogout {
-        background-color: #6e00ff;
+        background-color: var(--backGround-App);
         // opacity: 0.9;
         height: 40px;
         width: 140px;
@@ -102,6 +147,12 @@
         transition: all 0.3s ease;
         color: #fff;
         position: relative;
+        @include mobile {
+          height: 35px;
+          width: 120px;
+          border-radius: 5px;
+          font-size: 1.4rem;
+        }
 
         &:hover {
           color: rgb(63, 62, 62);
@@ -113,7 +164,10 @@
           position: absolute;
           left: 15px;
           font-size: 1.6rem;
-
+          @include mobile {
+            display: none;
+            font-size: 1.5rem;
+          }
           // color: #fff;
         }
       }
@@ -129,174 +183,7 @@
 @media (min-width: 739px) {
 }
 
-/* Tablet - PC low resolution */
-@media (min-width: 740px) and (max-width: 1023px) {
-  .wrapper {
-    padding: 40px 20px;
-
-    // Có thể xóa
-    .myProfileInfo {
-      flex: 1;
-      background-color: var(--backGround--page);
-      height: 300px;
-      padding-top: 35px;
-      padding-bottom: 40px;
-      margin-right: 35px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      border-radius: 20px;
-      box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.05);
-
-      .myProfileInfo--avata {
-        width: 130px;
-        height: 130px;
-        border-radius: 50%;
-        overflow: hidden;
-        margin-bottom: 20px;
-        img {
-          width: 100%;
-          height: 100%;
-          border-radius: 50%;
-        }
-      }
-      .myProfileInfo--contact {
-        text-align: center;
-        font-size: 1.2rem;
-        color: #7d7d7d;
-        .myProfileInfo--Name {
-          font-size: 1.6rem;
-          margin-bottom: 5px;
-          color: var(--text-color);
-        }
-        .myProfileInfo--Email {
-          margin-bottom: 5px;
-        }
-        .myProfileInfo--Nation {
-        }
-      }
-    }
-    .myProfileContent {
-      flex: 1.8;
-      // background-color: transparent !important;
-      border-radius: 20px;
-      .backgroundSpecial {
-        background-color: #e1edf5;
-      }
-      .colorRedOr {
-        color: #e97233;
-      }
-      .myProfileContent__Property {
-        border-radius: 10px;
-        display: flex;
-        padding: 0 25px;
-        font-size: 1.2rem;
-        //   flex-direction: column;
-        align-items: center;
-        height: 50px;
-        //   justify-content: center;
-      }
-      .PropertyName {
-        flex: 1;
-        color: #7d7d7d;
-      }
-      .Property--content {
-        flex: 1;
-        font-weight: 600;
-      }
-    }
-
-    // Có thể xóa
-  }
-}
 /* > PC low resolution */
 
 @media (min-width: 1024px) and (max-width: 1239px) {
-}
-
-@media (max-width: 739px) {
-  .wrapper {
-    padding: 10px;
-    flex-direction: column;
-    // align-items: center;
-    .myProfileInfo {
-      flex: 1;
-      height: 250px;
-      padding-top: 23.3px;
-      padding-bottom: 20.6px;
-      margin-right: 0px;
-      margin-bottom: 10px;
-      border-radius: 10px;
-
-      .myProfileInfo--avata {
-        width: 86.66px;
-        height: 86.66px;
-        margin-bottom: 13.33px;
-      }
-      .myProfileInfo--contact {
-        font-size: 1rem;
-        .myProfileInfo--Name {
-          font-size: 1.4rem;
-          margin-bottom: 5px;
-        }
-        .myProfileInfo--Email {
-          margin-bottom: 2px;
-        }
-        .myProfileInfo--Nation {
-        }
-      }
-    }
-    .myProfileContent {
-      flex: 1.8;
-      // background-color: transparent !important;
-      border-radius: 10px;
-
-      .myProfileContent__Property {
-        border-radius: 10px;
-        display: flex;
-        padding: 0 15px;
-        font-size: 1.2rem;
-        //   flex-direction: column;
-        align-items: center;
-        height: 50px;
-        //   justify-content: center;
-      }
-      .PropertyName {
-        flex: 1;
-        color: #7d7d7d;
-      }
-      .Property--content {
-        //git
-        flex: 1;
-        font-weight: 600;
-      }
-      .logout {
-        // float: left;
-        padding: 20px 20px 20px 0px;
-        .buttonLogout {
-          background-color: var(--backGround--page);
-          // opacity: 0.9;
-          height: 35px;
-          width: 120px;
-          border-radius: 5px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          color: #fff;
-          position: relative;
-          font-size: 1.4rem;
-
-          .buttonContent {
-          }
-          .iconLogout {
-            display: none;
-            position: absolute;
-            left: 5px;
-            font-size: 1.5rem;
-
-            // color: #fff;
-          }
-        }
-      }
-    }
-  }
 }
