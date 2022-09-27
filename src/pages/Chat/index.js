@@ -2,6 +2,7 @@ import styles from "./Chat.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
+import BoxChat from "@/pages/Chat/BoxChat";
 
 const cx = classNames.bind(styles);
 
@@ -115,7 +116,9 @@ function Chat() {
           </div>
         </div>
       </article>
-      <article className={cx("rooms")}></article>
+      <article className={cx("rooms")}>
+        <BoxChat />
+      </article>
     </section>
   );
 }

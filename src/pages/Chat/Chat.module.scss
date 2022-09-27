@@ -1,3 +1,9 @@
+@mixin mobile {
+  @media screen and (max-width: 739px) {
+    @content;
+  }
+}
+
 .wrapper {
   background-color: var(--backGround--page);
   height: 100%;
@@ -5,16 +11,25 @@
   padding: 15px;
   border-radius: 30px;
   //   flex: 1;
+  @include mobile {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    padding: 0 8px var(--default-layout-Nav-height) 8px;
 
+    padding-bottom: var(--default-layout-Nav-height);
+  }
   .controlChat {
     // flex: 1;
     display: flex;
     flex-direction: column;
-    width: 200px;
+    width: 300px;
     background-color: #fff;
     padding: 15px;
     border-radius: 30px;
     overflow: hidden;
+    @include mobile {
+      flex: 1;
+    }
     .createNew {
       display: flex;
       align-items: center;
@@ -47,7 +62,7 @@
       }
     }
     .wrapperSearch {
-      height: 32px;
+      height: 45px;
       width: 100%;
       position: relative;
       background-color: #f3f6ff;
@@ -55,7 +70,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 24px;
+      margin-bottom: 10px;
+      @include mobile {
+        height: 50px;
+      }
       .searchText {
         width: 80%;
         background-color: transparent;
@@ -63,11 +81,19 @@
         font-size: 1.2rem;
         padding-left: 16px;
         color: #8f97a4;
+        @include mobile {
+          font-size: 1.3rem;
+        }
       }
       .searchIcon {
         margin-right: 10px;
         color: #8f97a4;
         font-size: 1.3rem;
+        @include mobile {
+          margin-right: 10px;
+          color: #8f97a4;
+          font-size: 1.5rem;
+        }
       }
     }
     .wrapperListUser::-webkit-scrollbar {
@@ -90,8 +116,8 @@
           width: 50px;
           height: 50px;
           img {
-            width: 35px;
-            height: 35px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
           }
         }
@@ -99,8 +125,9 @@
         .user__display {
           padding-top: 1px;
           .user__name {
-            font-size: 1.3rem;
-            font-weight: 600;
+            font-size: 1.5rem;
+            // font-weight: 400;
+
             line-height: 1.5rem;
           }
           .user__chatHistory {
@@ -111,76 +138,12 @@
       }
     }
   }
-  //   .rooms {
-  //     flex: 4;
-  //     background-color: aqua;
-  //   }
-}
-
-@media (max-width: 739px) {
-  .wrapper {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    padding: 0 8px var(--default-layout-Nav-height) 8px;
-
-    padding-bottom: var(--default-layout-Nav-height);
-    .controlChat {
-      flex: 1;
-      .wrapperSearch {
-        height: 50px;
-        .searchText {
-          font-size: 1.3rem;
-        }
-        .searchIcon {
-          margin-right: 10px;
-          color: #8f97a4;
-          font-size: 1.5rem;
-        }
-      }
-      .wrapperListUser::-webkit-scrollbar {
-        display: none;
-      }
-
-      /* Hide scrollbar for IE, Edge and Firefox */
-      .wrapperListUser {
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
-      }
-      .wrapperListUser {
-        overflow-y: scroll;
-
-        .user {
-          display: flex;
-          align-items: center;
-          height: 53.3px;
-          .avata {
-            width: 50px;
-            height: 50px;
-            img {
-              width: 35px;
-              height: 35px;
-              border-radius: 50%;
-            }
-          }
-
-          .user__display {
-            padding-top: 1px;
-            .user__name {
-              font-size: 1.3rem;
-              font-weight: 600;
-              line-height: 1.5rem;
-            }
-            .user__chatHistory {
-              font-size: 1rem;
-              color: #8f97a4;
-            }
-          }
-        }
-      }
+  .rooms {
+    flex: 1;
+    // background-color: aqua;
+    display: flex;
+    @include mobile {
+      flex: 0;
     }
-    // .rooms {
-    //   flex: 4;
-    //   background-color: aqua;
-    // }
   }
 }

@@ -1,5 +1,9 @@
 // npm install --save normalize.css reset css
-
+@mixin mobile {
+  @media screen and (max-width: 739px) {
+    @content;
+  }
+}
 :root {
   --primary: #fe2c55;
   --backGround-App: #6e00ff;
@@ -61,6 +65,7 @@ input,
 [tabindex] {
   outline: none;
   border: none;
+  background-color: transparent;
 }
 
 a[href] {
