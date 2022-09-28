@@ -5,13 +5,14 @@ import { faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
 import BoxChat from "@/pages/Chat/BoxChat";
 import { Link } from "react-router-dom";
 import ModalInfoChat from "./ModalInfoChat";
+import { useState } from "react";
 // import ModalInfoChat from "./ModalInfoChat";
 
 const cx = classNames.bind(styles);
 
 function Chat() {
   console.log("Chat");
-
+  const [modalInfo, setModalInfo] = useState(false);
   return (
     <section className={cx("wrapper")}>
       <article className={cx("controlChat")}>
@@ -121,10 +122,10 @@ function Chat() {
         </div>
       </article>
       <article className={cx("rooms")}>
-        <BoxChat />
+        <BoxChat modal={modalInfo} setModal={setModalInfo} />
       </article>
       <article className={cx("ModalInfoChat")}>
-        <ModalInfoChat />
+        <ModalInfoChat modal={modalInfo} setModal={setModalInfo} />
       </article>
     </section>
   );

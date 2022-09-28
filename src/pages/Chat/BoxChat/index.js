@@ -7,7 +7,7 @@ import { useEffect, useRef } from "react";
 
 const cx = classNames.bind(styles);
 
-function BoxChat() {
+function BoxChat({ modal, setModal }) {
   const boxMessage = useRef();
   useEffect(() => {
     boxMessage.current.scrollTop = boxMessage.current.scrollHeight;
@@ -26,7 +26,12 @@ function BoxChat() {
             </div>
           </div>
         </div>
-        <div className={cx("infoRoom-Bar", "autoCenter")}>
+        <div
+          onClick={() => {
+            setModal(!modal);
+          }}
+          className={cx("infoRoom-Bar", "autoCenter")}
+        >
           <FontAwesomeIcon className={cx("iconMenu")} icon={faEllipsis} />
         </div>
       </div>
