@@ -1,6 +1,13 @@
 import styles from "./ModalInfoChat.module.scss";
 import classNames from "classnames/bind";
 import { motion, AnimatePresence } from "framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronDown,
+  faGear,
+  faImage,
+  faSignature,
+} from "@fortawesome/free-solid-svg-icons";
 
 const cx = classNames.bind(styles);
 
@@ -19,7 +26,59 @@ function ModalInfoChat({ modal }) {
             transition: { duration: 0.3 },
           }}
           className={cx("wrapper")}
-        ></motion.div>
+        >
+          <div className={cx("infoUser")}>
+            <div className={cx("avatar")}>
+              <img
+                width={40}
+                src={require("../../../assets/images/avata.jpg")}
+                alt=""
+              />
+            </div>
+            <h1 className={cx("nameUser")}>Tiến trung</h1>
+          </div>
+          <div className={cx("controlRoom")}>
+            <ul className={cx("controlList")}>
+              <li className={cx("controlItem", "setting")}>
+                <div className={cx("boxBug")}>
+                  <div className={cx("wrappIcon", "autoCenter")}>
+                    <FontAwesomeIcon className={cx("icon")} icon={faGear} />
+                  </div>
+                  <FontAwesomeIcon
+                    className={cx("iconOpen")}
+                    icon={faChevronDown}
+                  />
+                  <p className={cx("content")}>Setting message</p>
+                </div>
+                <ul className={cx("navBar")}>
+                  <li className={cx("childrentControl", "nickName")}>
+                    <div className={cx("boxBug")}>
+                      <div className={cx("wrappIcon", "autoCenter")}>
+                        <FontAwesomeIcon
+                          className={cx("icon")}
+                          icon={faSignature}
+                        />
+                      </div>
+                      <p className={cx("content")}>Edit Nickname</p>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <li className={cx("controlItem", "image")}>
+                <div className={cx("boxBug")}>
+                  <div className={cx("wrappIcon", "autoCenter")}>
+                    <FontAwesomeIcon className={cx("icon")} icon={faImage} />
+                  </div>
+                  <FontAwesomeIcon
+                    className={cx("iconOpen")}
+                    icon={faChevronDown}
+                  />
+                  <p className={cx("content")}>Media</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </motion.div>
       )}
     </AnimatePresence>
   );

@@ -1,4 +1,99 @@
+$bOrgeTransparent: #fff4e6;
+$bPinkTransparent: #fff0f7;
+
 .wrapper {
   background-color: #fff;
   border-radius: 30px;
+  display: flex; //thêm
+  flex-direction: column; //thêm
+  // padding: 33.33px 20px 0 20px;
+  padding-top: 33.33px;
+  overflow: hidden;
+  .infoUser {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+    user-select: none;
+
+    .avatar {
+      // display: none;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3.5px solid #fff;
+      margin-bottom: 20px;
+      // display: flex;
+      // justify-content: center;
+      // align-items: center;
+      box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.2);
+      img {
+        width: 100%;
+        border-radius: 50%;
+        // border: 9px solid rgb(19, 173, 27);
+      }
+    }
+    .nameUser {
+      font-size: 2rem;
+    }
+  }
+  .controlRoom {
+    padding: 0 18px;
+    .controlList {
+      .setting {
+        background-color: $bOrgeTransparent;
+        .icon {
+          color: #e5a730;
+        }
+      }
+      .nickName {
+        background-color: $bOrgeTransparent;
+        .icon {
+          color: #afe530;
+        }
+      }
+      .image {
+        background-color: $bPinkTransparent;
+        .icon {
+          color: #c383a5;
+        }
+      }
+
+      .controlItem {
+        // flex-direction: ;
+        border-radius: 20px;
+        margin-bottom: 16px;
+        padding: 0 10px;
+        position: relative;
+        cursor: pointer;
+        .boxBug {
+          display: flex;
+          align-items: center;
+          padding: 8px 0;
+          .iconOpen {
+            color: #848589;
+            position: absolute;
+            right: 15px;
+            font-size: 1.2rem;
+          }
+          .wrappIcon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 5px;
+
+            .icon {
+            }
+          }
+        }
+
+        .content {
+          font-size: 1.4rem;
+          font-weight: 600;
+          user-select: none;
+        }
+      }
+    }
+  }
 }
