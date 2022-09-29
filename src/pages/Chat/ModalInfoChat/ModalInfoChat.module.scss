@@ -1,6 +1,6 @@
 $bOrgeTransparent: #fff4e6;
 $bPinkTransparent: #fff0f7;
-
+$widthModal: 250px;
 .wrapper {
   background-color: #fff;
   border-radius: 30px;
@@ -15,7 +15,8 @@ $bPinkTransparent: #fff0f7;
     align-items: center;
     margin-bottom: 40px;
     user-select: none;
-
+    // bug nhảy dòng khi close modal
+    width: $widthModal;
     .avatar {
       // display: none;
       width: 70px;
@@ -40,6 +41,8 @@ $bPinkTransparent: #fff0f7;
   }
   .controlRoom {
     padding: 0 18px;
+    //bug nhảy dòng khi close modle
+    width: $widthModal;
     .controlList {
       .setting {
         background-color: $bOrgeTransparent;
@@ -76,6 +79,8 @@ $bPinkTransparent: #fff0f7;
             position: absolute;
             right: 15px;
             font-size: 1.2rem;
+            // rotate: -90deg;
+            transition: 0.3s ease-in-out;
           }
           .wrappIcon {
             width: 30px;

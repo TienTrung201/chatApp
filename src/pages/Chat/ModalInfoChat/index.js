@@ -8,10 +8,12 @@ import {
   faImage,
   faSignature,
 } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 
 const cx = classNames.bind(styles);
 
 function ModalInfoChat({ modal }) {
+  const [isSetting, setIsSetting] = useState(true);
   return (
     <AnimatePresence>
       {modal && (
@@ -39,7 +41,12 @@ function ModalInfoChat({ modal }) {
           </div>
           <div className={cx("controlRoom")}>
             <ul className={cx("controlList")}>
-              <li className={cx("controlItem", "setting")}>
+              <li
+                onClick={() => {
+                  setIsSetting(!isSetting);
+                }}
+                className={cx("controlItem", "setting")}
+              >
                 <div className={cx("boxBug")}>
                   <div className={cx("wrappIcon", "autoCenter")}>
                     <FontAwesomeIcon className={cx("icon")} icon={faGear} />
@@ -47,22 +54,44 @@ function ModalInfoChat({ modal }) {
                   <FontAwesomeIcon
                     className={cx("iconOpen")}
                     icon={faChevronDown}
+                    style={
+                      isSetting === true
+                        ? { rotate: "-90deg" }
+                        : { rotate: "0deg" }
+                    }
                   />
                   <p className={cx("content")}>Setting message</p>
                 </div>
-                <ul className={cx("navBar")}>
-                  <li className={cx("childrentControl", "nickName")}>
-                    <div className={cx("boxBug")}>
-                      <div className={cx("wrappIcon", "autoCenter")}>
-                        <FontAwesomeIcon
-                          className={cx("icon")}
-                          icon={faSignature}
-                        />
-                      </div>
-                      <p className={cx("content")}>Edit Nickname</p>
-                    </div>
-                  </li>
-                </ul>
+                <AnimatePresence>
+                  {isSetting && (
+                    <motion.ul
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{
+                        transition: { stiffness: 300 },
+                        opacity: 1,
+                        height: "auto",
+                      }}
+                      exit={{
+                        opacity: 0,
+                        height: 0,
+                        transition: { duration: 0.2 },
+                      }}
+                      className={cx("navBar")}
+                    >
+                      <li className={cx("childrentControl", "nickName")}>
+                        <div className={cx("boxBug")}>
+                          <div className={cx("wrappIcon", "autoCenter")}>
+                            <FontAwesomeIcon
+                              className={cx("icon")}
+                              icon={faSignature}
+                            />
+                          </div>
+                          <p className={cx("content")}>Edit Nickname</p>
+                        </div>
+                      </li>
+                    </motion.ul>
+                  )}
+                </AnimatePresence>
               </li>
               <li className={cx("controlItem", "image")}>
                 <div className={cx("boxBug")}>

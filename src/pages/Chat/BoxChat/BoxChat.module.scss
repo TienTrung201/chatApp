@@ -1,5 +1,5 @@
 .wrapper {
-  padding: 33.3px 15px 15px 15px;
+  padding: 33.3px 15px 0px 15px;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -100,6 +100,7 @@
     padding: 10px 0;
     // padding-bottom: 15px;
     overflow: hidden;
+    box-shadow: 0px 30px 30px rgba(0, 0, 0, 0.1);
     .chooseButton {
       // height: 50px;
 

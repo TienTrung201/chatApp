@@ -3,6 +3,11 @@
     @content;
   }
 }
+@mixin tablet {
+  @media screen and (min-width: 740px) and (max-width: 1023px) {
+    @content;
+  }
+}
 
 .wrapper {
   background-color: var(--backGround--page);
@@ -27,16 +32,20 @@
     padding: 15px;
     border-radius: 30px;
     overflow: hidden;
+    box-shadow: 5px 20px 50px rgba(0, 0, 0, 0.1);
+
     @include mobile {
       flex: 1;
     }
     .createNew {
       display: flex;
       align-items: center;
-      height: 53px;
+      // height: 53px;
+      padding: 6.5px 0;
       padding-left: 12px;
       cursor: pointer;
-      //   margin-bottom: 26px;
+      // margin-bottom: 26px;
+
       .createPlus {
         width: 40px;
         height: 40px;
@@ -54,15 +63,26 @@
       }
     }
     .wrapperTitle {
-      height: 70px;
+      // height: 70px;
+      padding: 16.25px 0;
+      padding-left: 12px;
       display: flex;
       align-items: center;
+      @include mobile {
+        padding: 10px 0;
+        padding-left: 12px;
+      }
+      @include tablet {
+        padding: 5px 0;
+        padding-left: 12px;
+      }
       .title__Chat {
         font-size: 2.5rem;
       }
     }
     .wrapperSearch {
-      height: 45px;
+      // height: 40px;
+      padding: 13px 0;
       width: 100%;
       position: relative;
       background-color: #f3f6ff;
@@ -71,9 +91,7 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 10px;
-      @include mobile {
-        height: 50px;
-      }
+
       .searchText {
         width: 80%;
         background-color: transparent;
