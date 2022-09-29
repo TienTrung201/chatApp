@@ -37,7 +37,7 @@ function Login() {
         console.log("Đăng nhập", { user });
         if (_tokenResponse.isNewUser) {
           setDocument("users", {
-            name: user.displayName,
+            displayName: user.displayName,
             email: user.email,
             photoURL: user.photoURL,
             uid: user.uid,
@@ -74,7 +74,7 @@ function Login() {
         console.log("Đăng nhập", { user });
         if (_tokenResponse.isNewUser) {
           setDocument("users", {
-            name: user.displayName,
+            displayName: user.displayName,
             email: user.email,
             photoURL: user.photoURL,
             uid: user.uid,

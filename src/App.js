@@ -10,7 +10,7 @@ import LayoutLogin from "./components/Layout/DefaultLayout/LoginLayout";
 import { auth } from "./firebase/config";
 import { useDispatch } from "react-redux";
 import userSlice from "./pages/Login/UserSlice";
-import { useFireStore } from "@/hooks/useFirestors";
+import { useFireStore } from "@/hooks/useFirestor";
 
 function App() {
   const Dispatch = useDispatch();

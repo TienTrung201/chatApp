@@ -6,26 +6,73 @@ import BoxChat from "@/pages/Chat/BoxChat";
 import { Link } from "react-router-dom";
 import ModalInfoChat from "./ModalInfoChat";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { users } from "@/components/redux/selector";
+import { useDispatch, useSelector } from "react-redux";
+import { userLogin, users, userSelect } from "@/components/redux/selector";
+import userSlice from "../Login/UserSlice";
+import {
+  doc,
+  getDoc,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "@/firebase/config";
 // import ModalInfoChat from "./ModalInfoChat";
 
 const cx = classNames.bind(styles);
 
 function Chat() {
   console.log("Chat");
+  const Dispatch = useDispatch();
+  const userSelected = useSelector(userSelect);
   const allUser = useSelector(users);
-  // const user = useSelector(userLogin);
+  const user = useSelector(userLogin);
   const [modalInfo, setModalInfo] = useState(false);
   const [searchUser, setSearchUser] = useState("");
   const [searchResult, setSearchResult] = useState([]);
-  const [selectUser, setSelectUser] = useState({});
   const handleChangeSearch = (e) => {
     setSearchUser(e.target.value);
   };
-  const handleSelect = async () => {
-    // const combinedId= selectUser.uid>user.uid?
-    console.log(selectUser.name); // bug nay chi can su dung redux
+  const handleSelect = async (userSelect) => {
+    const combinedId =
+      userSelect.uid > user.uid
+        ? userSelect.uid + user.uid
+        : user.uid + userSelect.uid;
+    try {
+      const res = await getDoc(doc(db, "chats", combinedId));
+
+      // nếu 2 người chưa kết nốt thì tạo 1 liên kết và setDoc vào rooms(chats)
+      // update người lạ có info của mình
+      if (!res.exists()) {
+        await setDoc(doc(db, "chats", combinedId), {
+          message: [{ text: "", icon: [] }],
+        });
+        console.log(1);
+        await updateDoc(doc(db, "userChats", user.uid), {
+          [combinedId + ".userInfo"]: {
+            uid: userSelect.uid,
+            displayName: userSelect.displayName,
+            photoURL: userSelect.photoURL,
+          },
+          [combinedId + ".createdAt"]: serverTimestamp(),
+        });
+        setSearchUser("");
+      }
+
+      await updateDoc(doc(db, "userChats", userSelect.uid), {
+        [combinedId + ".userInfo"]: {
+          uid: user.uid,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+        },
+        [combinedId + ".createdAt"]: serverTimestamp(),
+      });
+
+      setSearchUser("");
+    } catch (err) {
+      console.log(err);
+      setSearchUser("");
+    }
   };
 
   useEffect(() => {
@@ -73,13 +120,15 @@ function Chat() {
                 return (
                   <li
                     onClick={() => {
-                      setSelectUser(user);
+                      Dispatch(userSlice.actions.setUserSelect(user));
                     }}
                     key={i}
                     className={cx("userItem")}
                   >
                     <Link
-                      onClick={handleSelect}
+                      onClick={() => {
+                        handleSelect(user);
+                      }}
                       to={"#"}
                       className={cx("user")}
                     >
