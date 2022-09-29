@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import ModalInfoChat from "./ModalInfoChat";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { userLogin, users } from "@/components/redux/selector";
+import { users } from "@/components/redux/selector";
 // import ModalInfoChat from "./ModalInfoChat";
 
 const cx = classNames.bind(styles);
@@ -15,7 +15,7 @@ const cx = classNames.bind(styles);
 function Chat() {
   console.log("Chat");
   const allUser = useSelector(users);
-  const user = useSelector(userLogin);
+  // const user = useSelector(userLogin);
   const [modalInfo, setModalInfo] = useState(false);
   const [searchUser, setSearchUser] = useState("");
   const [searchResult, setSearchResult] = useState([]);
