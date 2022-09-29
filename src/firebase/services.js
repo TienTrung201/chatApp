@@ -7,13 +7,16 @@ import {
 } from "firebase/firestore";
 import { db } from "./config";
 //  tạo id thủ công
+
 export const setDocument = async (collectionName, data) => {
   try {
-    console.log(data.uid);
     await setDoc(doc(db, collectionName, data.uid), {
       ...data,
       createdAt: serverTimestamp(),
     });
+    if (collectionName === "users") {
+      await setDoc(doc(db, "userChats", data.uid), {});
+    }
   } catch (e) {
     console.error("Error adding document: ", e);
   }

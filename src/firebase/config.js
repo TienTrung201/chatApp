@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
+import { connectAuthEmulator, getAuth } from "firebase/auth";
 const firebaseConfig = {
   apiKey: "AIzaSyAUKdbc1zfIoU901Oa0KG__f27HVa_YREQ",
   authDomain: "chatapp-trung.firebaseapp.com",
@@ -20,7 +20,8 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 if (window.location.hostname === "localhost") {
-  auth.useEmulator("http://localhost:9099");
-  db.useEmulator("localhost", "8080");
+  connectAuthEmulator(auth, "http://localhost:9099");
+  connectFirestoreEmulator(db, "localhost", 8080);
+  // connectStorageEmulatot(storage, "localhost", 9199);
 }
 export { auth, db };

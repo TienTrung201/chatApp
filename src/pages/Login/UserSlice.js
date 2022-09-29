@@ -5,6 +5,7 @@ export const userSlice = createSlice({
   initialState: {
     status: "idle",
     user: {},
+    users: [],
   },
   reducers: {
     setUser: (state, action) => {
@@ -12,6 +13,9 @@ export const userSlice = createSlice({
     },
     logout: (state, action) => {
       state.user = action.payload;
+    },
+    updateUsers: (state, action) => {
+      state.users = action.payload;
     },
   },
 });

@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; //npm i react-router-dom
 import { publicRoutes } from "@/routes";
 import { DefaultLayout } from "@/components/Layout";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import MyProfile from "./pages/Profile/MyProfile";
 import EditProfile from "./pages/Profile/EditProfile";
 import MyMusic from "./pages/Profile/MyMusic";
@@ -10,10 +10,20 @@ import LayoutLogin from "./components/Layout/DefaultLayout/LoginLayout";
 import { auth } from "./firebase/config";
 import { useDispatch } from "react-redux";
 import userSlice from "./pages/Login/UserSlice";
+import { useFireStore } from "./hooks/useFirestore";
 
 function App() {
   const Dispatch = useDispatch();
   const [countCheckUser, setCountCheckUser] = useState(0);
+  const conditionUser = useMemo(() => {
+    return {
+      fieldName: "name",
+      operator: "!=",
+      compareValue: "getAll",
+    };
+  }, []);
+
+  const users = useFireStore("users", conditionUser);
   useEffect(() => {
     if (countCheckUser > 1) {
       return;
@@ -22,6 +32,7 @@ function App() {
       if (user) {
         setCountCheckUser((prev) => prev + 1);
         const { displayName, email, uid, photoURL } = user;
+        console.log("Dispatch user");
         Dispatch(
           userSlice.actions.setUser({
             displayName,
@@ -39,7 +50,10 @@ function App() {
       };
     });
   }, [Dispatch, countCheckUser]);
-
+  useEffect(() => {
+    Dispatch(userSlice.actions.updateUsers(users));
+    console.log("Dispatch users");
+  }, [users, Dispatch]);
   return (
     <Router>
       <div className="App">
