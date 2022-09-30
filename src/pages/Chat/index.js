@@ -181,7 +181,7 @@ function Chat() {
                         <img
                           src={
                             user[1].userInfo.photoURL !== null
-                              ? user[1].photoURL
+                              ? user[1].userInfo.photoURL
                               : require("../../assets/images/photoUser.png")
                           }
                           alt=""
@@ -202,6 +202,7 @@ function Chat() {
                   <LoadingListUser />
                 </div>
               )}
+              {/* <LoadingListUser /> */}
             </>
           )}
         </ul>
