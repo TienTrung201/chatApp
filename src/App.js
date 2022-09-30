@@ -17,7 +17,7 @@ function App() {
   const [countCheckUser, setCountCheckUser] = useState(0);
   const conditionUser = useMemo(() => {
     return {
-      fieldName: "name",
+      fieldName: "displayName",
       operator: "!=",
       compareValue: "getAll",
     };

@@ -1,6 +1,7 @@
 import { db } from "@/firebase/config";
 import {
   collection,
+  doc,
   onSnapshot,
   orderBy,
   query,
@@ -78,6 +79,16 @@ export const useFireStore = (collectionName, condition) => {
       setDocuments(documents);
     });
 
+    return unsub; // clear
+  }, [collectionName, condition]);
+  return documents; // mảng đối tượng rooms
+};
+export const useFireStoreGetFields = (collectionName, condition) => {
+  const [documents, setDocuments] = useState([]);
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, collectionName, condition), (doc) => {
+      setDocuments(Object.entries(doc.data()));
+    });
     return unsub; // clear
   }, [collectionName, condition]);
   return documents; // mảng đối tượng rooms

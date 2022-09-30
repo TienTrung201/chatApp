@@ -2,13 +2,13 @@ import styles from "./MyProfile.module.scss";
 import classNames from "classnames/bind";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "@/components/redux/selector";
-import Loading from "@/components/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { signOut } from "firebase/auth";
 import { auth } from "@/firebase/config";
 import { useState } from "react";
 import userSlice from "@/pages/Login/UserSlice";
+import LoadingProFile from "@/components/Loaddings/LoadingProFile";
 
 const cx = classNames.bind(styles);
 
@@ -31,9 +31,9 @@ function MyProfile() {
     // {user.displayName === undefined?}
     <section className={cx("wrapper")}>
       {user.displayName === undefined ? (
-        <Loading />
+        <LoadingProFile />
       ) : isLoading === true ? (
-        <Loading />
+        <LoadingProFile />
       ) : (
         <>
           <article className={cx("myProfileInfo")}>

@@ -1,9 +1,9 @@
-import styles from "./Loading.module.scss";
+import styles from "./LoadingListUser.module.scss";
 import classNames from "classnames/bind";
 
 const cx = classNames.bind(styles);
 
-function Loading() {
+function LoadingListUser() {
   return (
     <article className={cx("wrapper")}>
       <div className={cx("loader")}>
@@ -15,4 +15,4 @@ function Loading() {
   );
 }
 
-export default Loading;
+export default LoadingListUser;

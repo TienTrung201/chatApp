@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import ModalInfoChat from "./ModalInfoChat";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { userLogin, users, userSelect } from "@/components/redux/selector";
+import { userLogin, users } from "@/components/redux/selector";
 import userSlice from "../Login/UserSlice";
 import {
   doc,
@@ -17,19 +17,22 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "@/firebase/config";
-// import ModalInfoChat from "./ModalInfoChat";
+import { useFireStoreGetFields } from "@/hooks/useFirestor";
+import LoadingListUser from "@/components/Loaddings/LoadingListUser";
 
 const cx = classNames.bind(styles);
 
 function Chat() {
   console.log("Chat");
+
   const Dispatch = useDispatch();
-  const userSelected = useSelector(userSelect);
   const allUser = useSelector(users);
   const user = useSelector(userLogin);
   const [modalInfo, setModalInfo] = useState(false);
   const [searchUser, setSearchUser] = useState("");
   const [searchResult, setSearchResult] = useState([]);
+  const [isloadingUser, setIsLoadingUser] = useState(false);
+  const listuserChat = useFireStoreGetFields("userChats", user.uid);
   const handleChangeSearch = (e) => {
     setSearchUser(e.target.value);
   };
@@ -43,11 +46,11 @@ function Chat() {
 
       // nếu 2 người chưa kết nốt thì tạo 1 liên kết và setDoc vào rooms(chats)
       // update người lạ có info của mình
+
       if (!res.exists()) {
         await setDoc(doc(db, "chats", combinedId), {
           message: [{ text: "", icon: [] }],
         });
-        console.log(1);
         await updateDoc(doc(db, "userChats", user.uid), {
           [combinedId + ".userInfo"]: {
             uid: userSelect.uid,
@@ -56,7 +59,6 @@ function Chat() {
           },
           [combinedId + ".createdAt"]: serverTimestamp(),
         });
-        setSearchUser("");
       }
 
       await updateDoc(doc(db, "userChats", userSelect.uid), {
@@ -67,18 +69,33 @@ function Chat() {
         },
         [combinedId + ".createdAt"]: serverTimestamp(),
       });
-
-      setSearchUser("");
     } catch (err) {
       console.log(err);
-      setSearchUser("");
+    } finally {
+      console.log("done");
     }
   };
+  const handleSelsectUser = (userSelect) => {
+    // if(listuserChat.findIndex())
+    if (
+      listuserChat.find((user) => {
+        return user[1].userInfo.displayName === userSelect.displayName;
+      })
+    ) {
+      console.log("đã tồn tại");
+    } else {
+      setIsLoadingUser(true);
+    }
 
+    // setIsLoadingUser(true)
+  };
+  useEffect(() => {
+    setIsLoadingUser(false); // khi click user unmount Loadding
+  }, [listuserChat]);
   useEffect(() => {
     setSearchResult(
       allUser.filter((user) => {
-        return removeVietnameseTones(user.name.toLowerCase()).includes(
+        return removeVietnameseTones(user.displayName.toLowerCase()).includes(
           removeVietnameseTones(searchUser.toLowerCase())
         );
       })
@@ -90,28 +107,30 @@ function Chat() {
   return (
     <section className={cx("wrapper")}>
       <article className={cx("controlChat")}>
-        <div className={cx("createNew")}>
-          <div className={cx("createPlus", "autoCenter")}>
-            <FontAwesomeIcon className={cx("creatPlusIcon")} icon={faPlus} />
+        <div className={cx("wrapperControl")}>
+          <div className={cx("createNew")}>
+            <div className={cx("createPlus", "autoCenter")}>
+              <FontAwesomeIcon className={cx("creatPlusIcon")} icon={faPlus} />
+            </div>
+            <h4 className={cx("create__title")}>Create New</h4>
           </div>
-          <h4 className={cx("create__title")}>Create New</h4>
-        </div>
-        <div className={cx("wrapperTitle")}>
-          <h2 className={cx("title__Chat")}>Chat</h2>
-          {/* <FontAwesomeIcon /> */}
-        </div>
-        <div className={cx("wrapperSearch")}>
-          <input
-            className={cx("searchText")}
-            placeholder="Search Name"
-            type="text"
-            onChange={handleChangeSearch}
-            value={searchUser}
-          />
-          <FontAwesomeIcon
-            className={cx("searchIcon")}
-            icon={faMagnifyingGlass}
-          />
+          <div className={cx("wrapperTitle")}>
+            <h2 className={cx("title__Chat")}>Chat</h2>
+            {/* <FontAwesomeIcon /> */}
+          </div>
+          <div className={cx("wrapperSearch")}>
+            <input
+              className={cx("searchText")}
+              placeholder="Search Name"
+              type="text"
+              onChange={handleChangeSearch}
+              value={searchUser}
+            />
+            <FontAwesomeIcon
+              className={cx("searchIcon")}
+              icon={faMagnifyingGlass}
+            />
+          </div>
         </div>
         <ul className={cx("wrapperListUser")}>
           {searchResult.length > 0 && searchUser.length > 0 ? (
@@ -121,6 +140,8 @@ function Chat() {
                   <li
                     onClick={() => {
                       Dispatch(userSlice.actions.setUserSelect(user));
+                      handleSelsectUser(user);
+                      setSearchUser("");
                     }}
                     key={i}
                     className={cx("userItem")}
@@ -143,7 +164,7 @@ function Chat() {
                         />
                       </div>
                       <div className={cx("user__display")}>
-                        <h5 className={cx("user__name")}>{user.name}</h5>
+                        <h5 className={cx("user__name")}>{user.displayName}</h5>
                       </div>
                     </Link>
                   </li>
@@ -152,20 +173,35 @@ function Chat() {
             </>
           ) : (
             <>
-              <li className={cx("userItem")}>
-                <Link to={"#"} className={cx("user")}>
-                  <div className={cx("avata", "autoCenter")}>
-                    <img
-                      src={require("../../assets/images/avata.jpg")}
-                      alt=""
-                    />
-                  </div>
-                  <div className={cx("user__display")}>
-                    <h5 className={cx("user__name")}>Tien trung</h5>
-                    <p className={cx("user__chatHistory")}>Hello</p>
-                  </div>
-                </Link>
-              </li>
+              {listuserChat.map((user, index) => {
+                return (
+                  <li key={index} className={cx("userItem")}>
+                    <Link to={"#"} className={cx("user")}>
+                      <div className={cx("avata", "autoCenter")}>
+                        <img
+                          src={
+                            user[1].userInfo.photoURL !== null
+                              ? user[1].photoURL
+                              : require("../../assets/images/photoUser.png")
+                          }
+                          alt=""
+                        />
+                      </div>
+                      <div className={cx("user__display")}>
+                        <h5 className={cx("user__name")}>
+                          {user[1].userInfo.displayName}
+                        </h5>
+                        <p className={cx("user__chatHistory")}>Hello</p>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+              {isloadingUser && (
+                <div className={cx("Loading")}>
+                  <LoadingListUser />
+                </div>
+              )}
             </>
           )}
         </ul>

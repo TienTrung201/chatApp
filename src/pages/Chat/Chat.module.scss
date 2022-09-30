@@ -29,7 +29,7 @@
     flex-direction: column;
     width: 250px;
     background-color: #fff;
-    padding: 15px;
+    padding: 15px 0;
     border-radius: 30px;
     overflow: hidden;
     box-shadow: 5px 20px 50px rgba(0, 0, 0, 0.1);
@@ -37,80 +37,83 @@
     @include mobile {
       flex: 1;
     }
-    .createNew {
-      display: flex;
-      align-items: center;
-      // height: 53px;
-      padding: 6.5px 0;
-      padding-left: 12px;
-      cursor: pointer;
-      // margin-bottom: 26px;
+    .wrapperControl {
+      padding: 0 15px;
+      .createNew {
+        display: flex;
+        align-items: center;
+        // height: 53px;
+        padding: 6.5px 0;
+        padding-left: 12px;
+        cursor: pointer;
+        // margin-bottom: 26px;
 
-      .createPlus {
-        width: 40px;
-        height: 40px;
-        background-color: #f3f6ff;
-        border-radius: 50%;
-        margin-right: 20px;
-        .creatPlusIcon {
+        .createPlus {
+          width: 40px;
+          height: 40px;
+          background-color: #f3f6ff;
+          border-radius: 50%;
+          margin-right: 20px;
+          .creatPlusIcon {
+            font-size: 1.6rem;
+            color: var(--backGround-App);
+          }
+        }
+
+        .create__title {
           font-size: 1.6rem;
-          color: var(--backGround-App);
         }
       }
-
-      .create__title {
-        font-size: 1.6rem;
-      }
-    }
-    .wrapperTitle {
-      // height: 70px;
-      padding: 16.25px 0;
-      padding-left: 12px;
-      display: flex;
-      align-items: center;
-      @include mobile {
-        padding: 10px 0;
+      .wrapperTitle {
+        // height: 70px;
+        padding: 16.25px 0;
         padding-left: 12px;
-      }
-      @include tablet {
-        padding: 5px 0;
-        padding-left: 12px;
-      }
-      .title__Chat {
-        font-size: 2.5rem;
-      }
-    }
-    .wrapperSearch {
-      // height: 40px;
-      padding: 13px 0;
-      width: 100%;
-      position: relative;
-      background-color: #f3f6ff;
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-
-      .searchText {
-        width: 80%;
-        background-color: transparent;
-        height: 100%;
-        font-size: 1.2rem;
-        padding-left: 16px;
-        color: #8f97a4;
+        display: flex;
+        align-items: center;
         @include mobile {
-          font-size: 1.3rem;
+          padding: 10px 0;
+          padding-left: 12px;
+        }
+        @include tablet {
+          padding: 5px 0;
+          padding-left: 12px;
+        }
+        .title__Chat {
+          font-size: 2.5rem;
         }
       }
-      .searchIcon {
-        margin-right: 10px;
-        color: #8f97a4;
-        font-size: 1.3rem;
-        @include mobile {
+      .wrapperSearch {
+        // height: 40px;
+        padding: 13px 0;
+        width: 100%;
+        position: relative;
+        background-color: #f3f6ff;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+
+        .searchText {
+          width: 80%;
+          background-color: transparent;
+          height: 100%;
+          font-size: 1.2rem;
+          padding-left: 16px;
+          color: #8f97a4;
+          @include mobile {
+            font-size: 1.3rem;
+          }
+        }
+        .searchIcon {
           margin-right: 10px;
           color: #8f97a4;
-          font-size: 1.5rem;
+          font-size: 1.3rem;
+          @include mobile {
+            margin-right: 10px;
+            color: #8f97a4;
+            font-size: 1.5rem;
+          }
         }
       }
     }
@@ -125,11 +128,20 @@
     }
     .wrapperListUser {
       overflow-y: scroll;
-
+      .Loading {
+        display: flex;
+        align-items: center;
+        height: 53.3px;
+      }
       .user {
         display: flex;
         align-items: center;
         height: 53.3px;
+        transition: 0.3s ease-in-out;
+        padding: 0 15px;
+        &:hover {
+          background-color: #ccc;
+        }
         .avata {
           width: 50px;
           height: 50px;

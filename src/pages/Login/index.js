@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { userLogin } from "@/components/redux/selector";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import LoadingLogin from "@/components/LoadingLogin";
+import LoadingLogin from "@/components/Loaddings/LoadingLogin";
 import { setDocument } from "@/firebase/services";
 
 const fbLogin = new FacebookAuthProvider();
