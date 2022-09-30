@@ -86,9 +86,15 @@ export const useFireStore = (collectionName, condition) => {
 export const useFireStoreGetFields = (collectionName, condition) => {
   const [documents, setDocuments] = useState([]);
   useEffect(() => {
-    const unsub = onSnapshot(doc(db, collectionName, condition), (doc) => {
-      setDocuments(Object.entries(doc.data()));
-    });
+    let unsub;
+
+    try {
+      unsub = onSnapshot(doc(db, collectionName, condition), (doc) => {
+        setDocuments(Object.entries(doc.data()));
+      });
+    } catch (e) {
+      console.log(e);
+    }
     return unsub; // clear
   }, [collectionName, condition]);
   return documents; // mảng đối tượng rooms
