@@ -38,7 +38,14 @@ function MyProfile() {
         <>
           <article className={cx("myProfileInfo")}>
             <div className={cx("myProfileInfo--avata")}>
-              <img src={user.photoURL} alt="" />
+              <img
+                src={
+                  user.photoURL !== null
+                    ? user.photoURL
+                    : require("../../../assets/images/photoUser.png")
+                }
+                alt=""
+              />
             </div>
             <div className={cx("myProfileInfo--contact")}>
               <h2 className={cx("myProfileInfo--Name")}>{user.displayName}</h2>
@@ -96,6 +103,7 @@ function MyProfile() {
             </div>
           </article>
         </>
+        // <LoadingProFile />
       )}
     </section>
   );

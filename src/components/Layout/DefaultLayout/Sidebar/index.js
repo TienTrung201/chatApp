@@ -2,21 +2,12 @@ import styles from "./Sidebar.module.scss";
 
 import classNames from "classnames/bind";
 import { NavLink } from "react-router-dom";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import "@fortawesome/free-solid-svg-icons";
-// import {
-//   faCirclePlay,
-//   faMessage,
-//   faUser,
-// } from "@fortawesome/free-regular-svg-icons";
 import { useEffect, useRef, useState } from "react";
 
 const cx = classNames.bind(styles);
 function Sidebar({ activeNav }) {
   const navItem = useRef();
-  // const heightNavItem = navItem.current.offsetHeight;
-  // const getItem = Document.querySelectorById("getItem");
   useEffect(() => {
     const heightNavItem = navItem.current.offsetHeight;
     if (activeNav === "Chat") {

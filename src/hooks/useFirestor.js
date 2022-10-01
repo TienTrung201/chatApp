@@ -44,9 +44,8 @@ export const useFireStore = (collectionName, condition) => {
 
     const unsub = onSnapshot(collectionRef, (snapshot) => {
       const documents = snapshot.docs.map((doc) => {
-        const date = doc.data();
+        const date = doc.data().createdAt;
 
-        // console.log(date.createdAt.toDate());
         let getDay;
         let getMonth;
         let getYear;
@@ -54,22 +53,22 @@ export const useFireStore = (collectionName, condition) => {
         let getMinutes;
 
         getDay =
-          date.createdAt.toDate().getDate() < 10
-            ? `0${date.createdAt.toDate().getDate()}`
-            : date.createdAt.toDate().getDate();
+          date.toDate().getDate() < 10
+            ? `0${date.toDate().getDate()}`
+            : date.toDate().getDate();
         getMonth =
-          date.createdAt.toDate().getMonth() < 10
-            ? `0${date.createdAt.toDate().getMonth()}`
-            : date.createdAt.toDate().getDate();
-        getYear = date.createdAt.toDate().getFullYear();
+          date.toDate().getMonth() < 10
+            ? `0${date.toDate().getMonth()}`
+            : date.toDate().getDate();
+        getYear = date.toDate().getFullYear();
         getHours =
-          date.createdAt.toDate().getHours() < 10
-            ? `0${date.createdAt.toDate().getHours()}`
-            : date.createdAt.toDate().getHours();
+          date.toDate().getHours() < 10
+            ? `0${date.toDate().getHours()}`
+            : date.toDate().getHours();
         getMinutes =
-          date.createdAt.toDate().getMinutes() < 10
-            ? `0${date.createdAt.toDate().getMinutes()}`
-            : date.createdAt.toDate().getMinutes();
+          date.toDate().getMinutes() < 10
+            ? `0${date.toDate().getMinutes()}`
+            : date.toDate().getMinutes();
         return {
           ...doc.data(),
           id: doc.id,
@@ -83,19 +82,19 @@ export const useFireStore = (collectionName, condition) => {
   }, [collectionName, condition]);
   return documents; // mảng đối tượng rooms
 };
-export const useFireStoreGetFields = (collectionName, condition) => {
+export const useFireStoreGetFields = (collectionName, userId) => {
   const [documents, setDocuments] = useState([]);
   useEffect(() => {
     let unsub;
 
     try {
-      unsub = onSnapshot(doc(db, collectionName, condition), (doc) => {
+      unsub = onSnapshot(doc(db, collectionName, userId), (doc) => {
         setDocuments(Object.entries(doc.data()));
       });
     } catch (e) {
       console.log(e);
     }
     return unsub; // clear
-  }, [collectionName, condition]);
-  return documents; // mảng đối tượng rooms
+  }, [collectionName, userId]);
+  return documents;
 };

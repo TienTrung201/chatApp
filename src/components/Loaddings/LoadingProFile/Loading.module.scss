@@ -17,7 +17,8 @@
       height: 25px;
       border-radius: 50%;
       background-color: rgb(185, 140, 174);
-      animation: bounce 0.5s alternate infinite;
+      // background-color: var(--backGround-App);
+      animation: bounce 0.4s alternate infinite;
     }
     .ball:nth-child(2) {
       animation-delay: 0.16s;
@@ -28,9 +29,11 @@
     @keyframes bounce {
       from {
         transform: scale(1.25);
+        opacity: 0.5;
       }
       to {
-        transform: translateY(-50px) scaleX(1);
+        transform: translateY(-30px) scaleX(1);
+        opacity: 1;
       }
     }
   }

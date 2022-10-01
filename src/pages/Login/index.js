@@ -24,8 +24,6 @@ function Login() {
     setTimeout(() => {
       if (user.displayName) {
         navigate("/");
-      } else {
-        navigate("/login");
       }
     }, 1500);
   }, [user, navigate]);

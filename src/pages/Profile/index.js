@@ -13,14 +13,13 @@ import { userLogin } from "@/components/redux/selector";
 const cx = classNames.bind(styles);
 
 function Profile() {
+  console.log("Profile");
   const user = useSelector(userLogin);
   const navigate = useNavigate();
   const [navProfile, setNavProfile] = useState("/");
   useEffect(() => {
     if (user.displayName) {
       navigate(navProfile);
-    } else {
-      navigate("/login");
     }
   }, [user, navigate, navProfile]);
   const headerProfile = useRef();

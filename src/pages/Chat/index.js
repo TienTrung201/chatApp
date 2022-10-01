@@ -23,11 +23,12 @@ import LoadingListUser from "@/components/Loaddings/LoadingListUser";
 const cx = classNames.bind(styles);
 
 function Chat() {
+  const user = useSelector(userLogin);
+
   console.log("Chat");
 
   const Dispatch = useDispatch();
   const allUser = useSelector(users);
-  const user = useSelector(userLogin);
   const [modalInfo, setModalInfo] = useState(false);
   const [searchUser, setSearchUser] = useState("");
   const [searchResult, setSearchResult] = useState([]);
