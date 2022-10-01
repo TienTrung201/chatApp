@@ -92,9 +92,30 @@ export const useFireStoreGetFields = (collectionName, userId) => {
         setDocuments(Object.entries(doc.data()));
       });
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
     return unsub; // clear
   }, [collectionName, userId]);
+  return documents;
+};
+export const useFireStoreGetAllData = (collectionName, condition) => {
+  const [documents, setDocuments] = useState([]);
+
+  useEffect(() => {
+    const q = query(
+      collection(db, collectionName),
+      where(condition.fieldName, condition.operator, condition.compareValue)
+    );
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const documents = snapshot.docChanges().map((change) => {
+        return {
+          id: change.doc.id,
+          ...change.doc.data(),
+        };
+      });
+      setDocuments(documents);
+    });
+    return unsubscribe; // clear
+  }, [collectionName, condition]);
   return documents;
 };

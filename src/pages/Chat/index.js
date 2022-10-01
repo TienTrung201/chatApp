@@ -19,6 +19,7 @@ import {
 import { db } from "@/firebase/config";
 import { useFireStoreGetFields } from "@/hooks/useFirestor";
 import LoadingListUser from "@/components/Loaddings/LoadingListUser";
+import boxChatSlice from "./BoxChat/BoxChatSlice";
 
 const cx = classNames.bind(styles);
 
@@ -50,7 +51,7 @@ function Chat() {
 
       if (!res.exists()) {
         await setDoc(doc(db, "chats", combinedId), {
-          message: [{ text: "", icon: [] }],
+          message: [],
         });
         await updateDoc(doc(db, "userChats", user.uid), {
           [combinedId + ".userInfo"]: {
@@ -76,7 +77,7 @@ function Chat() {
       console.log("done");
     }
   };
-  const handleSelsectUser = (userSelect) => {
+  const handleSelsectUserSearch = (userSelect) => {
     // if(listuserChat.findIndex())
     if (
       listuserChat.find((user) => {
@@ -89,6 +90,15 @@ function Chat() {
     }
 
     // setIsLoadingUser(true)
+  };
+  const selectedRoom = (userSelect) => {
+    const combinedId =
+      userSelect[1].userInfo.uid > user.uid
+        ? userSelect[1].userInfo.uid + user.uid
+        : user.uid + userSelect[1].userInfo.uid;
+
+    const data = { chatId: combinedId, user: userSelect[1].userInfo };
+    Dispatch(boxChatSlice.actions.setUserSelect(data));
   };
   useEffect(() => {
     setIsLoadingUser(false); // khi click user unmount Loadding
@@ -141,7 +151,7 @@ function Chat() {
                   <li
                     onClick={() => {
                       Dispatch(userSlice.actions.setUserSelect(user));
-                      handleSelsectUser(user);
+                      handleSelsectUserSearch(user);
                       setSearchUser("");
                     }}
                     key={i}
@@ -176,7 +186,13 @@ function Chat() {
             <>
               {listuserChat.map((user, index) => {
                 return (
-                  <li key={index} className={cx("userItem")}>
+                  <li
+                    onClick={() => {
+                      selectedRoom(user);
+                    }}
+                    key={index}
+                    className={cx("userItem")}
+                  >
                     <Link to={"#"} className={cx("user")}>
                       <div className={cx("avata", "autoCenter")}>
                         <img

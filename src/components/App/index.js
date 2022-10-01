@@ -1,5 +1,6 @@
 import { auth } from "@/firebase/config";
-import { useFireStore } from "@/hooks/useFirestor";
+import { useFireStore, useFireStoreGetAllData } from "@/hooks/useFirestor";
+import chatSlice from "@/pages/Chat/ChatSlice";
 import userSlice from "@/pages/Login/UserSlice";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -53,6 +54,18 @@ function AppCheckLofgin({ children }) {
     console.log("Dispatch users");
   }, [users, Dispatch]);
 
+  const conditionChats = useMemo(() => {
+    return {
+      fieldName: "message",
+      operator: "not-in",
+      compareValue: ["nothing:))"],
+    };
+  }, []);
+  const message = useFireStoreGetAllData("chats", conditionChats);
+  useEffect(() => {
+    Dispatch(chatSlice.actions.setAllMessage(message));
+    console.log("Dispatch messages");
+  }, [message, Dispatch]);
   return children;
 }
 

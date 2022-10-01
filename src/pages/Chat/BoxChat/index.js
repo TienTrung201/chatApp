@@ -4,11 +4,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { faImages, faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import { useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
+import { allMessage, userChat } from "@/components/redux/selector";
+import Message from "./Message";
 
 const cx = classNames.bind(styles);
 
 function BoxChat({ modal, setModal }) {
+  const displayUserChat = useSelector(userChat);
   const boxMessage = useRef();
+  const allMessageChat = useSelector(allMessage);
+  const messages = allMessageChat.find((idMessage) => {
+    return idMessage.id === displayUserChat.chatId;
+  });
+  // console.log(messages);
   useEffect(() => {
     boxMessage.current.scrollTop = boxMessage.current.scrollHeight;
   });
@@ -18,10 +27,19 @@ function BoxChat({ modal, setModal }) {
         <div className={cx("infoUser")}>
           <div className={cx("user")}>
             <div className={cx("avata")}>
-              <img src={require("../../../assets/images/avata.jpg")} alt="" />
+              <img
+                src={
+                  displayUserChat.user.photoURL !== null
+                    ? displayUserChat.user.photoURL
+                    : require("../../../assets/images/photoUser.png")
+                }
+                alt=""
+              />
             </div>
             <div className={cx("user__display")}>
-              <h5 className={cx("user__name")}>Tien trung</h5>
+              <h5 className={cx("user__name")}>
+                {displayUserChat.user.displayName}
+              </h5>
               {/* <p className={cx("user__active")}>online</p> */}
             </div>
           </div>
@@ -36,54 +54,11 @@ function BoxChat({ modal, setModal }) {
         </div>
       </div>
       <div ref={boxMessage} className={cx("boxMessage")}>
-        <div className={cx("message__chat", "user")}>
-          <div className={cx("boxText")}>
-            <p className={cx("textMessage")}>
-              Hello chat display here tin nhắn dài test thử xem như nào dài dài
-              dài HoMua hàng và thanh toán Online Mua hàng trả góp Online Tra
-              thông tin đơn hàng Tra điểm Smember Tra thông tin bảo hành Tra cứu
-              hoá đơn điện tử Trung tâm bảo hành chính hãng Quy định về việc sao
-              lưu dữ liệu Dịch vụ bảo hành điện thoại
-            </p>
-            <p className={cx("textTime")}>20:00</p>
-          </div>
-        </div>
-        <div className={cx("message__chat", "friend")}>
-          <div className={cx("avatar")}>
-            <img src={require("../../../assets/images/avata.jpg")} alt="" />
-          </div>
-          <div className={cx("boxText")}>
-            <p className={cx("textMessage")}>Hello chat display here</p>
-            <p className={cx("textTime")}>20:00</p>
-          </div>
-        </div>
-        <div className={cx("message__chat", "friend")}>
-          <div className={cx("avatar")}>
-            <img src={require("../../../assets/images/avata.jpg")} alt="" />
-          </div>
-          <div className={cx("boxText")}>
-            <p className={cx("textMessage")}>Hello chat display here</p>
-            <p className={cx("textTime")}>20:00</p>
-          </div>
-        </div>
-        <div className={cx("message__chat", "friend")}>
-          <div className={cx("avatar")}>
-            <img src={require("../../../assets/images/avata.jpg")} alt="" />
-          </div>
-          <div className={cx("boxText")}>
-            <p className={cx("textMessage")}>Hello chat display here</p>
-            <p className={cx("textTime")}>20:00</p>
-          </div>
-        </div>
-        <div className={cx("message__chat", "friend")}>
-          <div className={cx("avatar")}>
-            <img src={require("../../../assets/images/avata.jpg")} alt="" />
-          </div>
-          <div className={cx("boxText")}>
-            <p className={cx("textMessage")}>Hello chat display here</p>
-            <p className={cx("textTime")}>20:00</p>
-          </div>
-        </div>
+        {messages === undefined ? (
+          <h1>Chọn Phòng chat</h1>
+        ) : (
+          <Message data={displayUserChat} />
+        )}
       </div>
       <div className={cx("controlMessage")}>
         <input

@@ -1,3 +1,5 @@
+import boxChatSlice from "@/pages/Chat/BoxChat/BoxChatSlice";
+import chatSlice from "@/pages/Chat/ChatSlice";
 import userSlice from "@/pages/Login/UserSlice";
 import { configureStore } from "@reduxjs/toolkit";
 
@@ -6,6 +8,8 @@ import { configureStore } from "@reduxjs/toolkit";
 const store = configureStore({
   reducer: {
     user: userSlice.reducer,
+    userChat: boxChatSlice.reducer,
+    allMessage: chatSlice.reducer,
   },
 });
 

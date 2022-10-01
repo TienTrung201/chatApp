@@ -9,10 +9,13 @@ import {
   faSignature,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { userChat } from "@/components/redux/selector";
 
 const cx = classNames.bind(styles);
 
 function ModalInfoChat({ modal }) {
+  const displayUserChat = useSelector(userChat);
   const [isSetting, setIsSetting] = useState(true);
   return (
     <AnimatePresence>
@@ -32,12 +35,17 @@ function ModalInfoChat({ modal }) {
           <div className={cx("infoUser")}>
             <div className={cx("avatar")}>
               <img
-                width={40}
-                src={require("../../../assets/images/avata.jpg")}
+                src={
+                  displayUserChat.user.photoURL !== null
+                    ? displayUserChat.user.photoURL
+                    : require("../../../assets/images/photoUser.png")
+                }
                 alt=""
               />
             </div>
-            <h1 className={cx("nameUser")}>Tiến trung</h1>
+            <h1 className={cx("nameUser")}>
+              {displayUserChat.user.displayName}
+            </h1>
           </div>
           <div className={cx("controlRoom")}>
             <ul className={cx("controlList")}>

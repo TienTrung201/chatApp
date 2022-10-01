@@ -9,6 +9,7 @@ import { auth } from "@/firebase/config";
 import { useState } from "react";
 import userSlice from "@/pages/Login/UserSlice";
 import LoadingProFile from "@/components/Loaddings/LoadingProFile";
+import boxChatSlice from "@/pages/Chat/BoxChat/BoxChatSlice";
 
 const cx = classNames.bind(styles);
 
@@ -23,6 +24,12 @@ function MyProfile() {
       setTimeout(() => {
         setIloading(false);
         Dispatch(userSlice.actions.logout({}));
+        Dispatch(
+          boxChatSlice.actions.setUserSelect({
+            chatId: "",
+            user: {},
+          })
+        );
         console.log("logged out...");
       }, 1200);
     });
