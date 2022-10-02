@@ -108,9 +108,46 @@ export const useFireStoreGetAllData = (collectionName, condition) => {
     );
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const documents = snapshot.docChanges().map((change) => {
+        const data = { messages: [] };
+        const convertTime = change.doc.data().messages.map((message) => {
+          const date = message.createdAt;
+
+          let getDay;
+          let getMonth;
+          let getYear;
+          let getHours;
+          let getMinutes;
+
+          getDay =
+            date.toDate().getDate() < 10
+              ? `0${date.toDate().getDate()}`
+              : date.toDate().getDate();
+          getMonth =
+            date.toDate().getMonth() < 10
+              ? `0${date.toDate().getMonth()}`
+              : date.toDate().getDate();
+          getYear = date.toDate().getFullYear();
+          getHours =
+            date.toDate().getHours() < 10
+              ? `0${date.toDate().getHours()}`
+              : date.toDate().getHours();
+          getMinutes =
+            date.toDate().getMinutes() < 10
+              ? `0${date.toDate().getMinutes()}`
+              : date.toDate().getMinutes();
+          return {
+            ...message,
+            createdAt: `${getDay}/${getMonth}/${getYear} and ${getHours}:${getMinutes}`,
+          };
+        });
+
+        // console.log(change.doc.data());
+        convertTime.forEach((dataConvert) => {
+          data.messages.push(dataConvert);
+        });
         return {
           id: change.doc.id,
-          ...change.doc.data(),
+          ...data,
         };
       });
       setDocuments(documents);

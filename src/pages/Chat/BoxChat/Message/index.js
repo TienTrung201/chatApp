@@ -1,4 +1,6 @@
+import { userChat, userLogin } from "@/components/redux/selector";
 import classNames from "classnames/bind";
+import { useSelector } from "react-redux";
 import styles from "./Message.module.scss";
 
 const cx = classNames.bind(styles);
@@ -6,30 +8,47 @@ const cx = classNames.bind(styles);
 function Message({ data }) {
   // const [message,setMessage]=useState([])
   // const mesage
+  const userLoginChat = useSelector(userLogin);
+  const displayUserChat = useSelector(userChat);
+  console.log(displayUserChat);
 
+  console.log(data);
+  console.log(userLoginChat);
   return (
     <>
-      <div className={cx("message__chat", "user")}>
-        <div className={cx("boxText")}>
-          <p className={cx("textMessage")}>
-            Hello chat display here tin nhắn dài test thử xem như nào dài dài
-            dài HoMua hàng và thanh toán Online Mua hàng trả góp Online Tra
-            thông tin đơn hàng Tra điểm Smember Tra thông tin bảo hành Tra cứu
-            hoá đơn điện tử Trung tâm bảo hành chính hãng Quy định về việc sao
-            lưu dữ liệu Dịch vụ bảo hành điện thoại
-          </p>
-          <p className={cx("textTime")}>20:00</p>
+      {userLoginChat.uid === data.senderId ? (
+        <div className={cx("message__chat", "user")}>
+          <div className={cx("boxText")}>
+            <p className={cx("textMessage")}>{data.text}</p>
+            <p className={cx("textTime")}>
+              {`${data.createdAt.toDate().getHours()}:${data.createdAt
+                .toDate()
+                .getMinutes()}`}
+            </p>
+          </div>
         </div>
-      </div>
-      {/* <div className={cx("message__chat", "friend")}>
-        <div className={cx("avatar")}>
-          <img src={require("../../../assets/images/avata.jpg")} alt="" />
+      ) : (
+        <div className={cx("message__chat", "friend")}>
+          <div className={cx("avatar")}>
+            <img
+              src={
+                displayUserChat.user.photoURL !== null
+                  ? displayUserChat.user.photoURL
+                  : require("../../../../assets/images/photoUser.png")
+              }
+              alt=""
+            />
+          </div>
+          <div className={cx("boxText")}>
+            <p className={cx("textMessage")}>{data.text}</p>
+            <p className={cx("textTime")}>{`${data.createdAt
+              .toDate()
+              .getHours()}:${data.createdAt.toDate().getMinutes()}`}</p>
+          </div>
         </div>
-        <div className={cx("boxText")}>
-          <p className={cx("textMessage")}>Hello chat display here</p>
-          <p className={cx("textTime")}>20:00</p>
-        </div>
-      </div> */}
+      )}
+
+      {/*  */}
     </>
   );
 }

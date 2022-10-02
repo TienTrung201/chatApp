@@ -11,6 +11,7 @@ export const chatSlice = createSlice({
       state.allMessage = action.payload;
     },
     addMessage: (state, action) => {
+      console.log(action.payload);
       state.allMessage.push(action.payload);
     },
   },

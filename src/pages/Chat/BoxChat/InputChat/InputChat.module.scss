@@ -12,11 +12,18 @@
 .wrapperTextMessage {
   // background-color: #8f97a4;
   // min-height: 50px;
+  display: flex;
+  align-items: center;
   flex: 1;
+  height: 100%;
+
   .inputMessage::-webkit-scrollbar {
     display: none;
   }
-
+  input {
+    // flex: 1;
+    width: 100%;
+  }
   .inputMessage {
     //   background-color: transparent;
     height: fit-content;

@@ -2,7 +2,7 @@ import styles from "./InputChat.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImages, faPaperPlane } from "@fortawesome/free-regular-svg-icons";
-import { useRef } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { userChat, userLogin } from "@/components/redux/selector";
 
@@ -14,17 +14,14 @@ const cx = classNames.bind(styles);
 function InputChat() {
   const displayUserChat = useSelector(userChat);
   const user = useSelector(userLogin);
-
-  console.log(displayUserChat);
-
-  const input = useRef();
+  const [valueInput, setValueInput] = useState("");
   const handleSubmit = async () => {
+    setValueInput("");
     try {
-      const messageSend = input.current.Text;
       await updateDoc(doc(db, "chats", displayUserChat.chatId), {
         messages: arrayUnion({
           id: uuid(),
-          text: messageSend,
+          text: valueInput,
           senderId: user.uid,
           createdAt: Timestamp.now(),
         }),
@@ -32,6 +29,14 @@ function InputChat() {
     } catch (e) {
       console.log(e);
     }
+  };
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  };
+  const handleChange = (e) => {
+    setValueInput(e.target.value);
   };
   return (
     <>
@@ -44,19 +49,28 @@ function InputChat() {
       <button className={cx("chooseButton")}>
         <FontAwesomeIcon className={cx("addFile-icon")} icon={faImages} />
       </button>
-      {/* <input
+      <div className={cx("wrapperTextMessage", "autoCenter")}>
+        <input
           autoComplete="off"
           type="text"
           placeholder="Hello:)))))"
           name="message"
-        /> */}
-      <div className={cx("wrapperTextMessage", "autoCenter")}>
+          value={valueInput}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+        />
+      </div>
+
+      {/* <div className={cx("wrapperTextMessage", "autoCenter")}>
         <div
+          onChange={handleChange}
           ref={input}
           contentEditable="true"
           className={cx("inputMessage")}
-        ></div>
-      </div>
+        >
+          {valueInput}
+        </div>
+      </div> */}
       {/* icon message */}
       <button
         onClick={() => {
