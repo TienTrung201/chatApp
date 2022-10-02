@@ -10,6 +10,9 @@ export const chatSlice = createSlice({
     setAllMessage: (state, action) => {
       state.allMessage = action.payload;
     },
+    addMessage: (state, action) => {
+      state.allMessage.push(action.payload);
+    },
   },
 });
 export default chatSlice;

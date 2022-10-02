@@ -51,7 +51,7 @@ function Chat() {
 
       if (!res.exists()) {
         await setDoc(doc(db, "chats", combinedId), {
-          message: [],
+          messages: [],
         });
         await updateDoc(doc(db, "userChats", user.uid), {
           [combinedId + ".userInfo"]: {

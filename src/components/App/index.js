@@ -53,18 +53,22 @@ function AppCheckLofgin({ children }) {
     Dispatch(userSlice.actions.setUsers(users));
     console.log("Dispatch users");
   }, [users, Dispatch]);
-
   const conditionChats = useMemo(() => {
     return {
-      fieldName: "message",
+      fieldName: "messages",
       operator: "not-in",
       compareValue: ["nothing:))"],
     };
   }, []);
   const message = useFireStoreGetAllData("chats", conditionChats);
   useEffect(() => {
-    Dispatch(chatSlice.actions.setAllMessage(message));
-    console.log("Dispatch messages");
+    if (message.length === 1) {
+      Dispatch(chatSlice.actions.addMessage(message[0]));
+      console.log("Dispatch add messages");
+    } else {
+      Dispatch(chatSlice.actions.setAllMessage(message));
+      console.log("Dispatch all messages");
+    }
   }, [message, Dispatch]);
   return children;
 }
