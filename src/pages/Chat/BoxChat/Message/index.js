@@ -10,21 +10,22 @@ function Message({ data }) {
   // const mesage
   const userLoginChat = useSelector(userLogin);
   const displayUserChat = useSelector(userChat);
-  console.log(displayUserChat);
 
-  console.log(data);
-  console.log(userLoginChat);
+  const getHours =
+    data.createdAt.toDate().getHours() < 10
+      ? `0${data.createdAt.toDate().getHours()}`
+      : data.createdAt.toDate().getHours();
+  const getMinutes =
+    data.createdAt.toDate().getMinutes() < 10
+      ? `0${data.createdAt.toDate().getMinutes()}`
+      : data.createdAt.toDate().getMinutes();
   return (
     <>
       {userLoginChat.uid === data.senderId ? (
         <div className={cx("message__chat", "user")}>
           <div className={cx("boxText")}>
             <p className={cx("textMessage")}>{data.text}</p>
-            <p className={cx("textTime")}>
-              {`${data.createdAt.toDate().getHours()}:${data.createdAt
-                .toDate()
-                .getMinutes()}`}
-            </p>
+            <p className={cx("textTime")}>{`${getHours}:${getMinutes}`}</p>
           </div>
         </div>
       ) : (
@@ -41,9 +42,7 @@ function Message({ data }) {
           </div>
           <div className={cx("boxText")}>
             <p className={cx("textMessage")}>{data.text}</p>
-            <p className={cx("textTime")}>{`${data.createdAt
-              .toDate()
-              .getHours()}:${data.createdAt.toDate().getMinutes()}`}</p>
+            <p className={cx("textTime")}>{`${getHours}:${getMinutes}`}</p>
           </div>
         </div>
       )}
