@@ -319,46 +319,41 @@ function lastSentMessage(timeNow, timeSendMessage) {
   const dateSendYear = dateSend.split(" ")[0].split("/")[2];
   const dateNowYear = dateNow.split(" ")[0].split("/")[2];
 
-  console.log("ngày gửi", dateSendDay);
-  console.log("today", dateNowDay);
-
   // console.log(Math.abs(dateNowMinutes - dateSendMinutes));
 
   // tháng
   // ví dụ tháng 7 2011 gửi tháng 3/2010 3-7 =-4
-  if (dateNowYear - dateSendYear <= 0) {
-    if (dateNowMonth - dateSendMonth <= 0) {
-      if (dateNowDay - dateSendDay <= 0) {
-        //Kiểm tra giờ
-        if (dateNowHours - dateSendHours <= 0) {
-          return Math.abs(dateNowMinutes - dateSendMinutes) + 1 + "Phút";
-        } else {
-          // nếu giờ =1 thì in phút mà lớn hơn 1 thì in giờ
-          if (Math.abs(dateNowHours - dateSendHours) === 1) {
-            return Math.abs(dateNowMinutes - dateSendMinutes) + 1 + "Phút";
-          } else {
-            return Math.abs(dateNowHours - dateSendHours) + 1 + "Giờ";
-          }
-        }
-      } else {
-        if (Math.abs(dateNowDay - dateSendDay) === 1) {
-          return Math.abs(dateNowHours - dateSendHours) + 1 + "Giờ";
-        } else {
-          return Math.abs(dateNowDay - dateSendDay) + 1 + "Ngày";
-        }
-      }
-    } else {
-      if (Math.abs(dateNowMonth - dateSendMonth) === 1) {
-        return Math.abs(dateNowDay - dateSendDay) + 1 + "Ngày";
-      } else {
-        return Math.abs(dateNowMonth - dateSendMonth) + 1 + "Tháng";
-      }
-    }
-  } else {
-    if (Math.abs(dateNowYear - dateSendYear) === 1) {
-      return Math.abs(dateNowMonth - dateSendMonth) + 1 + "Tháng";
-    } else {
-      return Math.abs(dateNowYear - dateSendYear) + 1 + "Năm";
-    }
+  // 3110400 giây 1 năm
+  //3600 1 giờ
+  //60 1 phút
+  //86400 1 ngày
+  //2592000 tháng
+  const secondsSend =
+    Number(dateSendMinutes) * 60 +
+    Number(dateSendHours) * 3600 +
+    Number(dateSendDay) * 86400 +
+    Number(dateSendMonth) * 2592000 +
+    Number(dateSendYear) * 3110400;
+  const secondsNow =
+    Number(dateNowMinutes) * 60 +
+    Number(dateNowHours) * 3600 +
+    Number(dateNowDay) * 86400 +
+    Number(dateNowMonth) * 2592000 +
+    Number(dateNowYear) * 3110400;
+
+  const result = secondsNow - secondsSend;
+
+  if (result / 3110400 >= 1) {
+    return parseInt(result / 3110400) + "Năm";
+  } else if (result / 2592000 >= 1) {
+    return parseInt(result / 2592000) + "Tháng";
+  } else if (result / 86400 >= 1) {
+    return parseInt(result / 86400) + "Ngày";
+  } else if (result / 3600 >= 1) {
+    return parseInt(result / 3600) + "Giờ";
+  } else if (result / 60 >= 1) {
+    return parseInt(result / 60) + "Phút";
+  } else if (result / 60 === 0) {
+    return parseInt(result / 60) + 1 + "Phút";
   }
 }
