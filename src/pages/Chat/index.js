@@ -327,7 +327,7 @@ function lastSentMessage(timeNow, timeSendMessage) {
       if (dateNowDay - dateSendDay <= 0) {
         //Kiểm tra giờ
         if (dateNowHours - dateSendHours <= 0) {
-          return Math.abs(dateNowMinutes - dateSendMinutes) + "Phút";
+          return Math.abs(dateNowMinutes - dateSendMinutes) + 1 + "Phút";
         } else {
           // nếu giờ =1 thì in phút mà lớn hơn 1 thì in giờ
           if (Math.abs(dateNowHours - dateSendHours) === 1) {
