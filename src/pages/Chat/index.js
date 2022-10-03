@@ -14,6 +14,7 @@ import {
   getDoc,
   serverTimestamp,
   setDoc,
+  Timestamp,
   updateDoc,
 } from "firebase/firestore";
 import { db } from "@/firebase/config";
@@ -24,10 +25,8 @@ import boxChatSlice from "./BoxChat/BoxChatSlice";
 const cx = classNames.bind(styles);
 
 function Chat() {
-  const user = useSelector(userLogin);
-
   console.log("Chat");
-
+  const user = useSelector(userLogin);
   const Dispatch = useDispatch();
   const allUser = useSelector(users);
   const [modalInfo, setModalInfo] = useState(false);
@@ -35,6 +34,16 @@ function Chat() {
   const [searchResult, setSearchResult] = useState([]);
   const [isloadingUser, setIsLoadingUser] = useState(false);
   const listuserChat = useFireStoreGetFields("userChats", user.uid);
+
+  const timeNow = Timestamp.now();
+  // const getHours =
+  //   timeNow.getHours() < 10 ? `0${timeNow.getHours()}` : timeNow.getHours();
+  // const getMinutes =
+  //   timeNow.getMinutes() < 10
+  //     ? `0${timeNow.getMinutes()}`
+  //     : timeNow.getMinutes();
+  // console.log(getHours);
+
   const handleChangeSearch = (e) => {
     setSearchUser(e.target.value);
   };
@@ -185,6 +194,15 @@ function Chat() {
           ) : (
             <>
               {listuserChat.map((user, index) => {
+                const lastSent = lastSentMessage(timeNow, user[1].createdAt);
+                // const getHours =
+                //   user[1].createdAt.toDate().getHours() < 10
+                //     ? `0${user[1].createdAt.toDate().getHours()}`
+                //     : user[1].createdAt.toDate().getHours();
+                // const getMinutes =
+                //   user[1].createdAt.toDate().getMinutes() < 10
+                //     ? `0${user[1].createdAt.toDate().getMinutes()}`
+                //     : user[1].createdAt.toDate().getMinutes();
                 return (
                   <li
                     onClick={() => {
@@ -208,7 +226,11 @@ function Chat() {
                         <h5 className={cx("user__name")}>
                           {user[1].userInfo.displayName}
                         </h5>
-                        <p className={cx("user__chatHistory")}>Hello</p>
+                        <div className={cx("user__chatHistory")}>
+                          <p>{user[1].lastMessage.sender}</p>
+                          {/* <p>{`.${getHours}:${getMinutes}`}</p> */}
+                          <p>{lastSent}</p>
+                        </div>
                       </div>
                     </Link>
                   </li>
@@ -265,4 +287,17 @@ function removeVietnameseTones(str) {
   //   " "
   // );
   return str;
+}
+function lastSentMessage(timeNow, timeSendMessage) {
+  if (timeSendMessage === null) {
+    return "";
+  }
+  const timeNowConvert = timeNow.toDate();
+  const timeSendMessageConvert = timeSendMessage.toDate();
+  const dateNow = `${timeNowConvert.getDate()}/${timeNowConvert.getMonth()}/${timeNowConvert.getFullYear()} ${timeNowConvert.getHours()}:${timeNowConvert.getMinutes()}`;
+  const dateSent = `${timeSendMessageConvert.getDate()}/${timeSendMessageConvert.getMonth()}/${timeSendMessageConvert.getFullYear()} ${timeSendMessageConvert.getHours()}:${timeSendMessageConvert.getMinutes()}`;
+  console.log("ngày gửi", dateSent);
+  console.log("Hiện tại", dateNow);
+
+  return dateSent;
 }

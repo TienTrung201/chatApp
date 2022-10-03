@@ -8,7 +8,13 @@ import { userChat, userLogin } from "@/components/redux/selector";
 
 import { v4 as uuid } from "uuid";
 import { db } from "@/firebase/config";
-import { arrayUnion, doc, Timestamp, updateDoc } from "firebase/firestore";
+import {
+  arrayUnion,
+  doc,
+  serverTimestamp,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
 
 const cx = classNames.bind(styles);
 function InputChat() {
@@ -25,6 +31,20 @@ function InputChat() {
           senderId: user.uid,
           createdAt: Timestamp.now(),
         }),
+      });
+      await updateDoc(doc(db, "userChats", displayUserChat.user.uid), {
+        [displayUserChat.chatId + ".lastMessage"]: {
+          text: valueInput,
+          sender: user.displayName,
+        },
+        [displayUserChat.chatId + ".createdAt"]: serverTimestamp(),
+      });
+      await updateDoc(doc(db, "userChats", user.uid), {
+        [displayUserChat.chatId + ".lastMessage"]: {
+          text: valueInput,
+          sender: user.displayName,
+        },
+        [displayUserChat.chatId + ".createdAt"]: serverTimestamp(),
       });
     } catch (e) {
       console.log(e);

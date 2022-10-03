@@ -155,6 +155,7 @@
 
         .user__display {
           padding-top: 1px;
+
           .user__name {
             font-size: 1.5rem;
             // font-weight: 400;
@@ -164,6 +165,11 @@
           .user__chatHistory {
             font-size: 1rem;
             color: #8f97a4;
+            display: flex;
+            justify-content: space-between;
+            p {
+              margin-right: 10px;
+            }
           }
         }
       }
