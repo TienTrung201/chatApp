@@ -19,9 +19,7 @@
   @include mobile {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    padding: 0 8px var(--default-layout-Nav-height) 8px;
-
-    padding-bottom: var(--default-layout-Nav-height);
+    padding: 0 8px var(--default-layout--mobile--bottom) 8px;
   }
   .controlChat {
     // flex: 1;
@@ -36,10 +34,15 @@
     box-shadow: 10px 0px 20px rgba(0, 0, 0, 0.01);
 
     @include mobile {
-      flex: 1;
+      // flex: 1;
+      width: 200px;
+      width: 60px;
     }
     .wrapperControl {
       padding: 0 15px;
+      @include mobile {
+        padding: 0 5px;
+      }
       .createNew {
         display: flex;
         align-items: center;
@@ -48,6 +51,11 @@
         padding-left: 12px;
         cursor: pointer;
         // margin-bottom: 26px;
+        @include mobile {
+          padding: 0 0;
+          padding-left: 0px;
+          justify-content: center;
+        }
 
         .createPlus {
           width: 40px;
@@ -55,14 +63,23 @@
           background-color: #f3f6ff;
           border-radius: 50%;
           margin-right: 20px;
+          @include mobile {
+            width: 35px;
+            height: 35px;
+            margin-right: 0;
+          }
           .creatPlusIcon {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             color: var(--backGround-App);
           }
         }
 
         .create__title {
           font-size: 1.6rem;
+          @include mobile {
+            font-size: 1.4rem;
+            display: none; // useState
+          }
         }
       }
       .wrapperTitle {
@@ -72,8 +89,8 @@
         display: flex;
         align-items: center;
         @include mobile {
-          padding: 10px 0;
-          padding-left: 12px;
+          padding: 5px 0;
+          padding-left: 3px;
         }
         @include tablet {
           padding: 5px 0;
@@ -81,6 +98,9 @@
         }
         .title__Chat {
           font-size: 2.5rem;
+          @include mobile {
+            font-size: 2rem;
+          }
         }
       }
       .wrapperSearch {
@@ -94,16 +114,19 @@
         align-items: center;
         justify-content: space-between;
         margin-bottom: 10px;
+        @include mobile {
+          padding: 10px 0;
+        }
 
         .searchText {
           width: 80%;
           background-color: transparent;
           height: 100%;
-          font-size: 1.2rem;
+          font-size: 1.3rem;
           padding-left: 16px;
           color: #8f97a4;
           @include mobile {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
           }
         }
         .searchIcon {
@@ -140,28 +163,44 @@
         height: 53.3px;
         transition: 0.3s ease-in-out;
         padding: 0 15px;
+        @include mobile {
+          padding: 0 8px;
+        }
         &:hover {
           background-color: #ccc;
         }
         .avata {
           width: 50px;
           height: 50px;
+          @include mobile {
+            width: 40px;
+            height: 40px;
+          }
           img {
             width: 40px;
             height: 40px;
             border-radius: 50%;
+            @include mobile {
+              width: 35px;
+              height: 35px;
+            }
           }
         }
 
         .user__display {
           padding-top: 1px;
           // flex: 1;
-
+          @include mobile {
+            display: none; // useState
+          }
           .user__name {
             font-size: 1.5rem;
             // font-weight: 400;
-
             line-height: 1.5rem;
+            @include mobile {
+              font-size: 1.3rem;
+              line-height: 1.3rem;
+            }
           }
           .user__chatHistory {
             font-size: 1rem;
@@ -173,6 +212,9 @@
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
+              @include mobile {
+                max-width: 95px;
+              }
             }
             p {
               margin-right: 2px;
@@ -187,7 +229,7 @@
     // background-color: aqua;
     display: flex;
     @include mobile {
-      flex: 0;
+      flex: 1;
     }
   }
   .ModalInfoChat {
