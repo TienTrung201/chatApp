@@ -193,49 +193,50 @@ function Chat() {
             </>
           ) : (
             <>
-              {listuserChat.map((user, index) => {
-                const lastSent = lastSentMessage(timeNow, user[1].createdAt);
-                // const getHours =
-                //   user[1].createdAt.toDate().getHours() < 10
-                //     ? `0${user[1].createdAt.toDate().getHours()}`
-                //     : user[1].createdAt.toDate().getHours();
-                // const getMinutes =
-                //   user[1].createdAt.toDate().getMinutes() < 10
-                //     ? `0${user[1].createdAt.toDate().getMinutes()}`
-                //     : user[1].createdAt.toDate().getMinutes();
-                return (
-                  <li
-                    onClick={() => {
-                      selectedRoom(user);
-                    }}
-                    key={index}
-                    className={cx("userItem")}
-                  >
-                    <Link to={"#"} className={cx("user")}>
-                      <div className={cx("avata", "autoCenter")}>
-                        <img
-                          src={
-                            user[1].userInfo.photoURL !== null
-                              ? user[1].userInfo.photoURL
-                              : require("../../assets/images/photoUser.png")
-                          }
-                          alt=""
-                        />
-                      </div>
-                      <div className={cx("user__display")}>
-                        <h5 className={cx("user__name")}>
-                          {user[1].userInfo.displayName}
-                        </h5>
-                        <div className={cx("user__chatHistory")}>
-                          <p>{user[1].lastMessage.sender}</p>
-                          {/* <p>{`.${getHours}:${getMinutes}`}</p> */}
-                          <p>{lastSent}</p>
+              {listuserChat
+                .sort((a, b) => b[1].createdAt - a[1].createdAt)
+                .map((user, index) => {
+                  const lastSent = lastSentMessage(timeNow, user[1].createdAt);
+                  return (
+                    <li
+                      onClick={() => {
+                        selectedRoom(user);
+                      }}
+                      key={index}
+                      className={cx("userItem")}
+                    >
+                      <Link to={"#"} className={cx("user")}>
+                        <div className={cx("avata", "autoCenter")}>
+                          <img
+                            src={
+                              user[1].userInfo.photoURL !== null
+                                ? user[1].userInfo.photoURL
+                                : require("../../assets/images/photoUser.png")
+                            }
+                            alt=""
+                          />
                         </div>
-                      </div>
-                    </Link>
-                  </li>
-                );
-              })}
+                        <div className={cx("user__display")}>
+                          <h5 className={cx("user__name")}>
+                            {user[1].userInfo.displayName}
+                          </h5>
+                          <div className={cx("user__chatHistory")}>
+                            <p>
+                              {user[1].lastMessage === undefined
+                                ? false
+                                : user[1].lastMessage.sender}
+                            </p>
+                            <p>
+                              {user[1].lastMessage === undefined
+                                ? false
+                                : lastSent}
+                            </p>
+                          </div>
+                        </div>
+                      </Link>
+                    </li>
+                  );
+                })}
               {isloadingUser && (
                 <div className={cx("Loading")}>
                   <LoadingListUser />
@@ -295,9 +296,49 @@ function lastSentMessage(timeNow, timeSendMessage) {
   const timeNowConvert = timeNow.toDate();
   const timeSendMessageConvert = timeSendMessage.toDate();
   const dateNow = `${timeNowConvert.getDate()}/${timeNowConvert.getMonth()}/${timeNowConvert.getFullYear()} ${timeNowConvert.getHours()}:${timeNowConvert.getMinutes()}`;
-  const dateSent = `${timeSendMessageConvert.getDate()}/${timeSendMessageConvert.getMonth()}/${timeSendMessageConvert.getFullYear()} ${timeSendMessageConvert.getHours()}:${timeSendMessageConvert.getMinutes()}`;
-  console.log("ngày gửi", dateSent);
+  const dateSend = `${timeSendMessageConvert.getDate()}/${timeSendMessageConvert.getMonth()}/${timeSendMessageConvert.getFullYear()} ${timeSendMessageConvert.getHours()}:${timeSendMessageConvert.getMinutes()}`;
+  console.log("ngày gửi", dateSend);
   console.log("Hiện tại", dateNow);
+  // const monthDateSent=dateSent.split(" ")[0].split("/")[1]
 
-  return dateSent;
+  //
+  const dateSendMinutes = dateSend.split(" ")[1].split(":")[1];
+  const dateNowMinutes = dateNow.split(" ")[1].split(":")[1];
+
+  const dateSendHours = dateSend.split(" ")[1].split(":")[0];
+  const dateNowHours = dateNow.split(" ")[1].split(":")[0];
+
+  const dateSendDay = dateSend.split(" ")[0].split("/")[0];
+  const dateNowDay = dateNow.split(" ")[0].split("/")[0];
+
+  const dateSendMonth = dateSend.split(" ")[0].split("/")[1];
+  const dateNowMonth = dateNow.split(" ")[0].split("/")[1];
+
+  const dateSendYear = dateSend.split(" ")[0].split("/")[2];
+  const dateNowYear = dateNow.split(" ")[0].split("/")[2];
+
+  console.log("ngày gửi", dateSendDay);
+  console.log("today", dateNowDay);
+
+  // console.log(Math.abs(dateNowMinutes - dateSendMinutes));
+
+  // tháng
+  // ví dụ tháng 7 2011 gửi tháng 3/2010 3-7 =-4
+  if (dateNowYear - dateSendYear <= 0) {
+    if (dateNowMonth - dateSendMonth <= 0) {
+      if (dateNowDay - dateSendDay <= 0) {
+        if (dateNowHours - dateSendHours <= 0) {
+          return dateNowMinutes - dateSendMinutes + 1 + "Phút";
+        } else {
+          return dateNowDay - dateSendDay + 1 + "Giờ";
+        }
+      } else {
+        return dateNowDay - dateSendDay + 1 + "Ngày";
+      }
+    } else {
+      return dateNowMonth - dateSendMonth + 1 + "Tháng";
+    }
+  } else {
+    return dateNowYear - dateSendYear + 1 + "Năm";
+  }
 }
