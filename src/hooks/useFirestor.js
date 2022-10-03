@@ -89,7 +89,11 @@ export const useFireStoreGetFields = (collectionName, userId) => {
 
     try {
       unsub = onSnapshot(doc(db, collectionName, userId), (doc) => {
-        setDocuments(Object.entries(doc.data()));
+        setDocuments(
+          Object.entries(doc.data()).sort(
+            (a, b) => b[1].createdAt - a[1].createdAt
+          )
+        );
       });
     } catch (e) {
       // console.log(e);

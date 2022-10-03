@@ -193,50 +193,48 @@ function Chat() {
             </>
           ) : (
             <>
-              {listuserChat
-                .sort((a, b) => b[1].createdAt - a[1].createdAt)
-                .map((user, index) => {
-                  const lastSent = lastSentMessage(timeNow, user[1].createdAt);
-                  return (
-                    <li
-                      onClick={() => {
-                        selectedRoom(user);
-                      }}
-                      key={index}
-                      className={cx("userItem")}
-                    >
-                      <Link to={"#"} className={cx("user")}>
-                        <div className={cx("avata", "autoCenter")}>
-                          <img
-                            src={
-                              user[1].userInfo.photoURL !== null
-                                ? user[1].userInfo.photoURL
-                                : require("../../assets/images/photoUser.png")
-                            }
-                            alt=""
-                          />
+              {listuserChat.map((user, index) => {
+                const lastSent = lastSentMessage(timeNow, user[1].createdAt);
+                return (
+                  <li
+                    onClick={() => {
+                      selectedRoom(user);
+                    }}
+                    key={index}
+                    className={cx("userItem")}
+                  >
+                    <Link to={"#"} className={cx("user")}>
+                      <div className={cx("avata", "autoCenter")}>
+                        <img
+                          src={
+                            user[1].userInfo.photoURL !== null
+                              ? user[1].userInfo.photoURL
+                              : require("../../assets/images/photoUser.png")
+                          }
+                          alt=""
+                        />
+                      </div>
+                      <div className={cx("user__display")}>
+                        <h5 className={cx("user__name")}>
+                          {user[1].userInfo.displayName}
+                        </h5>
+                        <div className={cx("user__chatHistory")}>
+                          <p>
+                            {user[1].lastMessage === undefined
+                              ? false
+                              : user[1].lastMessage.sender}
+                          </p>
+                          <p>
+                            {user[1].lastMessage === undefined
+                              ? false
+                              : lastSent}
+                          </p>
                         </div>
-                        <div className={cx("user__display")}>
-                          <h5 className={cx("user__name")}>
-                            {user[1].userInfo.displayName}
-                          </h5>
-                          <div className={cx("user__chatHistory")}>
-                            <p>
-                              {user[1].lastMessage === undefined
-                                ? false
-                                : user[1].lastMessage.sender}
-                            </p>
-                            <p>
-                              {user[1].lastMessage === undefined
-                                ? false
-                                : lastSent}
-                            </p>
-                          </div>
-                        </div>
-                      </Link>
-                    </li>
-                  );
-                })}
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
               {isloadingUser && (
                 <div className={cx("Loading")}>
                   <LoadingListUser />
@@ -297,8 +295,8 @@ function lastSentMessage(timeNow, timeSendMessage) {
   const timeSendMessageConvert = timeSendMessage.toDate();
   const dateNow = `${timeNowConvert.getDate()}/${timeNowConvert.getMonth()}/${timeNowConvert.getFullYear()} ${timeNowConvert.getHours()}:${timeNowConvert.getMinutes()}`;
   const dateSend = `${timeSendMessageConvert.getDate()}/${timeSendMessageConvert.getMonth()}/${timeSendMessageConvert.getFullYear()} ${timeSendMessageConvert.getHours()}:${timeSendMessageConvert.getMinutes()}`;
-  console.log("ngày gửi", dateSend);
-  console.log("Hiện tại", dateNow);
+  // console.log("ngày gửi", dateSend);
+  // console.log("Hiện tại", dateNow);
   // const monthDateSent=dateSent.split(" ")[0].split("/")[1]
 
   //
@@ -327,18 +325,36 @@ function lastSentMessage(timeNow, timeSendMessage) {
   if (dateNowYear - dateSendYear <= 0) {
     if (dateNowMonth - dateSendMonth <= 0) {
       if (dateNowDay - dateSendDay <= 0) {
+        //Kiểm tra giờ
         if (dateNowHours - dateSendHours <= 0) {
-          return dateNowMinutes - dateSendMinutes + 1 + "Phút";
+          return Math.abs(dateNowMinutes - dateSendMinutes) + "Phút";
         } else {
-          return dateNowDay - dateSendDay + 1 + "Giờ";
+          // nếu giờ =1 thì in phút mà lớn hơn 1 thì in giờ
+          if (Math.abs(dateNowHours - dateSendHours) === 1) {
+            return Math.abs(dateNowMinutes - dateSendMinutes) + 1 + "Phút";
+          } else {
+            return Math.abs(dateNowHours - dateSendHours) + 1 + "Giờ";
+          }
         }
       } else {
-        return dateNowDay - dateSendDay + 1 + "Ngày";
+        if (Math.abs(dateNowDay - dateSendDay) === 1) {
+          return Math.abs(dateNowHours - dateSendHours) + 1 + "Giờ";
+        } else {
+          return Math.abs(dateNowDay - dateSendDay) + 1 + "Ngày";
+        }
       }
     } else {
-      return dateNowMonth - dateSendMonth + 1 + "Tháng";
+      if (Math.abs(dateNowMonth - dateSendMonth) === 1) {
+        return Math.abs(dateNowDay - dateSendDay) + 1 + "Ngày";
+      } else {
+        return Math.abs(dateNowMonth - dateSendMonth) + 1 + "Tháng";
+      }
     }
   } else {
-    return dateNowYear - dateSendYear + 1 + "Năm";
+    if (Math.abs(dateNowYear - dateSendYear) === 1) {
+      return Math.abs(dateNowMonth - dateSendMonth) + 1 + "Tháng";
+    } else {
+      return Math.abs(dateNowYear - dateSendYear) + 1 + "Năm";
+    }
   }
 }
