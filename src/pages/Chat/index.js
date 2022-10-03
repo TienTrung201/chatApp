@@ -219,10 +219,14 @@ function Chat() {
                           {user[1].userInfo.displayName}
                         </h5>
                         <div className={cx("user__chatHistory")}>
-                          <p>
+                          <p className={cx("userChatHistory")}>
                             {user[1].lastMessage === undefined
                               ? false
-                              : user[1].lastMessage.sender}
+                              : `${
+                                  user[1].lastMessage.sender
+                                    .split(" ")
+                                    .reverse()[0]
+                                }: ${user[1].lastMessage.text}`}
                           </p>
                           <p>
                             {user[1].lastMessage === undefined
