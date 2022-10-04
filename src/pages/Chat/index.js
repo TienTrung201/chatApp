@@ -66,7 +66,7 @@ function Chat() {
   const [styleControl, setStyleControl] = useState({});
   const handleClickOpen = () => {
     if (modalInfo) {
-      setModalInfo(!modalInfo);
+      setModalInfo(false);
     }
 
     setControlChat(!controlChat);

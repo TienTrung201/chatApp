@@ -23,7 +23,7 @@ function ModalInfoChat({ modal, setModal }) {
     <AnimatePresence>
       {modal && (
         <motion.div
-          initial={{ width: 0, opacity: 0 }}
+          initial={{ width: 0, opacity: 0.5 }}
           animate={{
             transition: { stiffness: 300 },
             // width: "calc(100% - 16px)",
@@ -33,7 +33,7 @@ function ModalInfoChat({ modal, setModal }) {
           exit={{
             width: 0,
             transition: { duration: 0.3 },
-            opacity: 0,
+            opacity: 0.5,
           }}
           className={cx("wrapper")}
         >

@@ -52,6 +52,9 @@ body {
   text-rendering: optimizeSpeed;
   color: var(--text-color);
   scrollbar-width: none;
+  @include mobile {
+    height: 100vh;
+  }
 }
 @media (max-width: 739px) {
   body {

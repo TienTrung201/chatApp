@@ -19,12 +19,16 @@ $widthModal: 250px;
   flex-direction: column; //thêm
   // padding: 33.33px 20px 0 20px;
   padding-top: 33.33px;
+  overflow-y: scroll;
 
   @include mobile {
     // width: 100% !important;
     // height: 100%;
     // justify-content: center;
     align-items: center;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   // overflow: hidden;
   .infoUser {
