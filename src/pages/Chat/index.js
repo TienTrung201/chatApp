@@ -39,6 +39,7 @@ function Chat() {
   const screenWidth = window.innerWidth;
 
   const resize = () => {
+    console.log(2);
     if (window.innerWidth > 739) {
       setStyleControl({
         width: 250,
@@ -55,6 +56,9 @@ function Chat() {
   useEffect(() => {
     /// nếu xoay màn hình nhiều lần thì bị duplicate code lằng nghe ++
     window.addEventListener("resize", resize, true);
+    return () => {
+      window.removeEventListener("resize", resize, true);
+    };
   }, []);
   // const zIndex = "z-index";
   const styleModalInfo = modalInfo === true ? { zIndex: 4, right: "0px" } : {};
