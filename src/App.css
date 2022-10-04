@@ -21,3 +21,6 @@
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
+.firebase-emulator-warning {
+  display: none;
+}

@@ -14,21 +14,26 @@ import { userChat } from "@/components/redux/selector";
 
 const cx = classNames.bind(styles);
 
-function ModalInfoChat({ modal }) {
+function ModalInfoChat({ modal, setModal }) {
   const displayUserChat = useSelector(userChat);
   const [isSetting, setIsSetting] = useState(true);
+  const screenWidth = window.innerWidth;
+  const widthProfileChatRoom = screenWidth > 739 ? 250 : "calc(100% - 1px)";
   return (
     <AnimatePresence>
       {modal && (
         <motion.div
-          initial={{ width: 0 }}
+          initial={{ width: 0, opacity: 0 }}
           animate={{
             transition: { stiffness: 300 },
-            width: 250,
+            // width: "calc(100% - 16px)",
+            width: widthProfileChatRoom,
+            opacity: 1,
           }}
           exit={{
             width: 0,
             transition: { duration: 0.3 },
+            opacity: 0,
           }}
           className={cx("wrapper")}
         >
@@ -110,7 +115,14 @@ function ModalInfoChat({ modal }) {
                     className={cx("iconOpen")}
                     icon={faChevronDown}
                   />
-                  <p className={cx("content")}>Media</p>
+                  <p
+                    onClick={() => {
+                      setModal(!modal);
+                    }}
+                    className={cx("content")}
+                  >
+                    Media
+                  </p>
                 </div>
               </li>
             </ul>

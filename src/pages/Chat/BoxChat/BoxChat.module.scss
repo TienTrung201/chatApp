@@ -1,16 +1,40 @@
+@mixin mobile {
+  @media screen and (max-width: 739px) {
+    @content;
+  }
+}
+@mixin tablet {
+  @media screen and (min-width: 740px) and (max-width: 1023px) {
+    @content;
+  }
+}
+
 .wrapper {
   padding: 33.3px 15px 0px 15px;
   display: flex;
   flex-direction: column;
   flex: 1;
   justify-content: space-between;
+
+  @include mobile {
+    padding: 16px 5px 0px 5px;
+  }
   .headerBox {
     display: flex;
     justify-content: space-between;
+
     align-items: center;
     height: 37.68px;
+    @include mobile {
+      //tesst
+      // flex-direction: row-reverse;
+      //chinh nó
+    }
     .infoUser {
       .user {
+        @include mobile {
+          // flex-direction: row-reverse;
+        }
         display: flex;
         .avata {
           display: flex;
@@ -24,6 +48,7 @@
           .user__name {
             font-size: 1.3rem;
             line-height: 1.5rem;
+            // white-space: nowrap;
             // font-weight: 300;
           }
         }

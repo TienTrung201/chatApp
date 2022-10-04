@@ -22,6 +22,9 @@ function InputChat() {
   const user = useSelector(userLogin);
   const [valueInput, setValueInput] = useState("");
   const handleSubmit = async () => {
+    if (valueInput.trim(" ") === "") {
+      return;
+    }
     setValueInput("");
     try {
       await updateDoc(doc(db, "chats", displayUserChat.chatId), {

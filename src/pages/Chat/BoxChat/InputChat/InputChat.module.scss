@@ -1,3 +1,13 @@
+@mixin mobile {
+  @media screen and (max-width: 739px) {
+    @content;
+  }
+}
+@mixin tablet {
+  @media screen and (min-width: 740px) and (max-width: 1023px) {
+    @content;
+  }
+}
 .chooseButton {
   // height: 50px;
 
@@ -6,7 +16,7 @@
     margin-left: 20px;
     margin-right: 15px;
     color: var(--backGround-App);
-    font-size: 20px;
+    font-size: 22px;
   }
 }
 .wrapperTextMessage {
@@ -23,6 +33,9 @@
   input {
     // flex: 1;
     width: 100%;
+    @include mobile {
+      font-size: 1.6rem;
+    }
   }
   .inputMessage {
     //   background-color: transparent;
@@ -47,7 +60,7 @@
   cursor: pointer;
   .send--icon {
     color: var(--backGround-App);
-    font-size: 20px;
+    font-size: 22px;
     margin-right: 20px;
     margin-left: 15px;
   }
