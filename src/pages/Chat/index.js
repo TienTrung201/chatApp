@@ -39,7 +39,6 @@ function Chat() {
   const screenWidth = window.innerWidth;
 
   const resize = () => {
-    console.log("addEventListener " + window.innerWidth);
     if (window.innerWidth > 739) {
       setStyleControl({
         width: 250,
