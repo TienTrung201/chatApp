@@ -19,7 +19,12 @@ function ModalInfoChat({ modal, setModal }) {
   const displayUserChat = useSelector(userChat);
   const [isSetting, setIsSetting] = useState(true);
   const screenWidth = window.innerWidth;
-  const widthProfileChatRoom = screenWidth > 739 ? 250 : "calc(100% - 1px)";
+  const widthProfileChatRoom =
+    screenWidth > 739 && screenWidth < 1023
+      ? 200
+      : screenWidth > 1023
+      ? 250
+      : "calc(100% - 1px)";
   return (
     <AnimatePresence>
       {modal && (

@@ -43,11 +43,19 @@ function Chat() {
 
   //Listen resize
   const resize = () => {
+    if (window.innerWidth > 739 && window.innerWidth < 1023) {
+    }
     if (window.innerWidth > 739) {
-      setStyleControl({
-        width: 250,
-        // right: 8 + "px",
-      });
+      if (window.innerWidth < 1023) {
+        setStyleControl({
+          width: 200,
+        });
+      } else {
+        setStyleControl({
+          width: 250,
+          // right: 8 + "px",
+        });
+      }
     } else {
       setStyleControl({
         width: 60,
@@ -83,7 +91,8 @@ function Chat() {
     if (modalInfo) {
       setModalInfo(false);
     }
-    if (styleControl.width !== "60px") {
+
+    if (styleControl.width !== "60px" && window.innerWidth < 739) {
       setControlChat(!controlChat);
       const opens = controlChat === true ? "calc(100% - 16px)" : "60px";
       setStyleControl({
