@@ -78,6 +78,10 @@ $widthModal: 250px;
     padding: 0 18px;
     //bug nhảy dòng khi close modle
     width: $widthModal;
+    @include mobile {
+      width: 90%;
+      min-width: 250px;
+    }
     // width: 100%;
     .controlList {
       .setting {

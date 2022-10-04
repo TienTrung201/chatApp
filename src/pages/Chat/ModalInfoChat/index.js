@@ -34,7 +34,7 @@ function ModalInfoChat({ modal, setModal }) {
           exit={{
             width: 0,
             transition: { duration: 0.2 },
-            opacity: 1,
+            opacity: 0,
           }}
           className={cx("wrapper")}
         >

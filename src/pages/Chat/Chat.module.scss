@@ -149,6 +149,8 @@
           position: absolute;
           right: 10px;
           background-color: var(--backGround--page);
+          height: 20px;
+
           @include mobile {
             right: 5px;
 

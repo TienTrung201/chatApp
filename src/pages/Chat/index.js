@@ -41,6 +41,7 @@ function Chat() {
   const open = useRef();
   const screenWidth = window.innerWidth;
 
+  //Listen resize
   const resize = () => {
     if (window.innerWidth > 739) {
       setStyleControl({
@@ -56,15 +57,15 @@ function Chat() {
     }
   };
   useEffect(() => {
-    /// nếu xoay màn hình nhiều lần thì bị duplicate code lằng nghe ++
     window.addEventListener("resize", resize, true);
     return () => {
       window.removeEventListener("resize", resize, true);
     };
   }, []);
-  // const zIndex = "z-index";
-  const styleModalInfo = modalInfo === true ? { zIndex: 4, right: "0px" } : {};
+  //Listen resize
 
+  //controlChats reponsive
+  const styleModalInfo = modalInfo === true ? { zIndex: 4, right: "0px" } : {};
   const [styleControl, setStyleControl] = useState({});
   const handleClickOpen = () => {
     if (modalInfo) {
@@ -78,7 +79,23 @@ function Chat() {
       // right: 8 + "px",
     });
   };
+  const handleSelectOpenRoom = () => {
+    if (modalInfo) {
+      setModalInfo(false);
+    }
+    if (styleControl.width !== "60px") {
+      setControlChat(!controlChat);
+      const opens = controlChat === true ? "calc(100% - 16px)" : "60px";
+      setStyleControl({
+        width: opens,
+      });
+    }
+  };
+  //controlChats reponsive
+
+  //get listChats
   const listuserChat = useFireStoreGetFields("userChats", user.uid);
+  //get listChats
 
   const timeNow = Timestamp.now();
 
@@ -148,8 +165,10 @@ function Chat() {
     Dispatch(boxChatSlice.actions.setUserSelect(data));
   };
   useEffect(() => {
-    setIsLoadingUser(false); // khi click user unmount Loadding
+    setIsLoadingUser(false); //  click user unmount -> Loadding
   }, [listuserChat]);
+
+  //searchUser to chat
   useEffect(() => {
     setSearchResult(
       allUser.filter((user) => {
@@ -162,6 +181,7 @@ function Chat() {
       setSearchResult([]);
     }
   }, [searchUser, allUser]);
+  //searchUser to chat
   return (
     <section className={cx("wrapper")}>
       <article style={styleControl} ref={open} className={cx("controlChat")}>
@@ -189,7 +209,10 @@ function Chat() {
               value={searchUser}
             />
 
-            <div className={cx("searchIconWrapper", "autoCenter")}>
+            <div
+              onClick={handleClickOpen}
+              className={cx("searchIconWrapper", "autoCenter")}
+            >
               <FontAwesomeIcon
                 className={cx("searchIcon")}
                 icon={faMagnifyingGlass}
@@ -251,6 +274,7 @@ function Chat() {
                   <li
                     onClick={() => {
                       selectedRoom(user);
+                      handleSelectOpenRoom();
                     }}
                     key={index}
                     className={cx("userItem")}
