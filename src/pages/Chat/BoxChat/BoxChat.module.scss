@@ -58,6 +58,9 @@
       cursor: pointer;
       height: 100%;
       padding-left: 10px;
+      @include mobile {
+        // display: none;
+      }
       .iconMenu {
         color: #8f97a4;
         font-size: 20px;

@@ -1,7 +1,11 @@
 import styles from "./Chat.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAlignLeft,
+  faMagnifyingGlass,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import BoxChat from "@/pages/Chat/BoxChat";
 import { Link } from "react-router-dom";
 import ModalInfoChat from "./ModalInfoChat";
@@ -21,7 +25,6 @@ import { db } from "@/firebase/config";
 import { useFireStoreGetFields } from "@/hooks/useFirestor";
 import LoadingListUser from "@/components/Loaddings/LoadingListUser";
 import boxChatSlice from "./BoxChat/BoxChatSlice";
-import { faElementor } from "@fortawesome/free-brands-svg-icons";
 
 const cx = classNames.bind(styles);
 
@@ -39,7 +42,6 @@ function Chat() {
   const screenWidth = window.innerWidth;
 
   const resize = () => {
-    console.log(2);
     if (window.innerWidth > 739) {
       setStyleControl({
         width: 250,
@@ -186,10 +188,13 @@ function Chat() {
               onChange={handleChangeSearch}
               value={searchUser}
             />
-            <FontAwesomeIcon
-              className={cx("searchIcon")}
-              icon={faMagnifyingGlass}
-            />
+
+            <div className={cx("searchIconWrapper", "autoCenter")}>
+              <FontAwesomeIcon
+                className={cx("searchIcon")}
+                icon={faMagnifyingGlass}
+              />
+            </div>
           </div>
         </div>
         <ul className={cx("wrapperListUser")}>
@@ -304,7 +309,7 @@ function Chat() {
           className={cx("barControlChat", "autoCenter")}
         >
           <div className={cx("createPlus", "autoCenter")}>
-            <FontAwesomeIcon className={cx("iconBar")} icon={faElementor} />
+            <FontAwesomeIcon className={cx("iconBar")} icon={faAlignLeft} />
           </div>
         </div>
       </article>

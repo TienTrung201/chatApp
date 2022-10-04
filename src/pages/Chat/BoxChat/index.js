@@ -37,7 +37,14 @@ function BoxChat({ modal, setModal }) {
 
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("headerBox")}>
+      <div
+        onClick={() => {
+          if (window.innerWidth < 739) {
+            setModal(!modal);
+          }
+        }}
+        className={cx("headerBox")}
+      >
         <div className={cx("infoUser")}>
           <div className={cx("user")}>
             <div className={cx("avata")}>

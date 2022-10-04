@@ -3,6 +3,7 @@ import classNames from "classnames/bind";
 import { motion, AnimatePresence } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faAngleLeft,
   faChevronDown,
   faGear,
   faImage,
@@ -32,11 +33,22 @@ function ModalInfoChat({ modal, setModal }) {
           }}
           exit={{
             width: 0,
-            transition: { duration: 0.3 },
-            opacity: 0.5,
+            transition: { duration: 0.2 },
+            opacity: 1,
           }}
           className={cx("wrapper")}
         >
+          <div
+            onClick={() => {
+              setModal(!modal);
+            }}
+            className={cx("closeModal", "autoCenter")}
+          >
+            <FontAwesomeIcon
+              icon={faAngleLeft}
+              className={cx("closeModal--icon")}
+            />
+          </div>
           <div className={cx("infoUser")}>
             <div className={cx("avatar")}>
               <img
@@ -115,14 +127,7 @@ function ModalInfoChat({ modal, setModal }) {
                     className={cx("iconOpen")}
                     icon={faChevronDown}
                   />
-                  <p
-                    onClick={() => {
-                      setModal(!modal);
-                    }}
-                    className={cx("content")}
-                  >
-                    Media
-                  </p>
+                  <p className={cx("content")}>Media</p>
                 </div>
               </li>
             </ul>
