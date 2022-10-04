@@ -98,7 +98,12 @@ function Chat() {
     if (modalInfo) {
       setModalInfo(false);
     }
-    if (styleControl.width !== 60 && window.innerWidth < 739) {
+    console.log(styleControl.width);
+    if (
+      styleControl.width !== 60 &&
+      styleControl.width !== "60px" &&
+      window.innerWidth < 739
+    ) {
       setControlChat(!controlChat);
       const opens = controlChat === true ? "calc(100% - 16px)" : "60px";
       setStyleControl({
