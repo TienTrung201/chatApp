@@ -74,7 +74,14 @@ function Chat() {
 
   //controlChats reponsive
   const styleModalInfo = modalInfo === true ? { zIndex: 4, right: "0px" } : {};
-  const [styleControl, setStyleControl] = useState({});
+  const [styleControl, setStyleControl] = useState({
+    width:
+      screenWidth > 739 && screenWidth < 1023
+        ? 200
+        : screenWidth > 1023
+        ? 250
+        : 60,
+  });
   const handleClickOpen = () => {
     if (modalInfo) {
       setModalInfo(false);
@@ -91,8 +98,7 @@ function Chat() {
     if (modalInfo) {
       setModalInfo(false);
     }
-
-    if (styleControl.width !== "60px" && window.innerWidth < 739) {
+    if (styleControl.width !== 60 && window.innerWidth < 739) {
       setControlChat(!controlChat);
       const opens = controlChat === true ? "calc(100% - 16px)" : "60px";
       setStyleControl({
