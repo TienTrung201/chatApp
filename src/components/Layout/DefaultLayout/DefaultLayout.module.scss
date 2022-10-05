@@ -27,6 +27,7 @@
     @include mobile {
       width: 100%;
       height: 100%;
+      z-index: 999;
       // padding-bottom: var(--default-layout-Nav-height);
       // padding-bottom: 40px;
     }
