@@ -207,6 +207,9 @@
       .nav__listItem:first-child {
         img {
           width: 50px;
+          @include mobile {
+            width: 40px;
+          }
         }
       }
       .nav__listItem {
@@ -214,6 +217,12 @@
         width: 100%;
         img {
           width: 40px;
+          @include mobile {
+            width: 30px;
+          }
+        }
+        @include mobile {
+          height: var(--default-layout-Nav-height--mobile);
         }
         .listItem__Link {
           width: 100%;
