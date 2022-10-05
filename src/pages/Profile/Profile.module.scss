@@ -59,9 +59,9 @@
   .wrapper {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    padding: 0 8px var(--default-layout--mobile--bottom) 8px;
+    padding: 0 8px var(--default-layout--mobile--bottom) 1px;
 
-    padding-bottom: 0;
+    // padding-bottom: 5px;
     .profile {
       .profile__Navigate {
         height: 70px;
