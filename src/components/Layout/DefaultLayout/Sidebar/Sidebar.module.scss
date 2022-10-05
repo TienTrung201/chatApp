@@ -1,9 +1,22 @@
+@mixin mobile {
+  @media screen and (max-width: 739px) {
+    @content;
+  }
+}
 .wrapper {
   width: 100px;
   // height: 100%;
   position: relative;
   display: flex;
   align-items: center;
+  @include mobile {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    // height: 100vh;
+  }
   .logoApp {
     user-select: none;
     position: absolute;
@@ -69,6 +82,11 @@
     //   }
     // }
     transform-style: preserve-3d;
+    @include mobile {
+      // height: 100vh;
+
+      display: none;
+    }
     .wrapperEarth {
       display: flex;
       align-items: center;
@@ -145,6 +163,10 @@
     flex-direction: column;
     width: 100%;
     position: relative;
+    @include mobile {
+      width: 100%;
+    }
+
     .line {
       position: absolute;
       left: 0px;
@@ -154,6 +176,17 @@
       background-color: #fff;
       transition: all 0.3s ease;
       animation: toRight 0.8s linear;
+      @include mobile {
+        display: none;
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        width: 3px;
+        height: var(--default-layout-Nav-height);
+        background-color: #fff;
+        transition: all 0.3s ease;
+        animation: toRight 0.8s linear;
+      }
       // transition: toRightLine 2s ease;
     }
     @keyframes toRight {
@@ -167,6 +200,9 @@
 
     .nav__list {
       width: 100%;
+      @include mobile {
+        display: flex;
+      }
       .nav__listItem:first-child {
         img {
           width: 50px;
@@ -194,45 +230,45 @@
     }
   }
 }
-@media (max-width: 739px) {
-  .wrapper {
-    width: 100%;
-    position: absolute;
-    // background-image: linear-gradient(
-    //   var(--backGround-App),
-    //   var(--backGround-App2)
-    // );
-    // display: none;
-    .logoApp {
-      display: none;
-    }
+// @media (max-width: 739px) {
+//   .wrapper {
+//     width: 100%;
+//     position: absolute;
+//     // background-image: linear-gradient(
+//     //   var(--backGround-App),
+//     //   var(--backGround-App2)
+//     // );
+//     // display: none;
+//     .logoApp {
+//       display: none;
+//     }
 
-    .navigation {
-      width: 100%;
-      .line {
-        display: none;
-        position: absolute;
-        left: 0px;
-        bottom: 0px;
-        width: 3px;
-        height: var(--default-layout-Nav-height);
-        background-color: #fff;
-        transition: all 0.3s ease;
-        animation: toRight 0.8s linear;
-        // transition: toRightLine 2s ease;
-      }
-      @keyframes toRight {
-        from {
-          left: -500px;
-        }
-        to {
-          left: 0px;
-        }
-      }
+//     .navigation {
+//       width: 100%;
+//       .line {
+//         display: none;
+//         position: absolute;
+//         left: 0px;
+//         bottom: 0px;
+//         width: 3px;
+//         height: var(--default-layout-Nav-height);
+//         background-color: #fff;
+//         transition: all 0.3s ease;
+//         animation: toRight 0.8s linear;
+//         // transition: toRightLine 2s ease;
+//       }
+//       @keyframes toRight {
+//         from {
+//           left: -500px;
+//         }
+//         to {
+//           left: 0px;
+//         }
+//       }
 
-      .nav__list {
-        display: flex;
-      }
-    }
-  }
-}
+//       .nav__list {
+//         display: flex;
+//       }
+//     }
+//   }
+// }

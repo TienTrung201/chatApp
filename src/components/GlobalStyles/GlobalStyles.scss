@@ -53,7 +53,7 @@ body {
   color: var(--text-color);
   scrollbar-width: none;
   @include mobile {
-    height: 100vh;
+    // height: 100vh;
   }
 }
 @media (max-width: 739px) {
