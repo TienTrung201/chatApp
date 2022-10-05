@@ -12,7 +12,6 @@
   // align-items: center;
   @include mobile {
     flex-direction: column-reverse;
-    height: 100vh;
     position: relative;
     position: fixed;
     top: 0;
