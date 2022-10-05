@@ -53,6 +53,14 @@ body {
   color: var(--text-color);
   scrollbar-width: none;
   @include mobile {
+    // position: fixed;
+    // position: absolute;
+    // top: 0;
+    // right: 0;
+    // left: 0;
+    // bottom: 0;
+    // background: url("../../assets/images/login.jpg") top center/ cover no-repeat;
+
     // height: 100vh;
   }
 }
