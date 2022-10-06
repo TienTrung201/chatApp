@@ -217,9 +217,7 @@ function Chat() {
             )}
           </div>
           <div className={cx("wrapperTitle")}>
-            <h2 className={cx("title__Chat")}>
-              LỖI RỒI LÚC KHÁC CHƠI ĐANG SỬA
-            </h2>
+            <h2 className={cx("title__Chat")}>Chat</h2>
             {/* <FontAwesomeIcon /> */}
           </div>
           <div className={cx("wrapperSearch")}>

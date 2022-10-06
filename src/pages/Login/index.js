@@ -71,26 +71,32 @@ function Login() {
         const { user, _tokenResponse } = result;
         console.log("Đăng nhập", { user });
         if (_tokenResponse.isNewUser) {
-          setDocument("users", {
-            displayName: user.displayName,
-            email: user.email,
-            photoURL: user.photoURL,
-            uid: user.uid,
-            providerId: _tokenResponse.providerId,
-          });
+          try {
+            setDocument("users", {
+              displayName: user.displayName,
+              email: user.email,
+              photoURL: user.photoURL,
+              uid: user.uid,
+              providerId: _tokenResponse.providerId,
+            });
+          } catch (e) {
+            console.log(e);
+          }
         }
 
         // ...
       })
       .catch((error) => {
+        console.error(error);
+
         // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        console.error({ errorCode, errorMessage, email, credential });
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+        // // The email of the user's account used.
+        // const email = error.customData.email;
+        // // The AuthCredential type that was used.
+        // const credential = GoogleAuthProvider.credentialFromError(error);
+        // console.error({ errorCode, errorMessage, email, credential });
 
         // ...
       });
