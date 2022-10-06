@@ -98,7 +98,7 @@ function Chat() {
     if (modalInfo) {
       setModalInfo(false);
     }
-    console.log(styleControl.width);
+
     if (
       styleControl.width !== 60 &&
       styleControl.width !== "60px" &&
@@ -328,7 +328,7 @@ function Chat() {
                             <p>
                               {user[1].lastMessage === undefined
                                 ? false
-                                : lastSent}
+                                : "·" + lastSent}
                             </p>
                           </div>
                         </div>
@@ -344,7 +344,9 @@ function Chat() {
                   <LoadingListUser />
                 </div>
               )}
-              {/* <LoadingListUser /> */}
+              {/* <div className={cx("Loading")}>
+                <LoadingListUser />
+              </div> */}
             </>
           )}
         </ul>

@@ -49,13 +49,14 @@
       top: 8px;
       right: 8px;
     }
-    @include tablet() {
-      width: 200px;
-    }
+
     .wrapperControl {
       padding: 0 15px;
       @include mobile {
         padding: 0 5px;
+      }
+      @include tablet() {
+        padding: 0 14px;
       }
       .createNew {
         display: flex;
@@ -188,7 +189,8 @@
       overflow-y: scroll;
       .Loading {
         display: flex;
-        align-items: center;
+        justify-content: center;
+        // align-items: center;
         height: 53.3px;
       }
       .user {
@@ -200,30 +202,34 @@
         @include mobile {
           padding: 0 8px;
         }
+        @include tablet() {
+          padding: 0 8px;
+        }
         &:hover {
           background-color: #ccc;
         }
         .avata {
           width: 50px;
           height: 50px;
-          @include mobile {
-            width: 40px;
-            height: 40px;
-          }
+          // @include mobile {
+          //   width: 40px;
+          //   height: 40px;
+          // }
           img {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            @include mobile {
-              width: 35px;
-              height: 35px;
-            }
+            // @include mobile {
+            //   width: 35px;
+            //   height: 35px;
+            // }
           }
         }
 
         .user__display {
           padding-top: 1px;
           white-space: nowrap;
+
           // flex: 1;
           @include mobile {
             // display: none; // useState
@@ -232,23 +238,34 @@
             font-size: 1.5rem;
             // font-weight: 400;
             line-height: 1.5rem;
-            @include mobile {
-              font-size: 1.3rem;
-              line-height: 1.3rem;
+
+            // @include mobile {
+            //   font-size: 1.3rem;
+            //   line-height: 1.3rem;
+            // }
+            @include tablet() {
+              max-width: 130px;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
             }
           }
           .user__chatHistory {
             font-size: 1rem;
             color: #8f97a4;
             display: flex;
-            justify-content: space-between;
+            // justify-content: space-between;
             .userChatHistory {
               max-width: 120px;
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
+
               @include mobile {
-                max-width: 95px;
+                max-width: 200px;
+              }
+              @include tablet() {
+                max-width: 70px;
               }
             }
             p {

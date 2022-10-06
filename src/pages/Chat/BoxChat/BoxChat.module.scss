@@ -72,8 +72,13 @@
     display: flex;
     // justify-content: flex-end;
     flex-direction: column;
+    // align-items: center;
+    // justify-content: center; // bug xóa ngay
     padding-bottom: 20px;
     overflow-y: scroll;
+    .loader {
+      background-color: aqua;
+    }
     &::-webkit-scrollbar {
       display: none;
     }

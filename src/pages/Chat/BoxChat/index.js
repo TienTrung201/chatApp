@@ -9,6 +9,7 @@ import Message from "./Message";
 import InputChat from "./InputChat";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "@/firebase/config";
+import LoadingListUser from "@/components/Loaddings/LoadingListUser";
 
 const cx = classNames.bind(styles);
 
@@ -31,6 +32,7 @@ function BoxChat({ modal, setModal }) {
       );
       return () => {
         ubsub();
+        setMessage(false);
       };
     }
   }, [displayUserChat.chatId]);
@@ -48,14 +50,18 @@ function BoxChat({ modal, setModal }) {
         <div className={cx("infoUser")}>
           <div className={cx("user")}>
             <div className={cx("avata")}>
-              <img
-                src={
-                  displayUserChat.user.photoURL !== null
-                    ? displayUserChat.user.photoURL
-                    : require("../../../assets/images/photoUser.png")
-                }
-                alt=""
-              />
+              {messages === undefined ? (
+                false
+              ) : (
+                <img
+                  src={
+                    displayUserChat.user.photoURL !== null
+                      ? displayUserChat.user.photoURL
+                      : require("../../../assets/images/photoUser.png")
+                  }
+                  alt=""
+                />
+              )}
             </div>
             <div className={cx("user__display")}>
               <h5 className={cx("user__name")}>
@@ -83,6 +89,8 @@ function BoxChat({ modal, setModal }) {
       <div ref={boxMessage} className={cx("boxMessage")}>
         {messages === undefined ? (
           <h1>Chọn Phòng chat</h1>
+        ) : messages === false ? (
+          <LoadingListUser />
         ) : (
           <>
             {messages.messages.map((message, i) => {
