@@ -1,5 +1,25 @@
+@mixin mobile {
+  @media screen and (max-width: 739px) {
+    @content;
+  }
+}
+@mixin tablet {
+  @media screen and (min-width: 740px) and (max-width: 1023px) {
+    @content;
+  }
+}
 .wrapper {
+  height: 100%;
+  //   padding-top: 50%;
   img {
     opacity: 0.8;
+
+    width: 80%;
+    @include mobile {
+      width: 50%;
+    }
+  }
+  @include mobile {
+    padding: 16px 5px 0px 5px;
   }
 }
