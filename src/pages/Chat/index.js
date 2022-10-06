@@ -217,7 +217,9 @@ function Chat() {
             )}
           </div>
           <div className={cx("wrapperTitle")}>
-            <h2 className={cx("title__Chat")}>Chat</h2>
+            <h2 className={cx("title__Chat")}>
+              LỖI RỒI LÚC KHÁC CHƠI ĐANG SỬA
+            </h2>
             {/* <FontAwesomeIcon /> */}
           </div>
           <div className={cx("wrapperSearch")}>
@@ -412,11 +414,7 @@ function lastSentMessage(timeNow, timeSendMessage) {
   const timeSendMessageConvert = timeSendMessage.toDate();
   const dateNow = `${timeNowConvert.getDate()}/${timeNowConvert.getMonth()}/${timeNowConvert.getFullYear()} ${timeNowConvert.getHours()}:${timeNowConvert.getMinutes()}`;
   const dateSend = `${timeSendMessageConvert.getDate()}/${timeSendMessageConvert.getMonth()}/${timeSendMessageConvert.getFullYear()} ${timeSendMessageConvert.getHours()}:${timeSendMessageConvert.getMinutes()}`;
-  // console.log("ngày gửi", dateSend);
-  // console.log("Hiện tại", dateNow);
-  // const monthDateSent=dateSent.split(" ")[0].split("/")[1]
 
-  //
   const dateSendMinutes = dateSend.split(" ")[1].split(":")[1];
   const dateNowMinutes = dateNow.split(" ")[1].split(":")[1];
 
