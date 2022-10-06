@@ -10,6 +10,7 @@ import InputChat from "./InputChat";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import LoadingListUser from "@/components/Loaddings/LoadingListUser";
+import NoMessage from "@/components/NoMessage";
 
 const cx = classNames.bind(styles);
 
@@ -88,7 +89,7 @@ function BoxChat({ modal, setModal }) {
       </div>
       <div ref={boxMessage} className={cx("boxMessage")}>
         {messages === undefined ? (
-          <h1>Chọn Phòng chat</h1>
+          <NoMessage />
         ) : messages === false ? (
           <LoadingListUser />
         ) : (

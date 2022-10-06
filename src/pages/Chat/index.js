@@ -83,16 +83,18 @@ function Chat() {
         : 60,
   });
   const handleClickOpen = () => {
-    if (modalInfo) {
-      setModalInfo(false);
-    }
+    if (screenWidth < 739) {
+      if (modalInfo) {
+        setModalInfo(false);
+      }
 
-    setControlChat(!controlChat);
-    const opens = controlChat === true ? "calc(100% - 16px)" : "60px";
-    setStyleControl({
-      width: opens,
-      // right: 8 + "px",
-    });
+      setControlChat(!controlChat);
+      const opens = controlChat === true ? "calc(100% - 16px)" : "60px";
+      setStyleControl({
+        width: opens,
+        // right: 8 + "px",
+      });
+    }
   };
   const handleSelectOpenRoom = () => {
     if (modalInfo) {
