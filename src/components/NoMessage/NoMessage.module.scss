@@ -14,8 +14,11 @@
   img {
     opacity: 0.8;
 
-    width: 80%;
+    width: 50%;
     @include mobile {
+      width: 50%;
+    }
+    @include tablet {
       width: 50%;
     }
   }

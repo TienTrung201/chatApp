@@ -1,0 +1,16 @@
+@mixin mobile {
+  @media screen and (max-width: 739px) {
+    @content;
+  }
+}
+@mixin tablet {
+  @media screen and (min-width: 740px) and (max-width: 1023px) {
+    @content;
+  }
+}
+.wrapper {
+  background-color: var(--backGround--page);
+  height: 100%;
+  padding: 15px;
+  border-radius: 30px;
+}

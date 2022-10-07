@@ -177,13 +177,20 @@ function Chat() {
 
     // setIsLoadingUser(true)
   };
-  const selectedRoom = (userSelect) => {
+  const selectedRoom = (userSelect, userChat) => {
     const combinedId =
       userSelect[1].userInfo.uid > user.uid
         ? userSelect[1].userInfo.uid + user.uid
         : user.uid + userSelect[1].userInfo.uid;
 
-    const data = { chatId: combinedId, user: userSelect[1].userInfo };
+    const data = {
+      chatId: combinedId,
+      user: {
+        ...userSelect[1].userInfo,
+        photoURL: userChat.photoURL,
+        displayName: userChat.displayName,
+      },
+    };
     Dispatch(boxChatSlice.actions.setUserSelect(data));
   };
   useEffect(() => {
@@ -292,10 +299,13 @@ function Chat() {
             <>
               {listuserChat.map((user, index) => {
                 const lastSent = lastSentMessage(timeNow, user[1].createdAt);
+                let userChat = allUser.find((userChat) => {
+                  return userChat.uid === user[1].userInfo.uid;
+                });
                 return (
                   <li
                     onClick={() => {
-                      selectedRoom(user);
+                      selectedRoom(user, userChat);
                       handleSelectOpenRoom();
                     }}
                     key={index}
@@ -305,8 +315,8 @@ function Chat() {
                       <div className={cx("avata", "autoCenter")}>
                         <img
                           src={
-                            user[1].userInfo.photoURL !== null
-                              ? user[1].userInfo.photoURL
+                            userChat !== undefined
+                              ? userChat.photoURL
                               : require("../../assets/images/photoUser.png")
                           }
                           alt=""
@@ -315,7 +325,7 @@ function Chat() {
                       {controlChat === false || screenWidth > 739 ? (
                         <div className={cx("user__display")}>
                           <h5 className={cx("user__name")}>
-                            {user[1].userInfo.displayName}
+                            {userChat !== undefined ? userChat.displayName : ""}
                           </h5>
                           <div className={cx("user__chatHistory")}>
                             <p className={cx("userChatHistory")}>

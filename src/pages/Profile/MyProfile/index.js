@@ -1,7 +1,7 @@
 import styles from "./MyProfile.module.scss";
 import classNames from "classnames/bind";
 import { useDispatch, useSelector } from "react-redux";
-import { userLogin } from "@/components/redux/selector";
+import { userLogin, users } from "@/components/redux/selector";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { signOut } from "firebase/auth";
@@ -16,7 +16,9 @@ const cx = classNames.bind(styles);
 function MyProfile() {
   const Dispatch = useDispatch();
   const [isLoading, setIloading] = useState(false);
-  const user = useSelector(userLogin);
+  let user = useSelector(userLogin);
+  const listUsers = useSelector(users);
+
   const handleLogout = () => {
     signOut(auth).then(() => {
       setIloading(true);
@@ -34,10 +36,14 @@ function MyProfile() {
       }, 1200);
     });
   };
+  user = listUsers.find((userChat) => {
+    return userChat.uid === user.uid;
+  });
+
   return (
     // {user.displayName === undefined?}
     <section className={cx("wrapper")}>
-      {user.displayName === undefined ? (
+      {user === undefined ? (
         <LoadingProFile />
       ) : isLoading === true ? (
         <LoadingProFile />

@@ -17,7 +17,7 @@ const cx = classNames.bind(styles);
 
 function ModalInfoChat({ modal, setModal }) {
   const displayUserChat = useSelector(userChat);
-  const [isSetting, setIsSetting] = useState(true);
+  const [isSetting, setIsSetting] = useState(false);
   const screenWidth = window.innerWidth;
   const widthProfileChatRoom =
     screenWidth > 739 && screenWidth < 1023
@@ -71,13 +71,13 @@ function ModalInfoChat({ modal, setModal }) {
           </div>
           <div className={cx("controlRoom")}>
             <ul className={cx("controlList")}>
-              <li
-                onClick={() => {
-                  setIsSetting(!isSetting);
-                }}
-                className={cx("controlItem", "setting")}
-              >
-                <div className={cx("boxBug")}>
+              <li className={cx("controlItem", "setting")}>
+                <div
+                  onClick={() => {
+                    setIsSetting(!isSetting);
+                  }}
+                  className={cx("boxBug")}
+                >
                   <div className={cx("wrappIcon", "autoCenter")}>
                     <FontAwesomeIcon className={cx("icon")} icon={faGear} />
                   </div>

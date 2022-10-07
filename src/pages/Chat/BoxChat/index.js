@@ -88,8 +88,10 @@ function BoxChat({ modal, setModal }) {
         </div>
       </div>
       <div ref={boxMessage} className={cx("boxMessage")}>
-        {messages === undefined ? (
+        {displayUserChat.chatId === "" ? (
           <NoMessage />
+        ) : messages === undefined ? (
+          false
         ) : messages === false ? (
           <LoadingListUser />
         ) : (
