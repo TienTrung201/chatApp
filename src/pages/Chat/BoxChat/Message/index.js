@@ -23,10 +23,15 @@ function Message({ data }) {
     <>
       {userLoginChat.uid === data.senderId ? (
         <div className={cx("message__chat", "user")}>
-          <div className={cx("boxText")}>
-            <p className={cx("textMessage")}>{data.text}</p>
-            <p className={cx("textTime")}>{`${getHours}:${getMinutes}`}</p>
-          </div>
+          {data.image ? <img src={data.image.url} alt="" /> : false}
+          {data.text.trim(" ") === "" ? (
+            false
+          ) : (
+            <div className={cx("boxText")}>
+              <p className={cx("textMessage")}>{data.text}</p>
+              <p className={cx("textTime")}>{`${getHours}:${getMinutes}`}</p>
+            </div>
+          )}
         </div>
       ) : (
         <div className={cx("message__chat", "friend")}>
@@ -40,9 +45,16 @@ function Message({ data }) {
               alt=""
             />
           </div>
-          <div className={cx("boxText")}>
-            <p className={cx("textMessage")}>{data.text}</p>
-            <p className={cx("textTime")}>{`${getHours}:${getMinutes}`}</p>
+          <div className={cx("messageChat")}>
+            {data.text.trim(" ") === "" ? (
+              false
+            ) : (
+              <div className={cx("boxText")}>
+                <p className={cx("textMessage")}>{data.text}</p>
+                <p className={cx("textTime")}>{`${getHours}:${getMinutes}`}</p>
+              </div>
+            )}
+            {data.image ? <img src={data.image.url} alt="" /> : false}
           </div>
         </div>
       )}

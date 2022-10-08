@@ -37,7 +37,7 @@ function MainMusic() {
               <img
                 width={300}
                 alt=""
-                src={require("../../../assets/images/login.png")}
+                src={require("../../../assets/images/foryou.jpg")}
               />
             </div>
             <div className={cx("musicForYou")}>
