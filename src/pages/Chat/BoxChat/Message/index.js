@@ -8,9 +8,20 @@ const cx = classNames.bind(styles);
 function Message({ data }) {
   // const [message,setMessage]=useState([])
   // const mesage
+  const heightImageScroll = window.innerWidth > 739 ? "200px" : "100px";
   const userLoginChat = useSelector(userLogin);
   const displayUserChat = useSelector(userChat);
-
+  const styleImage = {
+    minHeight:
+      data.image !== undefined
+        ? window.innerHeight < 420
+          ? "80px"
+          : data.image.height > 200
+          ? heightImageScroll
+          : `${data.image.height}px`
+        : "",
+    maxHeight: window.innerHeight < 420 ? "80px" : "200px",
+  };
   const getHours =
     data.createdAt.toDate().getHours() < 10
       ? `0${data.createdAt.toDate().getHours()}`
@@ -23,7 +34,11 @@ function Message({ data }) {
     <>
       {userLoginChat.uid === data.senderId ? (
         <div className={cx("message__chat", "user")}>
-          {data.image ? <img src={data.image.url} alt="" /> : false}
+          {data.image ? (
+            <img style={styleImage} src={data.image.url} alt="" />
+          ) : (
+            false
+          )}
           {data.text.trim(" ") === "" ? (
             false
           ) : (
@@ -54,7 +69,11 @@ function Message({ data }) {
                 <p className={cx("textTime")}>{`${getHours}:${getMinutes}`}</p>
               </div>
             )}
-            {data.image ? <img src={data.image.url} alt="" /> : false}
+            {data.image ? (
+              <img style={styleImage} src={data.image.url} alt="" />
+            ) : (
+              false
+            )}
           </div>
         </div>
       )}

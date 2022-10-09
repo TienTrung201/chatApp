@@ -1,10 +1,27 @@
+@mixin mobile {
+  @media screen and (max-width: 739px) {
+    @content;
+  }
+}
+@mixin tablet {
+  @media screen and (min-width: 740px) and (max-width: 1023px) {
+    @content;
+  }
+}
 .user {
   flex-direction: column;
   img {
     width: max-content;
-    max-width: 40%;
-    max-height: 250px;
+    max-width: 60%;
+    max-height: 200px;
     border-radius: 10px;
+    // min-height: 150px !important;
+    @include mobile {
+      max-height: 150px;
+    }
+    @include tablet {
+      max-width: 40%;
+    }
   }
   .textTime {
     // float: left;
@@ -61,9 +78,16 @@
   // margin-bottom: 20px;
   img {
     width: max-content;
-    max-width: 40%;
-    max-height: 250px;
+    max-width: 60%;
+    max-height: 200px;
+    // min-height: 150px !important;
     border-radius: 10px;
+    @include mobile {
+      max-height: 100px;
+    }
+    @include tablet {
+      max-width: 40%;
+    }
   }
   .boxText {
     background-color: var(--backGround-App);

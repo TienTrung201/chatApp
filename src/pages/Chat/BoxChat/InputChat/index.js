@@ -24,31 +24,50 @@ function InputChat() {
   const [valueInput, setValueInput] = useState("");
   const file = useRef();
   const [imgFile, setImgFile] = useState(null);
+
+  const createGetSize = (imageFile, getSize) => {
+    var image;
+    var _URL = window.URL || window.webkitURL;
+    image = new Image();
+    image.src = _URL.createObjectURL(imageFile);
+    image.onload = function () {
+      if (getSize) {
+        getSize(this.width, this.height);
+      }
+    };
+  };
+
   const handleSubmit = async () => {
     setValueInput("");
     setImgFile(false);
+
     if (imgFile) {
-      console.log(imgFile);
       const imgRef = ref(
         storage,
         `imagesChats/${displayUserChat.chatId}/${imgFile.name}${uuid()}`
       );
-
-      uploadBytes(imgRef, imgFile).then((snapshot) => {
-        getDownloadURL(snapshot.ref).then(async (imgUrl) => {
-          try {
-            await updateDoc(doc(db, "chats", displayUserChat.chatId), {
-              messages: arrayUnion({
-                id: uuid(),
-                text: valueInput,
-                senderId: user.uid,
-                createdAt: Timestamp.now(),
-                image: { url: imgUrl, fullPath: snapshot.metadata.fullPath },
-              }),
-            });
-          } catch (e) {
-            console.log("e");
-          }
+      createGetSize(imgFile, (w, h) => {
+        uploadBytes(imgRef, imgFile).then((snapshot) => {
+          getDownloadURL(snapshot.ref).then(async (imgUrl) => {
+            try {
+              await updateDoc(doc(db, "chats", displayUserChat.chatId), {
+                messages: arrayUnion({
+                  id: uuid(),
+                  text: valueInput,
+                  senderId: user.uid,
+                  createdAt: Timestamp.now(),
+                  image: {
+                    url: imgUrl,
+                    fullPath: snapshot.metadata.fullPath,
+                    width: w,
+                    height: h,
+                  },
+                }),
+              });
+            } catch (e) {
+              console.log("e");
+            }
+          });
         });
       });
     } else {

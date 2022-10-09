@@ -20,7 +20,7 @@ function BoxChat({ modal, setModal }) {
   const [messages, setMessage] = useState(undefined);
   useEffect(() => {
     boxMessage.current.scrollTop = boxMessage.current.scrollHeight;
-  });
+  }, [messages]);
   useEffect(() => {
     if (displayUserChat.chatId === "") {
       setMessage(undefined);
