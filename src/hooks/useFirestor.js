@@ -45,6 +45,36 @@ export const useFireStore = (collectionName, condition) => {
     const unsub = onSnapshot(collectionRef, (snapshot) => {
       const documents = snapshot.docs.map((doc) => {
         const date = doc.data().createdAt;
+        let lastActive;
+        if (doc.data().lastActive) {
+          lastActive = doc.data().lastActive;
+        }
+
+        let lastActiveDay;
+        let lastActiveMonth;
+        let lastActiveYear;
+        let lastActiveHours;
+        let lastActiveMinutes;
+        if (lastActive) {
+          // console.log(lastActiveDay);
+          lastActiveDay =
+            lastActive.toDate().getDate() < 10
+              ? `0${lastActive.toDate().getDate()}`
+              : lastActive.toDate().getDate();
+          lastActiveMonth =
+            lastActive.toDate().getMonth() < 10
+              ? `0${lastActive.toDate().getMonth()}`
+              : lastActive.toDate().getDate();
+          lastActiveYear = lastActive.toDate().getFullYear();
+          lastActiveHours =
+            lastActive.toDate().getHours() < 10
+              ? `0${lastActive.toDate().getHours()}`
+              : lastActive.toDate().getHours();
+          lastActiveMinutes =
+            lastActive.toDate().getMinutes() < 10
+              ? `0${lastActive.toDate().getMinutes()}`
+              : lastActive.toDate().getMinutes();
+        }
 
         let getDay;
         let getMonth;
@@ -73,6 +103,7 @@ export const useFireStore = (collectionName, condition) => {
           ...doc.data(),
           id: doc.id,
           createdAt: `${getDay}/${getMonth}/${getYear} and ${getHours}:${getMinutes}`,
+          lastActive: `${lastActiveDay}/${lastActiveMonth}/${lastActiveYear} and ${lastActiveHours}:${lastActiveMinutes}`,
         };
       });
       setDocuments(documents);

@@ -13,6 +13,7 @@ export const setDocument = async (collectionName, data) => {
     await setDoc(doc(db, collectionName, data.uid), {
       ...data,
       createdAt: serverTimestamp(),
+      lastActive: serverTimestamp(),
     });
     if (collectionName === "users") {
       await setDoc(doc(db, "userChats", data.uid), {});

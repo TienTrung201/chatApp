@@ -62,7 +62,8 @@
     max-height: 200px;
     // min-height: 150px !important;
     border-radius: 10px;
-    object-fit: contain;
+    object-fit: cover;
+    cursor: pointer;
     @include mobile {
       max-height: 100px;
     }
@@ -109,7 +110,7 @@
     max-width: 60%;
     max-height: 200px;
     border-radius: 10px;
-    object-fit: contain;
+    object-fit: cover;
     // min-height: 150px !important;
     @include mobile {
       max-height: 150px;

@@ -52,6 +52,13 @@
             // white-space: nowrap;
             // font-weight: 300;
           }
+          .user__active {
+            font-size: 1.3rem;
+            color: #8f97a4;
+            @include mobile {
+              font-size: 1.2rem;
+            }
+          }
         }
       }
     }

@@ -41,7 +41,7 @@ function Login() {
             uid: user.uid,
             providerId: _tokenResponse.providerId,
           });
-          setDocument("userChats", {});
+          // setDocument("userChats", {});
         }
         // ...
 

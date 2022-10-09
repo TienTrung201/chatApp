@@ -40,7 +40,7 @@ function Chat() {
   const [isloadingUser, setIsLoadingUser] = useState(false);
   const open = useRef();
   const screenWidth = window.innerWidth;
-
+  const activeUsersChat = useRef();
   //Listen resize
   const resize = () => {
     if (window.innerWidth > 739 && window.innerWidth < 1023) {
@@ -189,6 +189,7 @@ function Chat() {
         ...userSelect[1].userInfo,
         photoURL: userChat.photoURL,
         displayName: userChat.displayName,
+        lastActive: userChat.lastActive,
       },
     };
     Dispatch(boxChatSlice.actions.setUserSelect(data));
@@ -211,11 +212,26 @@ function Chat() {
     }
   }, [searchUser, allUser]);
   //searchUser to chat
+  useEffect(() => {
+    const activeUser = activeUsersChat.current;
+    const activeUserChat = () => {
+      const userUpdate = doc(db, "users", user.uid);
+
+      updateDoc(userUpdate, {
+        lastActive: serverTimestamp(),
+      });
+      console.log("user update");
+    };
+    activeUser.addEventListener("mouseover", activeUserChat);
+    return () => {
+      activeUser.removeEventListener("mouseover", activeUserChat);
+    };
+  }, [user.uid]);
   return (
     <section className={cx("wrapper")}>
       <article style={styleControl} ref={open} className={cx("controlChat")}>
         <div className={cx("wrapperControl")}>
-          <div className={cx("createNew")}>
+          <div ref={activeUsersChat} className={cx("createNew")}>
             <div className={cx("createPlus", "autoCenter")}>
               <FontAwesomeIcon className={cx("creatPlusIcon")} icon={faPlus} />
             </div>
@@ -418,7 +434,7 @@ function removeVietnameseTones(str) {
   // );
   return str;
 }
-function lastSentMessage(timeNow, timeSendMessage) {
+export function lastSentMessage(timeNow, timeSendMessage) {
   if (timeSendMessage === null) {
     return "";
   }
