@@ -19,7 +19,7 @@ function Message({ data }) {
           : data.image.height > 200
           ? heightImageScroll
           : `${data.image.height}px`
-        : "",
+        : heightImageScroll,
     maxHeight: window.innerHeight < 420 ? "80px" : "200px",
   };
   const getHours =
