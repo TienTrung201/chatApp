@@ -43,8 +43,17 @@ function BoxChat({ modal, setModal }) {
     "users",
     displayUserChat.user.uid
   );
-  const activeConvert = userChatActive.lastActive.toDate();
-  const active = `${activeConvert.getDate()}/${activeConvert.getMonth()}/${activeConvert.getFullYear()} and ${activeConvert.getHours()}:${activeConvert.getMinutes()}:${activeConvert.getSeconds()}`;
+
+  let activeConvert;
+  let active;
+  if (
+    displayUserChat.chatId !== "" &&
+    userChatActive.lastActive !== undefined &&
+    userChatActive.lastActive !== null
+  ) {
+    activeConvert = userChatActive.lastActive.toDate();
+    active = `${activeConvert.getDate()}/${activeConvert.getMonth()}/${activeConvert.getFullYear()} and ${activeConvert.getHours()}:${activeConvert.getMinutes()}:${activeConvert.getSeconds()}`;
+  }
 
   // console.log(userChatActive);
   return (

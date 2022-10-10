@@ -41,6 +41,14 @@ function Chat() {
   const open = useRef();
   const screenWidth = window.innerWidth;
   const activeUsersChat = useRef();
+  // useEffect(() => {
+  //   allUser.forEach((user) => {
+  //     const userUpdate = doc(db, "users", user.uid);
+  //     updateDoc(userUpdate, {
+  //       lastActive: serverTimestamp(),
+  //     });
+  //   });
+  // }, [allUser]);
   //Listen resize
   const resize = () => {
     if (window.innerWidth > 739 && window.innerWidth < 1023) {
