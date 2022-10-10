@@ -11,6 +11,7 @@ import { doc, onSnapshot, Timestamp } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import LoadingListUser from "@/components/Loaddings/LoadingListUser";
 import NoMessage from "@/components/NoMessage";
+import { useFireStoreGetFields } from "@/hooks/useFirestor";
 
 const cx = classNames.bind(styles);
 
@@ -37,11 +38,15 @@ function BoxChat({ modal, setModal }) {
       };
     }
   }, [displayUserChat.chatId]);
-  const timeNow = Timestamp.now();
-  const lastActive = lastSentMessage(
-    timeNow.toDate(),
-    displayUserChat.user.lastActive
+
+  const userChatActive = useFireStoreGetFields(
+    "users",
+    displayUserChat.user.uid
   );
+  const activeConvert = userChatActive.lastActive.toDate();
+  const active = `${activeConvert.getDate()}/${activeConvert.getMonth()}/${activeConvert.getFullYear()} and ${activeConvert.getHours()}:${activeConvert.getMinutes()}:${activeConvert.getSeconds()}`;
+
+  // console.log(userChatActive);
   return (
     <div className={cx("wrapper")}>
       <div
@@ -74,7 +79,7 @@ function BoxChat({ modal, setModal }) {
                   ? false
                   : displayUserChat.user.displayName}
               </h5>
-              <p className={cx("user__active")}>{lastActive}</p>
+              <p className={cx("user__active")}>{checkActiveUser(active)}</p>
             </div>
           </div>
         </div>
@@ -119,39 +124,46 @@ function BoxChat({ modal, setModal }) {
 
 export default BoxChat;
 
-export function lastSentMessage(timeNow, timeActive) {
+export function checkActiveUser(timeActive) {
   if (timeActive === null) {
     return "";
   }
-  const timeNowConvert = timeNow;
-  const dateNow = `${timeNowConvert.getDate()}/${timeNowConvert.getMonth()}/${timeNowConvert.getFullYear()} and ${timeNowConvert.getHours()}:${timeNowConvert.getMinutes()}`;
-  // const dateSend = `${timeSendMessageConvert.getDate()}/${timeSendMessageConvert.getMonth()}/${timeSendMessageConvert.getFullYear()} ${timeSendMessageConvert.getHours()}:${timeSendMessageConvert.getMinutes()}`;
   if (timeActive === undefined) {
     return "";
   }
-  const dateSendMinutes = timeActive.split("and")[1].split(":")[1];
+
+  const timeNow = Timestamp.now();
+  const timeNowConvert = timeNow.toDate();
+
+  const dateNow = `${timeNowConvert.getDate()}/${timeNowConvert.getMonth()}/${timeNowConvert.getFullYear()} and ${timeNowConvert.getHours()}:${timeNowConvert.getMinutes()}:${timeNowConvert.getSeconds()}`;
+
+  const activeSeconds = timeActive.split("and")[1].split(":")[2];
+  const dateNowSeconds = dateNow.split("and")[1].split(":")[2];
+
+  const activeMinutes = timeActive.split("and")[1].split(":")[1];
   const dateNowMinutes = dateNow.split("and")[1].split(":")[1];
 
-  const dateSendHours = timeActive.split("and")[1].split(":")[0];
+  const activeHours = timeActive.split("and")[1].split(":")[0];
   const dateNowHours = dateNow.split("and")[1].split(":")[0];
 
-  const dateSendDay = timeActive.split("and")[0].split("/")[0];
+  const activeDay = timeActive.split("and")[0].split("/")[0];
   const dateNowDay = dateNow.split("and")[0].split("/")[0];
 
-  const dateSendMonth = timeActive.split("and")[0].split("/")[1];
+  const activeMonth = timeActive.split("and")[0].split("/")[1];
   const dateNowMonth = dateNow.split("and")[0].split("/")[1];
 
-  const dateSendYear = timeActive.split("and")[0].split("/")[2];
+  const activeYear = timeActive.split("and")[0].split("/")[2];
   const dateNowYear = dateNow.split("and")[0].split("/")[2];
 
-  // console.log(Math.abs(dateNowMinutes - dateSendMinutes));
   const secondsSend =
-    Number(dateSendMinutes) * 60 +
-    Number(dateSendHours) * 3600 +
-    Number(dateSendDay) * 86400 +
-    Number(dateSendMonth) * 2592000 +
-    Number(dateSendYear) * 3110400;
+    Number(activeSeconds) +
+    Number(activeMinutes) * 60 +
+    Number(activeHours) * 3600 +
+    Number(activeDay) * 86400 +
+    Number(activeMonth) * 2592000 +
+    Number(activeYear) * 3110400;
   const secondsNow =
+    Number(dateNowSeconds) +
     Number(dateNowMinutes) * 60 +
     Number(dateNowHours) * 3600 +
     Number(dateNowDay) * 86400 +
@@ -169,8 +181,9 @@ export function lastSentMessage(timeNow, timeActive) {
     return "Hoạt động " + parseInt(result / 3600) + " giờ trước";
   } else if (result / 60 >= 1) {
     return "Hoạt động " + parseInt(result / 60) + " phút trước";
-  } else if (result / 60 === 0) {
+  } else if (result / 60 < 1) {
     return "Đang hoạt động";
   }
+
   return "";
 }

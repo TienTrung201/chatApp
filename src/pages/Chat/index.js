@@ -6,7 +6,7 @@ import {
   faMagnifyingGlass,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
-import BoxChat from "@/pages/Chat/BoxChat";
+import BoxChat, { checkActiveUser } from "@/pages/Chat/BoxChat";
 import { Link } from "react-router-dom";
 import ModalInfoChat from "./ModalInfoChat";
 import { useEffect, useRef, useState } from "react";
@@ -214,24 +214,30 @@ function Chat() {
   //searchUser to chat
   useEffect(() => {
     const activeUser = activeUsersChat.current;
-    const activeUserChat = () => {
-      const userUpdate = doc(db, "users", user.uid);
 
-      updateDoc(userUpdate, {
-        lastActive: serverTimestamp(),
-      });
-      console.log("user update");
+    const activeUserChat = () => {
+      const userLoginCheckActive = allUser.find(
+        (userChat) => userChat.uid === user.uid
+      );
+      if (
+        checkActiveUser(userLoginCheckActive.lastActive) !== "Đang hoạt động"
+      ) {
+        const userUpdate = doc(db, "users", user.uid);
+        updateDoc(userUpdate, {
+          lastActive: serverTimestamp(),
+        });
+      }
     };
     activeUser.addEventListener("mouseover", activeUserChat);
     return () => {
       activeUser.removeEventListener("mouseover", activeUserChat);
     };
-  }, [user.uid]);
+  }, [user.uid, timeNow, allUser]);
   return (
-    <section className={cx("wrapper")}>
+    <section ref={activeUsersChat} className={cx("wrapper")}>
       <article style={styleControl} ref={open} className={cx("controlChat")}>
         <div className={cx("wrapperControl")}>
-          <div ref={activeUsersChat} className={cx("createNew")}>
+          <div className={cx("createNew")}>
             <div className={cx("createPlus", "autoCenter")}>
               <FontAwesomeIcon className={cx("creatPlusIcon")} icon={faPlus} />
             </div>

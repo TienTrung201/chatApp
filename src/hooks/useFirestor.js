@@ -55,6 +55,7 @@ export const useFireStore = (collectionName, condition) => {
         let lastActiveYear;
         let lastActiveHours;
         let lastActiveMinutes;
+        let lastActiveSeconds;
         if (lastActive) {
           // console.log(lastActiveDay);
           lastActiveDay =
@@ -74,6 +75,10 @@ export const useFireStore = (collectionName, condition) => {
             lastActive.toDate().getMinutes() < 10
               ? `0${lastActive.toDate().getMinutes()}`
               : lastActive.toDate().getMinutes();
+          lastActiveSeconds =
+            lastActive.toDate().getSeconds() < 10
+              ? `0${lastActive.toDate().getSeconds()}`
+              : lastActive.toDate().getSeconds();
         }
 
         let getDay;
@@ -103,7 +108,7 @@ export const useFireStore = (collectionName, condition) => {
           ...doc.data(),
           id: doc.id,
           createdAt: `${getDay}/${getMonth}/${getYear} and ${getHours}:${getMinutes}`,
-          lastActive: `${lastActiveDay}/${lastActiveMonth}/${lastActiveYear} and ${lastActiveHours}:${lastActiveMinutes}`,
+          lastActive: `${lastActiveDay}/${lastActiveMonth}/${lastActiveYear} and ${lastActiveHours}:${lastActiveMinutes}:${lastActiveSeconds}`,
         };
       });
       setDocuments(documents);
@@ -119,13 +124,19 @@ export const useFireStoreGetFields = (collectionName, userId) => {
     let unsub;
 
     try {
-      unsub = onSnapshot(doc(db, collectionName, userId), (doc) => {
-        setDocuments(
-          Object.entries(doc.data()).sort(
-            (a, b) => b[1].createdAt - a[1].createdAt
-          )
-        );
-      });
+      if (collectionName === "users") {
+        unsub = onSnapshot(doc(db, collectionName, userId), (doc) => {
+          setDocuments(doc.data());
+        });
+      } else {
+        unsub = onSnapshot(doc(db, collectionName, userId), (doc) => {
+          setDocuments(
+            Object.entries(doc.data()).sort(
+              (a, b) => b[1].createdAt - a[1].createdAt
+            )
+          );
+        });
+      }
     } catch (e) {
       // console.log(e);
     }
