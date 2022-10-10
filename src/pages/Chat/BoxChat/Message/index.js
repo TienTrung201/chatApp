@@ -6,11 +6,10 @@ import styles from "./Message.module.scss";
 const cx = classNames.bind(styles);
 
 function Message({ data }) {
-  // const [message,setMessage]=useState([])
-  // const mesage
   const heightImageScroll = window.innerWidth > 739 ? "200px" : "100px";
   const userLoginChat = useSelector(userLogin);
   const displayUserChat = useSelector(userChat);
+  //image scroll top bug
   const styleImage = {
     minHeight:
       data.image !== undefined
@@ -20,8 +19,11 @@ function Message({ data }) {
           ? heightImageScroll
           : `${data.image.height}px`
         : heightImageScroll,
-    maxHeight: window.innerHeight < 420 ? "80px" : "200px",
+    maxHeight: window.innerHeight < 420 ? "80px" : heightImageScroll,
   };
+  //image scroll top bug
+
+  //last send message
   const getHours =
     data.createdAt.toDate().getHours() < 10
       ? `0${data.createdAt.toDate().getHours()}`
@@ -30,6 +32,8 @@ function Message({ data }) {
     data.createdAt.toDate().getMinutes() < 10
       ? `0${data.createdAt.toDate().getMinutes()}`
       : data.createdAt.toDate().getMinutes();
+  //last send message
+
   return (
     <>
       {userLoginChat.uid === data.senderId ? (
