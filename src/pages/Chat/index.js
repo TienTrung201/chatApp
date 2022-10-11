@@ -231,33 +231,10 @@ function Chat() {
         checkActiveUser(userLoginCheckActive.lastActive) !== "Đang hoạt động" &&
         checkActiveUser(userLoginCheckActive.lastActive) !== ""
       ) {
-        if (
-          Number(
-            checkActiveUser(userLoginCheckActive.lastActive).split(" ")[2]
-          ) > 4 &&
-          checkActiveUser(userLoginCheckActive.lastActive).split(" ")[3] ===
-            "phút"
-        ) {
-          const userUpdate = doc(db, "users", user.uid);
-          updateDoc(userUpdate, {
-            lastActive: serverTimestamp(),
-          });
-        }
-        if (
-          checkActiveUser(userLoginCheckActive.lastActive).split(" ")[3] ===
-            "giờ" ||
-          checkActiveUser(userLoginCheckActive.lastActive).split(" ")[3] ===
-            "ngày" ||
-          checkActiveUser(userLoginCheckActive.lastActive).split(" ")[3] ===
-            "tháng" ||
-          checkActiveUser(userLoginCheckActive.lastActive).split(" ")[3] ===
-            "năm"
-        ) {
-          const userUpdate = doc(db, "users", user.uid);
-          updateDoc(userUpdate, {
-            lastActive: serverTimestamp(),
-          });
-        }
+        const userUpdate = doc(db, "users", user.uid);
+        updateDoc(userUpdate, {
+          lastActive: serverTimestamp(),
+        });
       }
     };
     activeUser.addEventListener("mouseover", activeUserChat);
@@ -544,16 +521,16 @@ export function lastSentMessage(timeNow, timeSendMessage) {
   const result = presentTime - sendingTime;
 
   if (result / 3110400 >= 1) {
-    return parseInt(result / 3110400) + "Năm";
+    return parseInt(result / 3110400) + "năm";
   } else if (result / 2592000 >= 1) {
-    return parseInt(result / 2592000) + "Tháng";
+    return parseInt(result / 2592000) + "tháng";
   } else if (result / 86400 >= 1) {
-    return parseInt(result / 86400) + "Ngày";
+    return parseInt(result / 86400) + "ngày";
   } else if (result / 3600 >= 1) {
-    return parseInt(result / 3600) + "Giờ";
+    return parseInt(result / 3600) + "giờ";
   } else if (result / 60 >= 1) {
-    return parseInt(result / 60) + "Phút";
+    return parseInt(result / 60) + "phút";
   } else if (result / 60 === 0) {
-    return parseInt(result / 60) + 1 + "Phút";
+    return parseInt(result / 60) + 1 + "phút";
   }
 }

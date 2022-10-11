@@ -186,9 +186,9 @@ export function checkActiveUser(timeActive) {
     return "Hoạt động " + parseInt(result / 86400) + " ngày trước";
   } else if (result / 3600 >= 1) {
     return "Hoạt động " + parseInt(result / 3600) + " giờ trước";
-  } else if (result / 60 >= 1) {
+  } else if (result / 60 >= 5) {
     return "Hoạt động " + parseInt(result / 60) + " phút trước";
-  } else if (result / 60 < 1) {
+  } else if (result / 60 < 5) {
     return "Đang hoạt động";
   }
 
