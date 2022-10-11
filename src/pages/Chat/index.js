@@ -223,7 +223,7 @@ function Chat() {
   const userLoginCheckActive = allUser.find(
     (userChat) => userChat.uid === user.uid
   );
-  //di chuyển ra ngoài nếu lỗi cho lại vào useEffect
+
   useEffect(() => {
     const activeUser = activeUsersChat.current;
     const activeUserChat = () => {
@@ -231,11 +231,33 @@ function Chat() {
         checkActiveUser(userLoginCheckActive.lastActive) !== "Đang hoạt động" &&
         checkActiveUser(userLoginCheckActive.lastActive) !== ""
       ) {
-        console.log(checkActiveUser(userLoginCheckActive.lastActive));
-        const userUpdate = doc(db, "users", user.uid);
-        updateDoc(userUpdate, {
-          lastActive: serverTimestamp(),
-        });
+        if (
+          Number(
+            checkActiveUser(userLoginCheckActive.lastActive).split(" ")[2]
+          ) > 4 &&
+          checkActiveUser(userLoginCheckActive.lastActive).split(" ")[3] ===
+            "phút"
+        ) {
+          const userUpdate = doc(db, "users", user.uid);
+          updateDoc(userUpdate, {
+            lastActive: serverTimestamp(),
+          });
+        }
+        if (
+          checkActiveUser(userLoginCheckActive.lastActive).split(" ")[3] ===
+            "giờ" ||
+          checkActiveUser(userLoginCheckActive.lastActive).split(" ")[3] ===
+            "ngày" ||
+          checkActiveUser(userLoginCheckActive.lastActive).split(" ")[3] ===
+            "tháng" ||
+          checkActiveUser(userLoginCheckActive.lastActive).split(" ")[3] ===
+            "năm"
+        ) {
+          const userUpdate = doc(db, "users", user.uid);
+          updateDoc(userUpdate, {
+            lastActive: serverTimestamp(),
+          });
+        }
       }
     };
     activeUser.addEventListener("mouseover", activeUserChat);
