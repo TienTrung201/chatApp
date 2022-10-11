@@ -8,6 +8,7 @@
     @content;
   }
 }
+$active--Color: #31a24c;
 
 .wrapper {
   background-color: var(--backGround--page);
@@ -215,6 +216,38 @@
           //   width: 40px;
           //   height: 40px;
           // }
+          position: relative;
+          @include mobile {
+            width: 45px;
+            height: 45px;
+          }
+          .active {
+            position: absolute;
+            border-radius: 50%;
+            width: 12px;
+            height: 12px;
+            background-color: $active--Color;
+            bottom: 5px;
+            right: 5px;
+            @include mobile {
+              bottom: 2px;
+              right: 2px;
+            }
+
+            &::after {
+              content: "";
+              position: absolute;
+              top: 0;
+              right: 0;
+              left: 0;
+              bottom: 0;
+              background-color: transparent;
+              border-radius: 50%;
+              // width: calc(100% + 2px);
+              // height: calc(100% + 2px);
+              border: #fff solid 2px;
+            }
+          }
           img {
             width: 40px;
             height: 40px;

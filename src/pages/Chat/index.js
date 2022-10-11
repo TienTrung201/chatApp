@@ -48,7 +48,7 @@ function Chat() {
   //       lastActive: serverTimestamp(),
   //     });
   //   });
-  // }, [allUser]);
+  // }, []);
   //Listen resize
   const resize = () => {
     if (window.innerWidth > 739 && window.innerWidth < 1023) {
@@ -220,16 +220,18 @@ function Chat() {
     }
   }, [searchUser, allUser]);
   //searchUser to chat
+  const userLoginCheckActive = allUser.find(
+    (userChat) => userChat.uid === user.uid
+  );
+  //di chuyển ra ngoài nếu lỗi cho lại vào useEffect
   useEffect(() => {
     const activeUser = activeUsersChat.current;
-
     const activeUserChat = () => {
-      const userLoginCheckActive = allUser.find(
-        (userChat) => userChat.uid === user.uid
-      );
       if (
-        checkActiveUser(userLoginCheckActive.lastActive) !== "Đang hoạt động"
+        checkActiveUser(userLoginCheckActive.lastActive) !== "Đang hoạt động" &&
+        checkActiveUser(userLoginCheckActive.lastActive) !== ""
       ) {
+        console.log(checkActiveUser(userLoginCheckActive.lastActive));
         const userUpdate = doc(db, "users", user.uid);
         updateDoc(userUpdate, {
           lastActive: serverTimestamp(),
@@ -240,7 +242,7 @@ function Chat() {
     return () => {
       activeUser.removeEventListener("mouseover", activeUserChat);
     };
-  }, [user.uid, timeNow, allUser]);
+  }, [user.uid, timeNow, userLoginCheckActive]);
   return (
     <section ref={activeUsersChat} className={cx("wrapper")}>
       <article style={styleControl} ref={open} className={cx("controlChat")}>
@@ -332,6 +334,17 @@ function Chat() {
                 let userChat = allUser.find((userChat) => {
                   return userChat.uid === user[1].userInfo.uid;
                 });
+
+                const userActive = allUser.find((userChat) => {
+                  return userChat.uid === user[1].userInfo.uid;
+                });
+                let active;
+                if (userActive === undefined) {
+                  active = undefined;
+                } else {
+                  active = userActive.lastActive;
+                }
+
                 return (
                   <li
                     onClick={() => {
@@ -351,6 +364,11 @@ function Chat() {
                           }
                           alt=""
                         />
+                        {checkActiveUser(active) === "Đang hoạt động" ? (
+                          <span className={cx("active")}></span>
+                        ) : (
+                          false
+                        )}
                       </div>
                       {controlChat === false || screenWidth > 739 ? (
                         <div className={cx("user__display")}>

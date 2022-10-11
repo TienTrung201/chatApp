@@ -8,7 +8,7 @@
     @content;
   }
 }
-
+$active--Color: #31a24c;
 .wrapper {
   padding: 33.3px 15px 0px 15px;
   display: flex;
@@ -38,10 +38,34 @@
         display: flex;
         .avata {
           display: flex;
+          position: relative;
           img {
             width: 35px;
             height: 35px;
             border-radius: 50%;
+          }
+          .active {
+            position: absolute;
+            border-radius: 50%;
+            width: 12px;
+            height: 12px;
+            background-color: $active--Color;
+            bottom: 0;
+            right: 0;
+
+            &::after {
+              content: "";
+              position: absolute;
+              top: 0;
+              right: 0;
+              left: 0;
+              bottom: 0;
+              background-color: transparent;
+              border-radius: 50%;
+              // width: calc(100% + 2px);
+              // height: calc(100% + 2px);
+              border: #fff solid 2px;
+            }
           }
         }
         .user__display {

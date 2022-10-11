@@ -4,19 +4,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { userChat } from "@/components/redux/selector";
+import { userChat, users } from "@/components/redux/selector";
 import Message from "./Message";
 import InputChat from "./InputChat";
 import { doc, onSnapshot, Timestamp } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import LoadingListUser from "@/components/Loaddings/LoadingListUser";
 import NoMessage from "@/components/NoMessage";
-import { useFireStoreGetFields } from "@/hooks/useFirestor";
-
 const cx = classNames.bind(styles);
 
 function BoxChat({ modal, setModal }) {
   const displayUserChat = useSelector(userChat);
+  const allUser = useSelector(users);
   const boxMessage = useRef();
   const [messages, setMessage] = useState(undefined);
   useEffect(() => {
@@ -39,23 +38,16 @@ function BoxChat({ modal, setModal }) {
     }
   }, [displayUserChat.chatId]);
 
-  const userChatActive = useFireStoreGetFields(
-    "users",
-    displayUserChat.user.uid
-  );
-
-  let activeConvert;
+  const userActive = allUser.find((userChat) => {
+    return userChat.uid === displayUserChat.user.uid;
+  });
   let active;
-  if (
-    displayUserChat.chatId !== "" &&
-    userChatActive.lastActive !== undefined &&
-    userChatActive.lastActive !== null
-  ) {
-    activeConvert = userChatActive.lastActive.toDate();
-    active = `${activeConvert.getDate()}/${activeConvert.getMonth()}/${activeConvert.getFullYear()} and ${activeConvert.getHours()}:${activeConvert.getMinutes()}:${activeConvert.getSeconds()}`;
+  if (userActive === undefined) {
+    active = undefined;
+  } else {
+    active = userActive.lastActive;
   }
 
-  // console.log(userChatActive);
   return (
     <div className={cx("wrapper")}>
       <div
@@ -81,6 +73,11 @@ function BoxChat({ modal, setModal }) {
                   alt=""
                 />
               )}
+              {checkActiveUser(active) === "Đang hoạt động" ? (
+                <span className={cx("active")}></span>
+              ) : (
+                false
+              )}
             </div>
             <div className={cx("user__display")}>
               <h5 className={cx("user__name")}>
@@ -88,6 +85,7 @@ function BoxChat({ modal, setModal }) {
                   ? false
                   : displayUserChat.user.displayName}
               </h5>
+
               <p className={cx("user__active")}>{checkActiveUser(active)}</p>
             </div>
           </div>
