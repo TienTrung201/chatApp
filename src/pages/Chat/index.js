@@ -243,6 +243,7 @@ function Chat() {
       activeUser.removeEventListener("mouseover", activeUserChat);
     };
   }, [user.uid, timeNow, userLoginCheckActive]);
+
   return (
     <section ref={activeUsersChat} className={cx("wrapper")}>
       <article style={styleControl} ref={open} className={cx("controlChat")}>
@@ -344,7 +345,16 @@ function Chat() {
                 } else {
                   active = userActive.lastActive;
                 }
-
+                // if(checkActiveUser(active).indexOf("phút"))
+                let offline;
+                if (checkActiveUser(active).indexOf("phút") !== -1) {
+                  offline =
+                    checkActiveUser(active).split(" ")[2] +
+                    " " +
+                    checkActiveUser(active).split(" ")[3];
+                } else {
+                  offline = false;
+                }
                 return (
                   <li
                     onClick={() => {
@@ -368,6 +378,11 @@ function Chat() {
                           <span className={cx("active")}></span>
                         ) : (
                           false
+                        )}
+                        {offline && (
+                          <span className={cx("offline", "autoCenter")}>
+                            {offline}
+                          </span>
                         )}
                       </div>
                       {controlChat === false || screenWidth > 739 ? (
@@ -475,36 +490,36 @@ export function lastSentMessage(timeNow, timeSendMessage) {
   const dateNow = `${timeNowConvert.getDate()}/${timeNowConvert.getMonth()}/${timeNowConvert.getFullYear()} ${timeNowConvert.getHours()}:${timeNowConvert.getMinutes()}`;
   const dateSend = `${timeSendMessageConvert.getDate()}/${timeSendMessageConvert.getMonth()}/${timeSendMessageConvert.getFullYear()} ${timeSendMessageConvert.getHours()}:${timeSendMessageConvert.getMinutes()}`;
 
-  const dateSendMinutes = dateSend.split(" ")[1].split(":")[1];
-  const dateNowMinutes = dateNow.split(" ")[1].split(":")[1];
+  const minutesSent = dateSend.split(" ")[1].split(":")[1];
+  const curentMinutes = dateNow.split(" ")[1].split(":")[1];
 
-  const dateSendHours = dateSend.split(" ")[1].split(":")[0];
-  const dateNowHours = dateNow.split(" ")[1].split(":")[0];
+  const houreSent = dateSend.split(" ")[1].split(":")[0];
+  const curentHours = dateNow.split(" ")[1].split(":")[0];
 
-  const dateSendDay = dateSend.split(" ")[0].split("/")[0];
-  const dateNowDay = dateNow.split(" ")[0].split("/")[0];
+  const daySent = dateSend.split(" ")[0].split("/")[0];
+  const curentDay = dateNow.split(" ")[0].split("/")[0];
 
-  const dateSendMonth = dateSend.split(" ")[0].split("/")[1];
-  const dateNowMonth = dateNow.split(" ")[0].split("/")[1];
+  const monthSent = dateSend.split(" ")[0].split("/")[1];
+  const curentMonth = dateNow.split(" ")[0].split("/")[1];
 
-  const dateSendYear = dateSend.split(" ")[0].split("/")[2];
-  const dateNowYear = dateNow.split(" ")[0].split("/")[2];
+  const yearSent = dateSend.split(" ")[0].split("/")[2];
+  const curentYear = dateNow.split(" ")[0].split("/")[2];
 
-  // console.log(Math.abs(dateNowMinutes - dateSendMinutes));
-  const secondsSend =
-    Number(dateSendMinutes) * 60 +
-    Number(dateSendHours) * 3600 +
-    Number(dateSendDay) * 86400 +
-    Number(dateSendMonth) * 2592000 +
-    Number(dateSendYear) * 3110400;
-  const secondsNow =
-    Number(dateNowMinutes) * 60 +
-    Number(dateNowHours) * 3600 +
-    Number(dateNowDay) * 86400 +
-    Number(dateNowMonth) * 2592000 +
-    Number(dateNowYear) * 3110400;
+  // console.log(Math.abs(dateNowMinutes - minutesSent));
+  const sendingTime =
+    Number(minutesSent) * 60 +
+    Number(houreSent) * 3600 +
+    Number(daySent) * 86400 +
+    Number(monthSent) * 2592000 +
+    Number(yearSent) * 3110400;
+  const presentTime =
+    Number(curentMinutes) * 60 +
+    Number(curentHours) * 3600 +
+    Number(curentDay) * 86400 +
+    Number(curentMonth) * 2592000 +
+    Number(curentYear) * 3110400;
 
-  const result = secondsNow - secondsSend;
+  const result = presentTime - sendingTime;
 
   if (result / 3110400 >= 1) {
     return parseInt(result / 3110400) + "Năm";

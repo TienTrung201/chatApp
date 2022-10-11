@@ -142,42 +142,42 @@ export function checkActiveUser(timeActive) {
   const timeNow = Timestamp.now();
   const timeNowConvert = timeNow.toDate();
 
-  const dateNow = `${timeNowConvert.getDate()}/${timeNowConvert.getMonth()}/${timeNowConvert.getFullYear()} and ${timeNowConvert.getHours()}:${timeNowConvert.getMinutes()}:${timeNowConvert.getSeconds()}`;
+  const timeNowConvertToString = `${timeNowConvert.getDate()}/${timeNowConvert.getMonth()}/${timeNowConvert.getFullYear()} and ${timeNowConvert.getHours()}:${timeNowConvert.getMinutes()}:${timeNowConvert.getSeconds()}`;
 
   const activeSeconds = timeActive.split("and")[1].split(":")[2];
-  const dateNowSeconds = dateNow.split("and")[1].split(":")[2];
+  const curentSeconds = timeNowConvertToString.split("and")[1].split(":")[2];
 
   const activeMinutes = timeActive.split("and")[1].split(":")[1];
-  const dateNowMinutes = dateNow.split("and")[1].split(":")[1];
+  const curentMinutes = timeNowConvertToString.split("and")[1].split(":")[1];
 
   const activeHours = timeActive.split("and")[1].split(":")[0];
-  const dateNowHours = dateNow.split("and")[1].split(":")[0];
+  const curentHours = timeNowConvertToString.split("and")[1].split(":")[0];
 
   const activeDay = timeActive.split("and")[0].split("/")[0];
-  const dateNowDay = dateNow.split("and")[0].split("/")[0];
+  const curentDay = timeNowConvertToString.split("and")[0].split("/")[0];
 
   const activeMonth = timeActive.split("and")[0].split("/")[1];
-  const dateNowMonth = dateNow.split("and")[0].split("/")[1];
+  const curentMonth = timeNowConvertToString.split("and")[0].split("/")[1];
 
   const activeYear = timeActive.split("and")[0].split("/")[2];
-  const dateNowYear = dateNow.split("and")[0].split("/")[2];
+  const curentYear = timeNowConvertToString.split("and")[0].split("/")[2];
 
-  const secondsSend =
+  const sendingTime =
     Number(activeSeconds) +
     Number(activeMinutes) * 60 +
     Number(activeHours) * 3600 +
     Number(activeDay) * 86400 +
     Number(activeMonth) * 2592000 +
     Number(activeYear) * 3110400;
-  const secondsNow =
-    Number(dateNowSeconds) +
-    Number(dateNowMinutes) * 60 +
-    Number(dateNowHours) * 3600 +
-    Number(dateNowDay) * 86400 +
-    Number(dateNowMonth) * 2592000 +
-    Number(dateNowYear) * 3110400;
+  const presentTime =
+    Number(curentSeconds) +
+    Number(curentMinutes) * 60 +
+    Number(curentHours) * 3600 +
+    Number(curentDay) * 86400 +
+    Number(curentMonth) * 2592000 +
+    Number(curentYear) * 3110400;
 
-  const result = secondsNow - secondsSend;
+  const result = presentTime - sendingTime;
   if (result / 3110400 >= 1) {
     return "Hoạt động " + parseInt(result / 3110400) + " năm trước";
   } else if (result / 2592000 >= 1) {

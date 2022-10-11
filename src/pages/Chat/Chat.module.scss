@@ -248,6 +248,39 @@ $active--Color: #31a24c;
               border: #fff solid 2px;
             }
           }
+          .offline {
+            position: absolute;
+            border-radius: 20px;
+            width: 65%;
+            height: 14px;
+            background-color: #ccfdd7;
+            color: $active--Color;
+            bottom: 5px;
+            right: 5px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.02rem;
+            @include mobile {
+              bottom: 1px;
+              right: 2px;
+              width: 70%;
+            }
+            &::after {
+              content: "";
+              position: absolute;
+              top: 0;
+              right: 0;
+              left: 0;
+              bottom: 0;
+              background-color: transparent;
+              border-radius: 20px;
+              // width: calc(100% + 2px);
+              // height: calc(100% + 2px);
+              border: #fff solid 2px;
+              @include mobile {
+              }
+            }
+          }
           img {
             width: 40px;
             height: 40px;
