@@ -265,8 +265,9 @@ $active--Color: #31a24c;
               font-weight: 600;
 
               @include mobile {
-                width: 100%;
-                font-size: 0.65rem !important;
+                width: 30px;
+                height: 14px;
+                font-size: 0.45rem !important;
                 letter-spacing: 0rem;
               }
             }
