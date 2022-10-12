@@ -257,15 +257,23 @@ $active--Color: #31a24c;
             color: $active--Color;
             bottom: 5px;
             right: 5px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.02rem;
+            overflow: hidden;
+
+            p {
+              font-size: 0.7rem;
+              letter-spacing: 0.02rem;
+              font-weight: 600;
+
+              @include mobile {
+                width: 100%;
+                font-size: 0.65rem !important;
+                letter-spacing: 0rem;
+              }
+            }
             @include mobile {
               bottom: 1px;
               right: 2px;
               width: 70%;
-              font-size: 0.3rem;
-              letter-spacing: 0rem;
             }
             &::after {
               content: "";

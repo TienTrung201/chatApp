@@ -380,7 +380,7 @@ function Chat() {
                         )}
                         {offline && (
                           <span className={cx("offline", "autoCenter")}>
-                            {offline}
+                            <p className={cx("autoCenter")}>{offline}</p>
                           </span>
                         )}
                       </div>
