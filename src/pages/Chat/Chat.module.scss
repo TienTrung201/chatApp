@@ -256,12 +256,12 @@ $active--Color: #31a24c;
             background-color: #ccfdd7;
             color: $active--Color;
             bottom: 5px;
-            right: 5px;
+            right: 3px;
             overflow: hidden;
 
             p {
               font-size: 0.7rem;
-              letter-spacing: 0.02rem;
+              // letter-spacing: 0.05px;
               // font-weight: 600;
               width: 30px;
               @include mobile {
@@ -269,13 +269,13 @@ $active--Color: #31a24c;
                 height: 14px;
                 font-size: 5.5px !important;
                 font-weight: 600;
-                letter-spacing: 0rem;
+                letter-spacing: 0px;
               }
             }
             @include mobile {
               bottom: 1px;
-              right: 2px;
-              width: 75%;
+              right: 0px;
+              width: 80%;
             }
             &::after {
               content: "";
