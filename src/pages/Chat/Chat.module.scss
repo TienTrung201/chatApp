@@ -263,11 +263,11 @@ $active--Color: #31a24c;
               font-size: 0.7rem;
               letter-spacing: 0.02rem;
               // font-weight: 600;
-
+              width: 30px;
               @include mobile {
                 width: 30px;
                 height: 14px;
-                font-size: 6px !important;
+                font-size: 5.5px !important;
                 font-weight: 600;
                 letter-spacing: 0rem;
               }
