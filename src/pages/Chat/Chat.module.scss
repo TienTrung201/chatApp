@@ -262,12 +262,12 @@ $active--Color: #31a24c;
             p {
               font-size: 0.7rem;
               letter-spacing: 0.02rem;
-              font-weight: 600;
+              // font-weight: 600;
 
               @include mobile {
                 width: 30px;
                 height: 14px;
-                font-size: 0.45rem !important;
+                font-size: 0.55rem !important;
                 letter-spacing: 0rem;
               }
             }
