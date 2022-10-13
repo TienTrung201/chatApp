@@ -4,19 +4,24 @@ import classNames from "classnames/bind";
 import Sidebar from "./Sidebar";
 import styles from "./DefaultLayout.module.scss";
 import { useEffect, useRef } from "react";
-
-import video from "../../../assets/video/CafeRainyDay.mp4";
 import { useSelector } from "react-redux";
-import { isSelectedMusic } from "@/components/redux/selector";
+import { isNight, isRainy, isSelectedMusic } from "@/components/redux/selector";
+
+import CafeDay from "../../../assets/video/CafeDay.mp4";
+import CafeRainyDay from "../../../assets/video/CafeRainyDay.mp4";
+import CafeNight from "../../../assets/video/CafeNight.mp4";
+import CafeRainyNight from "../../../assets/video/CafeRainyNight.mp4";
 const cx = classNames.bind(styles);
 
 function DefaultLayout({ children, active }) {
   const scrollBottom = useRef();
   const isCheckedMusic = useSelector(isSelectedMusic);
-  console.log(isCheckedMusic);
+  const isCheckNight = useSelector(isNight);
+  const isRain = useSelector(isRainy);
   useEffect(() => {
     scrollBottom.current.scrollTop = scrollBottom.current.scrollHeight;
   });
+  console.log(isCheckNight);
   return (
     <section ref={scrollBottom} className={cx("wrapper")}>
       <Sidebar activeNav={active} />
@@ -24,11 +29,57 @@ function DefaultLayout({ children, active }) {
         <div className={cx("content")}>{children}</div>
       </article>
       {isCheckedMusic && (
-        <div className={cx("backGroundVideo")}>
-          <video loop autoPlay>
-            <source src={video} type="video/mp4" />
-          </video>
-        </div>
+        <>
+          <div
+            className={cx(
+              "backGroundVideo",
+              isCheckNight === true && isRain === false
+                ? "opacity0"
+                : "opacity1"
+            )}
+          >
+            <video loop autoPlay>
+              <source src={CafeDay} type="video/mp4" />
+            </video>
+          </div>
+
+          <div
+            className={cx(
+              "backGroundVideo",
+              isRain === true && isCheckNight === false
+                ? "opacity1"
+                : "opacity0"
+            )}
+          >
+            <video loop autoPlay>
+              <source src={CafeRainyDay} type="video/mp4" />
+            </video>
+          </div>
+
+          <div
+            className={cx(
+              "backGroundVideo",
+              isCheckNight === true && isRain === false
+                ? "opacity1"
+                : "opacity0"
+            )}
+          >
+            <video loop autoPlay>
+              <source src={CafeNight} type="video/mp4" />
+            </video>
+          </div>
+
+          <div
+            className={cx(
+              "backGroundVideo",
+              isRain === true && isCheckNight === true ? "opacity1" : "opacity0"
+            )}
+          >
+            <video loop autoPlay>
+              <source src={CafeRainyNight} type="video/mp4" />
+            </video>
+          </div>
+        </>
       )}
     </section>
   );

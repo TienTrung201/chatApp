@@ -5,10 +5,18 @@ export const SidebarSlide = createSlice({
   initialState: {
     status: "idle",
     isSelectedMusic: false,
+    isRainy: false,
+    isNight: false,
   },
   reducers: {
     setSelectedMusic: (state, action) => {
       state.isSelectedMusic = action.payload;
+    },
+    setIsRain: (state, action) => {
+      state.isRainy = action.payload;
+    },
+    setIsNight: (state, action) => {
+      state.isNight = action.payload;
     },
   },
 });

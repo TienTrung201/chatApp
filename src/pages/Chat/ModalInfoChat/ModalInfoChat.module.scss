@@ -20,10 +20,7 @@ $widthModal: 250px;
   // padding: 33.33px 20px 0 20px;
   padding-top: 33.33px;
   overflow-y: scroll;
-  transition: 0.3s ease-in-out;
-  &:hover {
-    border: none;
-  }
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -41,9 +38,14 @@ $widthModal: 250px;
     position: absolute;
     top: 12px;
     left: 10px;
+    display: none;
+    cursor: pointer;
     .closeModal--icon {
       font-size: 2rem;
       color: var(--backGround-App);
+    }
+    @include mobile {
+      display: flex;
     }
   }
   // overflow: hidden;
@@ -98,12 +100,13 @@ $widthModal: 250px;
 
     // width: 100%;
     .controlList {
+      .content {
+        transition: 0.3s ease-in-out;
+      }
       .setting {
         background-color: $bOrgeTransparent;
         transition: 0.3s ease-in-out;
-        .content {
-          transition: 0.3s ease-in-out;
-        }
+
         &:hover .settingHover {
           color: #e5a730;
         }
@@ -124,6 +127,9 @@ $widthModal: 250px;
       }
       .image {
         background-color: $bPinkTransparent;
+        &:hover .imageHover {
+          color: #c383a5;
+        }
         .icon {
           color: #c383a5;
         }

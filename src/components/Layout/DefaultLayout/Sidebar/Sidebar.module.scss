@@ -84,6 +84,22 @@
     //   }
     // }
     transform-style: preserve-3d;
+    .wrapperCloud {
+      cursor: pointer;
+      transition: 0.3s ease-in-out;
+      animation: weather 0.3s linear;
+      img {
+        width: 80px;
+      }
+    }
+    @keyframes weather {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
     @include mobile {
       // height: 100vh;
 
@@ -205,6 +221,11 @@
       @include mobile {
         display: flex;
       }
+      .mobileDisplay {
+        @include mobile {
+          display: none;
+        }
+      }
       .nav__listItem:first-child {
         img {
           width: 50px;
@@ -213,6 +234,7 @@
           }
         }
       }
+
       .nav__listItem {
         height: var(--default-layout-Nav-height);
         width: 100%;

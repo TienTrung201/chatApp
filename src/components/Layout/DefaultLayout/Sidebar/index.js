@@ -4,13 +4,18 @@ import classNames from "classnames/bind";
 import { NavLink } from "react-router-dom";
 
 import { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SidebarSlide from "./SideBarSlice";
+import { isNight, isRainy, isSelectedMusic } from "@/components/redux/selector";
 
 const cx = classNames.bind(styles);
 
 function Sidebar({ activeNav }) {
   const Dispatch = useDispatch();
+  const isCheckedMusic = useSelector(isSelectedMusic);
+  const isRain = useSelector(isRainy);
+  const isNightApp = useSelector(isNight);
+  const [option, setOption] = useState(1);
   const handleSelectMusic = (boolean) => {
     Dispatch(SidebarSlide.actions.setSelectedMusic(boolean));
   };
@@ -43,41 +48,70 @@ function Sidebar({ activeNav }) {
   return (
     <article className={cx("wrapper")}>
       <div className={cx("logoApp", "autoCenter")}>
-        {/* <img
-          src={require("../../../../assets/images/logoApp.png")}
-          alt="Logo"
-        /> */}
-        {/* <div className={cx("emoji")}>
-          <div className={cx("face")}>
-            <div className={cx("eyes")}>
-              <div className={cx("eye")}></div>
-              <div className={cx("eye")}></div>
+        {isCheckedMusic === true ? (
+          <>
+            {" "}
+            {isNightApp === true ? (
+              <div
+                onClick={() => {
+                  if (option % 2 === 0) {
+                    Dispatch(SidebarSlide.actions.setIsNight(false));
+                  }
+                  setOption((prev) => prev + 1);
+                  Dispatch(SidebarSlide.actions.setIsRain(!isRain));
+                }}
+                className={cx("wrapperCloud", "autoCenter")}
+              >
+                <img
+                  alt="sun"
+                  src={
+                    isRain === true
+                      ? require("../../../../assets/images/rainNight.png")
+                      : require("../../../../assets/images/moon.png")
+                  }
+                />
+              </div>
+            ) : (
+              <div
+                onClick={() => {
+                  if (option % 2 === 0) {
+                    Dispatch(SidebarSlide.actions.setIsNight(true));
+                  }
+                  setOption((prev) => prev + 1);
+                  Dispatch(SidebarSlide.actions.setIsRain(!isRain));
+                }}
+                className={cx("wrapperCloud", "autoCenter")}
+              >
+                <img
+                  alt="sun"
+                  src={
+                    isRain === true
+                      ? require("../../../../assets/images/rain.png")
+                      : require("../../../../assets/images/sun.png")
+                  }
+                />
+              </div>
+            )}
+          </>
+        ) : (
+          <section className={cx("wrapperEarth")}>
+            <div className={cx("earth")}>
+              <div className={cx("planet", "mars")}></div>
+              <div className={cx("planet", "jupiter")}>
+                <img
+                  alt="mars"
+                  src={require("../../../../assets/images/jupiter.png")}
+                />
+              </div>
+              <div className={cx("planet", "mercury")}>
+                <img
+                  alt="mars"
+                  src={require("../../../../assets/images/mercury.png")}
+                />
+              </div>
             </div>
-            <div className={cx("mouth")}></div>
-          </div>
-        </div> */}
-        <section className={cx("wrapperEarth")}>
-          <div className={cx("earth")}>
-            <div className={cx("planet", "mars")}>
-              <img
-                alt="mars"
-                src={require("../../../../assets/images/mars.png")}
-              />
-            </div>
-            <div className={cx("planet", "jupiter")}>
-              <img
-                alt="mars"
-                src={require("../../../../assets/images/jupiter.png")}
-              />
-            </div>
-            <div className={cx("planet", "mercury")}>
-              <img
-                alt="mars"
-                src={require("../../../../assets/images/mercury.png")}
-              />
-            </div>
-          </div>
-        </section>
+          </section>
+        )}
       </div>
       <nav className={cx("navigation", "autoCenter")}>
         <ul className={cx("nav__list")}>
@@ -123,7 +157,7 @@ function Sidebar({ activeNav }) {
             onClick={() => {
               handleSelectMusic(true);
             }}
-            className={cx("nav__listItem")}
+            className={cx("nav__listItem", "mobileDisplay")}
           >
             <NavLink
               onClick={handleActiveNav}
@@ -134,7 +168,6 @@ function Sidebar({ activeNav }) {
                 src={require("../../../../assets/images/headphones.png")}
                 alt="Facebook"
               />
-              {/* <FontAwesomeIcon className={cx("iconNav")} icon={faCirclePlay} /> */}
             </NavLink>
           </li>
         </ul>

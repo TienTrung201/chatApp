@@ -156,7 +156,7 @@ function ModalInfoChat({ modal, setModal }) {
                     className={cx("iconOpen")}
                     icon={faChevronDown}
                   />
-                  <p className={cx("content")}>Media</p>
+                  <p className={cx("content", "imageHover")}>Media</p>
                 </div>
               </li>
             </ul>

@@ -108,12 +108,13 @@ $active--Color: #31a24c;
     // justify-content: center; // bug xóa ngay
     padding-bottom: 20px;
     overflow-y: scroll;
+    padding-right: 2px;
     .loader {
       background-color: aqua;
     }
     &::-webkit-scrollbar {
       // display: none;
-      width: 5px;
+      width: 3px;
     }
     &::-webkit-scrollbar-thumb {
       background: rgb(100, 99, 99);
