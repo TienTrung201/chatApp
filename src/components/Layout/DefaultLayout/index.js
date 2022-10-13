@@ -5,6 +5,7 @@ import Sidebar from "./Sidebar";
 import styles from "./DefaultLayout.module.scss";
 import { useEffect, useRef } from "react";
 
+import video from "../../../assets/video/CafeRainyDay.mp4";
 const cx = classNames.bind(styles);
 
 function DefaultLayout({ children, active }) {
@@ -19,6 +20,16 @@ function DefaultLayout({ children, active }) {
       <article className={cx("container")}>
         <div className={cx("content")}>{children}</div>
       </article>
+      <div className={cx("backGroundVideo")}>
+        <video loop controls autoplay>
+          <source
+            // src="./NewYorkBedroomRainyNight.mp4"
+            /* src={require("../../../assets/video/NewYorkBedroomRainyNight.mp4")} */
+            src={video}
+            type="video/mp4"
+          />
+        </video>
+      </div>
     </section>
   );
 }

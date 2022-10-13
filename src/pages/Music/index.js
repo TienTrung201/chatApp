@@ -9,8 +9,8 @@ function Music() {
   console.log("Music");
   return (
     <section className={cx("wrapper")}>
-      <MainMusic />
-      <FriendsActive />
+      {/* <MainMusic />
+      <FriendsActive /> */}
     </section>
   );
 }
