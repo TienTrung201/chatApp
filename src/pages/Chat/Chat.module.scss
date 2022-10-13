@@ -31,7 +31,7 @@ $active--Color: #31a24c;
     display: flex;
     flex-direction: column;
     width: 250px;
-    background-color: #fff;
+    background-color: var(--backGround--page2--white);
     padding: 15px 0;
     border-radius: 30px;
     overflow: hidden;
@@ -76,7 +76,9 @@ $active--Color: #31a24c;
         .createPlus {
           width: 40px;
           height: 40px;
-          background-color: #f3f6ff;
+          background-color: var(--backGround--page);
+
+          // background-color: var(--backGround--page2);
           border-radius: 50%;
           margin-right: 20px;
           margin-left: 7px;
@@ -131,6 +133,7 @@ $active--Color: #31a24c;
         width: 100%;
         position: relative;
         background-color: #f3f6ff;
+        background-color: var(--backGround--page);
         border-radius: 20px;
         display: flex;
         align-items: center;

@@ -9,9 +9,58 @@
   }
 }
 .wrapper {
-  flex: 1;
   background-color: var(--backGround--page);
   // height: 100%;
   // padding: 15px;
   // border-radius: 30px;
+  padding: 20px 0 10px 15px;
+  width: 220px;
+  .title {
+    font-size: 2rem;
+  }
+  .listUsers {
+    padding-top: 10px;
+    .userActivity {
+      .selectedUserChat {
+        display: flex;
+        align-items: center;
+        background-color: transparent;
+        padding: 5px 10px;
+        border-radius: 10px;
+        transition: 0.2s ease-in-out;
+        &:hover {
+          background-color: #fff;
+        }
+        .avatar {
+          width: 40px;
+          height: 40px;
+          overflow: hidden;
+          img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+          }
+        }
+        .infoUser {
+          padding-left: 10px;
+          display: flex;
+          align-content: space-between;
+          justify-content: space-between;
+          flex-direction: column;
+          // background-color: aqua;
+          height: 35px;
+          .userName {
+            font-size: 1.5rem;
+            line-height: 1.4rem;
+            padding-bottom: 4px;
+          }
+          .status {
+            font-size: 1.3rem;
+            line-height: 1.4rem;
+            color: #a9a9b8;
+          }
+        }
+      }
+    }
+  }
 }

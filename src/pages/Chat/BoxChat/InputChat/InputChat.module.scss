@@ -32,6 +32,7 @@
   }
   input {
     // flex: 1;
+    background-color: var(--backGround--page-white);
     width: 100%;
     @include mobile {
       font-size: 1.6rem;

@@ -3,6 +3,7 @@ import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartSimple, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import PlayingMusic from "@/components/PlayingMusic";
 
 const cx = classNames.bind(styles);
 
@@ -22,7 +23,7 @@ function MainMusic() {
           <div className={cx("avatar")}>
             <img
               width={40}
-              src={require("../../../assets/images/photoUser.png")}
+              src={require("../../../assets/images/avata.jpg")}
               alt=""
             />
           </div>
@@ -43,7 +44,9 @@ function MainMusic() {
             <div className={cx("musicForYou")}>
               <ul className={cx("listMusic")}>
                 <li className={cx("itemMusic")}>
-                  <span className={cx("index")}>1</span>
+                  <span className={cx("index", "autoCenter")}>
+                    <PlayingMusic />
+                  </span>
                   <span className={cx("heart")}>
                     <FontAwesomeIcon
                       className={cx("iconHeart")}
@@ -57,7 +60,7 @@ function MainMusic() {
                   <span className={cx("time")}>2:42</span>
                 </li>
                 <li className={cx("itemMusic")}>
-                  <span className={cx("index")}>1</span>
+                  <span className={cx("index", "autoCenter")}>1</span>
                   <span className={cx("heart")}>
                     <FontAwesomeIcon
                       className={cx("iconHeart")}
@@ -71,7 +74,7 @@ function MainMusic() {
                   <span className={cx("time")}>2:42</span>
                 </li>
                 <li className={cx("itemMusic")}>
-                  <span className={cx("index")}>1</span>
+                  <span className={cx("index", "autoCenter")}>1</span>
                   <span className={cx("heart")}>
                     <FontAwesomeIcon
                       className={cx("iconHeart")}
@@ -85,7 +88,7 @@ function MainMusic() {
                   <span className={cx("time")}>2:42</span>
                 </li>
                 <li className={cx("itemMusic")}>
-                  <span className={cx("index")}>1</span>
+                  <span className={cx("index", "autoCenter")}>1</span>
                   <span className={cx("heart")}>
                     <FontAwesomeIcon
                       className={cx("iconHeart")}
@@ -99,7 +102,7 @@ function MainMusic() {
                   <span className={cx("time")}>2:42</span>
                 </li>
                 <li className={cx("itemMusic")}>
-                  <span className={cx("index")}>1</span>
+                  <span className={cx("index", "autoCenter")}>1</span>
                   <span className={cx("heart")}>
                     <FontAwesomeIcon
                       className={cx("iconHeart")}

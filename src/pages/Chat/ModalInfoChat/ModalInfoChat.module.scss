@@ -13,7 +13,7 @@ $widthModal: 250px;
   }
 }
 .wrapper {
-  background-color: #fff;
+  background-color: var(--backGround--page2--white);
   border-radius: 30px;
   display: flex; //thêm
   flex-direction: column; //thêm

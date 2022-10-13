@@ -161,7 +161,8 @@ $active--Color: #31a24c;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    background-color: #fff;
+    background-color: var(--backGround--page2--white);
+
     border-radius: 30px;
     padding: 10px 0;
     // padding-bottom: 15px;
