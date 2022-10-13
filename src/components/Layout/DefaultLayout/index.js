@@ -20,16 +20,11 @@ function DefaultLayout({ children, active }) {
       <article className={cx("container")}>
         <div className={cx("content")}>{children}</div>
       </article>
-      <div className={cx("backGroundVideo")}>
+      {/* <div className={cx("backGroundVideo")}>
         <video loop controls autoplay>
-          <source
-            // src="./NewYorkBedroomRainyNight.mp4"
-            /* src={require("../../../assets/video/NewYorkBedroomRainyNight.mp4")} */
-            src={video}
-            type="video/mp4"
-          />
+          <source src={video} type="video/mp4" />
         </video>
-      </div>
+      </div> */}
     </section>
   );
 }
