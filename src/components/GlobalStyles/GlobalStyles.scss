@@ -15,6 +15,7 @@ $active--Color: #31a24c;
   --backGround--page: #f3f6ff;
   --backGround--page2--white: #fff;
 
+  --backgroundTransparent: transparent;
   // --backGround--page2--white: transparent;
   // --backGround--page: transparent;
 
@@ -65,6 +66,24 @@ body {
 
     // height: 100vh;
   }
+}
+.backgroundTransparent {
+  background-color: transparent !important;
+  // border: 2px solid #838383;
+}
+.backgroundTransparent:hover {
+  border: 1px solid #838383;
+}
+.borderHover {
+  border: 1px solid #838383;
+}
+
+.backgroundTransparent h4,
+.backgroundTransparent h1,
+.backgroundTransparent h5,
+.backgroundTransparent h2 {
+  color: #fff;
+  opacity: 0.8;
 }
 @media (max-width: 739px) {
   body {

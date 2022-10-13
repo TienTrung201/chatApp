@@ -11,12 +11,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { userChat } from "@/components/redux/selector";
+import { isSelectedMusic, userChat } from "@/components/redux/selector";
 
 const cx = classNames.bind(styles);
 
 function ModalInfoChat({ modal, setModal }) {
   const displayUserChat = useSelector(userChat);
+  const isCheckedMusic = useSelector(isSelectedMusic);
   const [isSetting, setIsSetting] = useState(false);
   const screenWidth = window.innerWidth;
   const widthProfileChatRoom =
@@ -41,7 +42,10 @@ function ModalInfoChat({ modal, setModal }) {
             transition: { duration: 0.2 },
             opacity: 0,
           }}
-          className={cx("wrapper")}
+          className={cx(
+            "wrapper",
+            isCheckedMusic === true ? "backgroundTransparent" : ""
+          )}
         >
           <div
             onClick={() => {
@@ -71,7 +75,13 @@ function ModalInfoChat({ modal, setModal }) {
           </div>
           <div className={cx("controlRoom")}>
             <ul className={cx("controlList")}>
-              <li className={cx("controlItem", "setting")}>
+              <li
+                className={cx(
+                  "controlItem",
+                  "setting",
+                  isCheckedMusic === true ? "backgroundTransparent" : ""
+                )}
+              >
                 <div
                   onClick={() => {
                     setIsSetting(!isSetting);
@@ -90,7 +100,9 @@ function ModalInfoChat({ modal, setModal }) {
                         : { rotate: "0deg" }
                     }
                   />
-                  <p className={cx("content")}>Setting message</p>
+                  <p className={cx("content", "settingHover")}>
+                    Setting message
+                  </p>
                 </div>
                 <AnimatePresence>
                   {isSetting && (
@@ -108,7 +120,13 @@ function ModalInfoChat({ modal, setModal }) {
                       }}
                       className={cx("navBar")}
                     >
-                      <li className={cx("childrentControl", "nickName")}>
+                      <li
+                        className={cx(
+                          "childrentControl",
+                          "nickName",
+                          isCheckedMusic === true ? "backgroundTransparent" : ""
+                        )}
+                      >
                         <div className={cx("boxBug")}>
                           <div className={cx("wrappIcon", "autoCenter")}>
                             <FontAwesomeIcon
@@ -123,7 +141,13 @@ function ModalInfoChat({ modal, setModal }) {
                   )}
                 </AnimatePresence>
               </li>
-              <li className={cx("controlItem", "image")}>
+              <li
+                className={cx(
+                  "controlItem",
+                  "image",
+                  isCheckedMusic === true ? "backgroundTransparent" : ""
+                )}
+              >
                 <div className={cx("boxBug")}>
                   <div className={cx("wrappIcon", "autoCenter")}>
                     <FontAwesomeIcon className={cx("icon")} icon={faImage} />

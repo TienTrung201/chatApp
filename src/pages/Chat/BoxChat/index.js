@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { userChat, users } from "@/components/redux/selector";
+import { isSelectedMusic, userChat, users } from "@/components/redux/selector";
 import Message from "./Message";
 import InputChat from "./InputChat";
 import { doc, onSnapshot, Timestamp } from "firebase/firestore";
@@ -16,6 +16,7 @@ const cx = classNames.bind(styles);
 function BoxChat({ modal, setModal }) {
   const displayUserChat = useSelector(userChat);
   const allUser = useSelector(users);
+  const isCheckedMusic = useSelector(isSelectedMusic);
   const boxMessage = useRef();
   const [messages, setMessage] = useState(undefined);
   useEffect(() => {
@@ -37,7 +38,6 @@ function BoxChat({ modal, setModal }) {
       };
     }
   }, [displayUserChat.chatId]);
-
   const userActive = allUser.find((userChat) => {
     return userChat.uid === displayUserChat.user.uid;
   });
@@ -121,7 +121,12 @@ function BoxChat({ modal, setModal }) {
       {messages === undefined ? (
         false
       ) : (
-        <div className={cx("controlMessage")}>
+        <div
+          className={cx(
+            "controlMessage",
+            isCheckedMusic === true ? "backgroundTransparent" : ""
+          )}
+        >
           <InputChat />
         </div>
       )}

@@ -6,11 +6,14 @@ import styles from "./DefaultLayout.module.scss";
 import { useEffect, useRef } from "react";
 
 import video from "../../../assets/video/CafeRainyDay.mp4";
+import { useSelector } from "react-redux";
+import { isSelectedMusic } from "@/components/redux/selector";
 const cx = classNames.bind(styles);
 
 function DefaultLayout({ children, active }) {
   const scrollBottom = useRef();
-
+  const isCheckedMusic = useSelector(isSelectedMusic);
+  console.log(isCheckedMusic);
   useEffect(() => {
     scrollBottom.current.scrollTop = scrollBottom.current.scrollHeight;
   });
@@ -20,11 +23,13 @@ function DefaultLayout({ children, active }) {
       <article className={cx("container")}>
         <div className={cx("content")}>{children}</div>
       </article>
-      {/* <div className={cx("backGroundVideo")}>
-        <video loop controls autoplay>
-          <source src={video} type="video/mp4" />
-        </video>
-      </div> */}
+      {isCheckedMusic && (
+        <div className={cx("backGroundVideo")}>
+          <video loop autoPlay>
+            <source src={video} type="video/mp4" />
+          </video>
+        </div>
+      )}
     </section>
   );
 }

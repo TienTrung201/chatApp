@@ -16,6 +16,11 @@ $active--Color: #31a24c;
   display: flex;
   padding: 15px;
   border-radius: 30px;
+  // border: 0px !important;
+  transition: 0.5s ease-in-out;
+  &:hover {
+    border: 0px !important;
+  }
   // padding-left: 100px;
   //   flex: 1;
   @include mobile {
@@ -39,6 +44,7 @@ $active--Color: #31a24c;
     box-shadow: 10px 0px 20px rgba(0, 0, 0, 0.01);
     transition: 0.3s ease-in-out;
     z-index: 3;
+
     @include mobile {
       // flex: 1;
       position: absolute;
@@ -65,7 +71,12 @@ $active--Color: #31a24c;
         // height: 53px;
         padding: 6.5px 0;
         padding-left: 3px;
+        border-radius: 30px;
         cursor: pointer;
+        transition: 0.3s ease-in-out;
+        // &:hover {
+        //   border: 1px solid #838383;
+        // }
         // margin-bottom: 26px;
         @include mobile {
           padding: 0 0;
@@ -82,6 +93,9 @@ $active--Color: #31a24c;
           border-radius: 50%;
           margin-right: 20px;
           margin-left: 7px;
+          &:hover {
+            border: 1px solid #838383;
+          }
           @include tablet() {
             margin-right: 10px;
           }
@@ -140,6 +154,8 @@ $active--Color: #31a24c;
         justify-content: space-between;
         margin-bottom: 10px;
         overflow: hidden;
+        transition: 0.3s ease-in-out;
+
         @include mobile {
           padding: 10px 0;
           padding-left: 5px;
@@ -151,7 +167,10 @@ $active--Color: #31a24c;
           height: 100%;
           font-size: 1.4rem;
           padding-left: 16px;
-          color: #8f97a4;
+          color: #000;
+          &::placeholder {
+            color: #8f97a4;
+          }
           @include mobile {
             font-size: 1.6rem;
           }
@@ -162,7 +181,9 @@ $active--Color: #31a24c;
           background-color: var(--backGround--page);
 
           height: 20px;
-
+          &:hover {
+            border: 0px;
+          }
           @include mobile {
             right: 5px;
 
@@ -172,6 +193,7 @@ $active--Color: #31a24c;
             // margin-right: 10px;
             color: #8f97a4;
             font-size: 1.6rem;
+
             @include mobile {
               font-size: 1.5rem;
               // right: 4px;
@@ -191,6 +213,8 @@ $active--Color: #31a24c;
     }
     .wrapperListUser {
       overflow-y: scroll;
+      transition: 0.3s ease-in-out;
+
       .Loading {
         display: flex;
         justify-content: center;
@@ -211,6 +235,7 @@ $active--Color: #31a24c;
         }
         &:hover {
           background-color: #ccc;
+          background-color: rgba(204, 204, 204, 0.5);
         }
         .avata {
           width: 50px;

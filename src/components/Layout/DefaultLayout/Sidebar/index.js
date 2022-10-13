@@ -4,9 +4,16 @@ import classNames from "classnames/bind";
 import { NavLink } from "react-router-dom";
 
 import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import SidebarSlide from "./SideBarSlice";
 
 const cx = classNames.bind(styles);
+
 function Sidebar({ activeNav }) {
+  const Dispatch = useDispatch();
+  const handleSelectMusic = (boolean) => {
+    Dispatch(SidebarSlide.actions.setSelectedMusic(boolean));
+  };
   const navItem = useRef();
   useEffect(() => {
     const heightNavItem = navItem.current.offsetHeight;
@@ -74,7 +81,13 @@ function Sidebar({ activeNav }) {
       </div>
       <nav className={cx("navigation", "autoCenter")}>
         <ul className={cx("nav__list")}>
-          <li id={"getItem"} className={cx("nav__listItem")}>
+          <li
+            onClick={() => {
+              handleSelectMusic(false);
+            }}
+            id={"getItem"}
+            className={cx("nav__listItem")}
+          >
             <NavLink
               ref={navItem}
               onClick={handleActiveNav}
@@ -88,7 +101,12 @@ function Sidebar({ activeNav }) {
               {/* <FontAwesomeIcon className={cx("iconNav")} icon={faUser} /> */}
             </NavLink>
           </li>
-          <li className={cx("nav__listItem")}>
+          <li
+            onClick={() => {
+              handleSelectMusic(false);
+            }}
+            className={cx("nav__listItem")}
+          >
             <NavLink
               onClick={handleActiveNav}
               className={cx("listItem__Link", "autoCenter")}
@@ -101,11 +119,16 @@ function Sidebar({ activeNav }) {
               {/* <FontAwesomeIcon className={cx("iconNav")} icon={faMessage} /> */}
             </NavLink>
           </li>
-          <li className={cx("nav__listItem")}>
+          <li
+            onClick={() => {
+              handleSelectMusic(true);
+            }}
+            className={cx("nav__listItem")}
+          >
             <NavLink
               onClick={handleActiveNav}
               className={cx("listItem__Link", "autoCenter")}
-              to={"/Music"}
+              to={"/chat"}
             >
               <img
                 src={require("../../../../assets/images/headphones.png")}

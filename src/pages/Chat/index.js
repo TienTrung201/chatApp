@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import ModalInfoChat from "./ModalInfoChat";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { userLogin, users } from "@/components/redux/selector";
+import { isSelectedMusic, userLogin, users } from "@/components/redux/selector";
 import userSlice from "../Login/UserSlice";
 import {
   doc,
@@ -31,6 +31,7 @@ const cx = classNames.bind(styles);
 function Chat() {
   console.log("Chat");
   const user = useSelector(userLogin);
+  const isCheckedMusic = useSelector(isSelectedMusic);
   const Dispatch = useDispatch();
   const allUser = useSelector(users);
   const [modalInfo, setModalInfo] = useState(false);
@@ -38,9 +39,11 @@ function Chat() {
   const [searchUser, setSearchUser] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [isloadingUser, setIsLoadingUser] = useState(false);
+
   const open = useRef();
   const screenWidth = window.innerWidth;
   const activeUsersChat = useRef();
+
   // useEffect(() => {
   //   allUser.forEach((user) => {
   //     const userUpdate = doc(db, "users", user.uid);
@@ -244,11 +247,30 @@ function Chat() {
   }, [user.uid, timeNow, userLoginCheckActive]);
 
   return (
-    <section ref={activeUsersChat} className={cx("wrapper")}>
-      <article style={styleControl} ref={open} className={cx("controlChat")}>
+    <section
+      ref={activeUsersChat}
+      className={cx(
+        "wrapper",
+        isCheckedMusic === true ? "backgroundTransparent" : ""
+      )}
+    >
+      <article
+        style={styleControl}
+        ref={open}
+        className={cx(
+          "controlChat",
+          isCheckedMusic === true ? "backgroundTransparent" : ""
+        )}
+      >
         <div className={cx("wrapperControl")}>
           <div className={cx("createNew")}>
-            <div className={cx("createPlus", "autoCenter")}>
+            <div
+              className={cx(
+                "createPlus",
+                "autoCenter",
+                isCheckedMusic === true ? "backgroundTransparent" : ""
+              )}
+            >
               <FontAwesomeIcon className={cx("creatPlusIcon")} icon={faPlus} />
             </div>
             {controlChat === false || screenWidth > 739 ? (
@@ -261,7 +283,12 @@ function Chat() {
             <h2 className={cx("title__Chat")}>Chat</h2>
             {/* <FontAwesomeIcon /> */}
           </div>
-          <div className={cx("wrapperSearch")}>
+          <div
+            className={cx(
+              "wrapperSearch",
+              isCheckedMusic === true ? "backgroundTransparent" : ""
+            )}
+          >
             <input
               className={cx("searchText")}
               placeholder="Search Name"
@@ -272,7 +299,11 @@ function Chat() {
 
             <div
               onClick={handleClickOpen}
-              className={cx("searchIconWrapper", "autoCenter")}
+              className={cx(
+                "searchIconWrapper",
+                "autoCenter",
+                isCheckedMusic === true ? "backgroundTransparent" : ""
+              )}
             >
               <FontAwesomeIcon
                 className={cx("searchIcon")}

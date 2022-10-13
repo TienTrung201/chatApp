@@ -20,6 +20,10 @@ $widthModal: 250px;
   // padding: 33.33px 20px 0 20px;
   padding-top: 33.33px;
   overflow-y: scroll;
+  transition: 0.3s ease-in-out;
+  &:hover {
+    border: none;
+  }
   &::-webkit-scrollbar {
     display: none;
   }
@@ -96,12 +100,24 @@ $widthModal: 250px;
     .controlList {
       .setting {
         background-color: $bOrgeTransparent;
+        transition: 0.3s ease-in-out;
+        .content {
+          transition: 0.3s ease-in-out;
+        }
+        &:hover .settingHover {
+          color: #e5a730;
+        }
         .icon {
           color: #e5a730;
         }
       }
       .nickName {
         background-color: $bOrgeTransparent;
+        transition: 0.3s ease-in-out;
+        &:hover {
+          border: 0px;
+          color: #afe530 !important;
+        }
         .icon {
           color: #afe530;
         }

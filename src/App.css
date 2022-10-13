@@ -2,7 +2,7 @@
 ::-webkit-scrollbar {
   width: 2px;
   transition: 0.3s ease;
-  display: none;
+  /* display: none; */
 }
 
 /* Track */

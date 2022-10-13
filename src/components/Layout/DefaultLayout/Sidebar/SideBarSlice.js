@@ -4,11 +4,11 @@ export const SidebarSlide = createSlice({
   name: "SidebarSlide",
   initialState: {
     status: "idle",
-    selectedMusic: true,
+    isSelectedMusic: false,
   },
   reducers: {
     setSelectedMusic: (state, action) => {
-      state.selectedMusic = action.payload;
+      state.isSelectedMusic = action.payload;
     },
   },
 });
