@@ -7,7 +7,12 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import SidebarSlide from "./SideBarSlice";
-import { isNight, isRainy, isSelectedMusic } from "@/components/redux/selector";
+import {
+  isNight,
+  isRainy,
+  isSelectedMusic,
+  volumeRain,
+} from "@/components/redux/selector";
 import rain from "@/assets/audio/rain.mp3";
 
 const cx = classNames.bind(styles);
@@ -15,6 +20,7 @@ const cx = classNames.bind(styles);
 function Sidebar({ activeNav }) {
   const Dispatch = useDispatch();
   const isCheckedMusic = useSelector(isSelectedMusic);
+  const volumeRainApp = useSelector(volumeRain);
   const isRain = useSelector(isRainy);
   const isNightApp = useSelector(isNight);
   const [option, setOption] = useState(1);
@@ -38,9 +44,6 @@ function Sidebar({ activeNav }) {
     top: 0,
   });
   const volumeRain2 = useRef();
-  // if (activeNav === "Chat") {
-  //   setStyleLine({ top: heightNavItem });
-  // }
   const handleActiveNav = (e) => {
     if (e.target.tagName === "A") {
       setStyleLine({ top: e.target.offsetTop });
@@ -48,17 +51,19 @@ function Sidebar({ activeNav }) {
       setStyleLine({ top: e.target.parentElement.parentElement.offsetTop });
     }
   };
-  const [volumeRain, setVolumeRain] = useState(0.5);
+  useEffect(() => {
+    if (isRain === true && isCheckedMusic) {
+      volumeRain2.current.volume = volumeRainApp / 100;
+    }
+  }, [isRain, volumeRainApp, isCheckedMusic]);
   const handleChaneVolumeRain = (e) => {
-    const value = volumeRain2.current.volume;
-    console.log(value);
     volumeRain2.current.volume = e.target.value / 100;
-    setVolumeRain(Number(e.target.value));
+    Dispatch(SidebarSlide.actions.setVolumeRain(e.target.value));
   };
   return (
     <article className={cx("wrapper")}>
       <div className={cx("logoApp", "autoCenter")}>
-        {isRain ? (
+        {isRain === true && isCheckedMusic === true ? (
           <div className={cx("rainy")}>
             <audio
               style={{ display: "none" }}
@@ -68,16 +73,16 @@ function Sidebar({ activeNav }) {
               controls
               loop
             />
-
+            {/* bugg unmount thì âm thanh gốc bị mất */}
             <input
               onChange={(e) => {
                 handleChaneVolumeRain(e);
               }}
               type="range"
-              // min={0}
-              // max={1}
-              value={volumeRain}
+              max={40}
+              value={volumeRainApp}
               step={1}
+              className={cx("volume-rain")}
             />
           </div>
         ) : (
@@ -203,7 +208,7 @@ function Sidebar({ activeNav }) {
             <NavLink
               onClick={handleActiveNav}
               className={cx("listItem__Link", "autoCenter")}
-              to={"/chat"}
+              to={"/music"}
             >
               <img
                 src={require("../../../../assets/images/headphones.png")}

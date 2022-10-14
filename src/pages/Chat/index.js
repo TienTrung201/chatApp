@@ -25,6 +25,7 @@ import { db } from "@/firebase/config";
 import { useFireStoreGetFields } from "@/hooks/useFirestor";
 import LoadingListUser from "@/components/Loaddings/LoadingListUser";
 import boxChatSlice from "./BoxChat/BoxChatSlice";
+import keyboard from "@/assets/audio/keyboard.mp3";
 
 const cx = classNames.bind(styles);
 
@@ -245,7 +246,17 @@ function Chat() {
       activeUser.removeEventListener("mouseover", activeUserChat);
     };
   }, [user.uid, timeNow, userLoginCheckActive]);
-
+  const inputKeyboard = useRef();
+  const [volumeKeyboard, setVolumeKeyboard] = useState(0);
+  const handleChaneVolumeKeyboard = (e) => {
+    inputKeyboard.current.volume = e.target.value / 100;
+    setVolumeKeyboard(e.target.value);
+  };
+  useEffect(() => {
+    if (isCheckedMusic) {
+      inputKeyboard.current.volume = volumeKeyboard / 100;
+    }
+  }, [volumeKeyboard, isCheckedMusic]);
   return (
     <section
       ref={activeUsersChat}
@@ -254,6 +265,27 @@ function Chat() {
         isCheckedMusic === true ? "backgroundTransparent" : ""
       )}
     >
+      <div className={cx("wrapperKeyboard")}>
+        <audio
+          style={{ display: "none" }}
+          ref={inputKeyboard}
+          src={keyboard}
+          autoPlay
+          controls
+          loop
+        />
+        {/* bugg unmount thì âm thanh gốc bị mất */}
+        <input
+          onChange={(e) => {
+            handleChaneVolumeKeyboard(e);
+          }}
+          type="range"
+          max={40}
+          value={volumeKeyboard}
+          step={1}
+          className={cx("volume-rain")}
+        />
+      </div>
       <article
         style={styleControl}
         ref={open}

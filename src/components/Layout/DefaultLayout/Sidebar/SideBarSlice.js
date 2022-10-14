@@ -7,6 +7,8 @@ export const SidebarSlide = createSlice({
     isSelectedMusic: false,
     isRainy: false,
     isNight: false,
+    volumeRain: 4,
+    volumeMusic: 4,
   },
   reducers: {
     setSelectedMusic: (state, action) => {
@@ -17,6 +19,12 @@ export const SidebarSlide = createSlice({
     },
     setIsNight: (state, action) => {
       state.isNight = action.payload;
+    },
+    setVolumeRain: (state, action) => {
+      state.volumeRain = action.payload;
+    },
+    setVolumeMusic: (state, action) => {
+      state.volumeMusic = action.payload;
     },
   },
 });

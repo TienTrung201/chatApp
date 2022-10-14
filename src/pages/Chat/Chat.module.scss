@@ -18,6 +18,33 @@ $active--Color: #31a24c;
   border-radius: 30px;
   // border: 0px !important;
   transition: 0.5s ease-in-out;
+  position: relative;
+  .wrapperKeyboard {
+    position: absolute;
+    z-index: 999;
+    bottom: 150px;
+    right: 100px;
+    background-color: rgba(36, 36, 36, 0.5);
+    border: 1px solid #838383;
+    opacity: 0.3;
+    height: 40px;
+    width: 100px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s ease-in-out;
+
+    // border: 5px solid #838383;
+    &:hover {
+      // border: 5px solid hsl(41, 100%, 51%);
+      opacity: 1;
+    }
+    input {
+      width: 80%;
+      cursor: pointer;
+    }
+  }
   &:hover {
     border: 0px !important;
   }

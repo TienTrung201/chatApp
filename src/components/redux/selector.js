@@ -7,3 +7,5 @@ export const allMessage = (state) => state.allMessage.allMessage;
 export const isSelectedMusic = (state) => state.sideBar.isSelectedMusic;
 export const isRainy = (state) => state.sideBar.isRainy;
 export const isNight = (state) => state.sideBar.isNight;
+export const volumeRain = (state) => state.sideBar.volumeRain;
+export const volumeMusic = (state) => state.sideBar.volumeMusic;

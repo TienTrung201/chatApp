@@ -5,19 +5,24 @@ import Sidebar from "./Sidebar";
 import styles from "./DefaultLayout.module.scss";
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { isNight, isRainy, isSelectedMusic } from "@/components/redux/selector";
+import {
+  isNight,
+  //  isRainy,
+  isSelectedMusic,
+} from "@/components/redux/selector";
 
-import CafeDay from "../../../assets/video/CafeDay.mp4";
-import CafeRainyDay from "../../../assets/video/CafeRainyDay.mp4";
-import CafeNight from "../../../assets/video/CafeNight.mp4";
-import CafeRainyNight from "../../../assets/video/CafeRainyNight.mp4";
+// import CafeDay from "../../../assets/video/CafeDay.mp4";
+// import CafeRainyDay from "../../../assets/video/CafeRainyDay.mp4";
+// import CafeNight from "../../../assets/video/CafeNight.mp4";
+// import CafeRainyNight from "../../../assets/video/CafeRainyNight.mp4";
+import CafeDayChill from "./CafeDay";
 const cx = classNames.bind(styles);
 
 function DefaultLayout({ children, active }) {
   const scrollBottom = useRef();
   const isCheckedMusic = useSelector(isSelectedMusic);
   const isCheckNight = useSelector(isNight);
-  const isRain = useSelector(isRainy);
+  // const isRain = useSelector(isRainy);
   useEffect(() => {
     scrollBottom.current.scrollTop = scrollBottom.current.scrollHeight;
   });
@@ -28,7 +33,7 @@ function DefaultLayout({ children, active }) {
       <article className={cx("container")}>
         <div className={cx("content")}>{children}</div>
       </article>
-      {isCheckedMusic && (
+      {/* {isCheckedMusic && (
         <>
           <div
             className={cx(
@@ -80,7 +85,8 @@ function DefaultLayout({ children, active }) {
             </video>
           </div>
         </>
-      )}
+      )} */}
+      {isCheckedMusic && <CafeDayChill />}
     </section>
   );
 }
