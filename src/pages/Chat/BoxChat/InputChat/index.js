@@ -4,7 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImages, faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { userChat, userLogin } from "@/components/redux/selector";
+import {
+  isSelectedMusic,
+  userChat,
+  userLogin,
+} from "@/components/redux/selector";
 
 import { v4 as uuid } from "uuid";
 import { db, storage } from "@/firebase/config";
@@ -24,7 +28,7 @@ function InputChat() {
   const [valueInput, setValueInput] = useState("");
   const file = useRef();
   const [imgFile, setImgFile] = useState(null);
-
+  const isCheckedMusic = useSelector(isSelectedMusic);
   const createGetSize = (imageFile, getSize) => {
     var image;
     var _URL = window.URL || window.webkitURL;
@@ -137,6 +141,7 @@ function InputChat() {
       </button>
       <div className={cx("wrapperTextMessage", "autoCenter")}>
         <input
+          className={cx(isCheckedMusic === true ? "textWhite" : "")}
           autoComplete="off"
           type="text"
           placeholder="Hello:)))))"

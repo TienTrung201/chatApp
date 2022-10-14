@@ -28,3 +28,7 @@
 }
 input[type="range"] {
 }
+.textWhite {
+  color: #fff;
+  font-size: 16px;
+}

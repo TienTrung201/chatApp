@@ -265,27 +265,32 @@ function Chat() {
         isCheckedMusic === true ? "backgroundTransparent" : ""
       )}
     >
-      <div className={cx("wrapperKeyboard")}>
-        <audio
-          style={{ display: "none" }}
-          ref={inputKeyboard}
-          src={keyboard}
-          autoPlay
-          controls
-          loop
-        />
-        {/* bugg unmount thì âm thanh gốc bị mất */}
-        <input
-          onChange={(e) => {
-            handleChaneVolumeKeyboard(e);
-          }}
-          type="range"
-          max={40}
-          value={volumeKeyboard}
-          step={1}
-          className={cx("volume-rain")}
-        />
-      </div>
+      {isCheckedMusic === true ? (
+        <div className={cx("wrapperKeyboard")}>
+          <audio
+            style={{ display: "none" }}
+            ref={inputKeyboard}
+            src={keyboard}
+            autoPlay
+            controls
+            loop
+          />
+          {/* bugg unmount thì âm thanh gốc bị mất */}
+          <input
+            onChange={(e) => {
+              handleChaneVolumeKeyboard(e);
+            }}
+            type="range"
+            max={40}
+            value={volumeKeyboard}
+            step={1}
+            className={cx("volume-rain")}
+          />
+        </div>
+      ) : (
+        false
+      )}
+
       <article
         style={styleControl}
         ref={open}

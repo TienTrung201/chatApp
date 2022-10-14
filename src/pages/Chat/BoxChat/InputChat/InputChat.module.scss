@@ -34,9 +34,17 @@
     // flex: 1;
     background-color: var(--backGround--page-white);
     width: 100%;
+    color: #000;
+    &::placeholder {
+      font-size: 1.5rem;
+    }
+    font-size: 1.6rem;
     @include mobile {
       font-size: 1.6rem;
     }
+  }
+  .textWhite {
+    color: #fff;
   }
   .inputMessage {
     //   background-color: transparent;
