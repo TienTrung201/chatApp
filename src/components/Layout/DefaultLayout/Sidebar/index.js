@@ -5,8 +5,10 @@ import { NavLink } from "react-router-dom";
 
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import SidebarSlide from "./SideBarSlice";
 import { isNight, isRainy, isSelectedMusic } from "@/components/redux/selector";
+import rain from "@/assets/audio/rain.mp3";
 
 const cx = classNames.bind(styles);
 
@@ -35,6 +37,7 @@ function Sidebar({ activeNav }) {
   const [styleLine, setStyleLine] = useState({
     top: 0,
   });
+  const volumeRain2 = useRef();
   // if (activeNav === "Chat") {
   //   setStyleLine({ top: heightNavItem });
   // }
@@ -45,12 +48,44 @@ function Sidebar({ activeNav }) {
       setStyleLine({ top: e.target.parentElement.parentElement.offsetTop });
     }
   };
+  const [volumeRain, setVolumeRain] = useState(0.5);
+  const handleChaneVolumeRain = (e) => {
+    const value = volumeRain2.current.volume;
+    console.log(value);
+    volumeRain2.current.volume = e.target.value / 100;
+    setVolumeRain(Number(e.target.value));
+  };
   return (
     <article className={cx("wrapper")}>
       <div className={cx("logoApp", "autoCenter")}>
+        {isRain ? (
+          <div className={cx("rainy")}>
+            <audio
+              style={{ display: "none" }}
+              ref={volumeRain2}
+              src={rain}
+              autoPlay
+              controls
+              loop
+            />
+
+            <input
+              onChange={(e) => {
+                handleChaneVolumeRain(e);
+              }}
+              type="range"
+              // min={0}
+              // max={1}
+              value={volumeRain}
+              step={1}
+            />
+          </div>
+        ) : (
+          false
+        )}
+
         {isCheckedMusic === true ? (
           <>
-            {" "}
             {isNightApp === true ? (
               <div
                 onClick={() => {
@@ -86,7 +121,7 @@ function Sidebar({ activeNav }) {
                   alt="sun"
                   src={
                     isRain === true
-                      ? require("../../../../assets/images/rain.png")
+                      ? require("../../../../assets/images/cloudRainSun.png")
                       : require("../../../../assets/images/sun.png")
                   }
                 />
@@ -101,6 +136,12 @@ function Sidebar({ activeNav }) {
                 <img
                   alt="mars"
                   src={require("../../../../assets/images/jupiter.png")}
+                />
+              </div>
+              <div className={cx("planet", "mars")}>
+                <img
+                  alt="mars"
+                  src={require("../../../../assets/images/mars.png")}
                 />
               </div>
               <div className={cx("planet", "mercury")}>

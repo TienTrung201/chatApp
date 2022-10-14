@@ -42,6 +42,9 @@
   .opacity1 {
     opacity: 1;
   }
+  .none {
+    display: none;
+  }
   .backGroundVideo {
     position: fixed;
     top: 0;
@@ -51,27 +54,44 @@
     transition: 0.3s ease-in-out;
     // opacity: 0.6;
     // overflow: hidden;
-
+    // min width1251
     video {
       position: absolute;
-      width: 110%;
+      width: 115%;
       // height: 100vh;
       top: -150px;
       left: -50px;
       right: 0;
       padding-top: 0px;
     }
-    @media screen and (max-width: 1250px) {
+    //ipad
+    @media screen and (min-width: 1300px) and (min-height: 700px) {
       video {
-        width: 120%;
+        width: 130%;
         // height: 100vh;
         top: -70px;
-        left: -150px;
+        left: -250px;
+      }
+    }
+    @media screen and (max-width: 1250px) {
+      video {
+        width: 135%;
+        // height: 100vh;
+        top: -70px;
+        left: -250px;
       }
     }
     @media screen and (max-width: 1024px) {
       video {
         width: 140%;
+        // height: 100vh;
+        top: -50px;
+        left: -250px;
+      }
+    } //ipad
+    @media screen and (max-width: 1024px) and (min-height: 700px) {
+      video {
+        width: 145%;
         // height: 100vh;
         top: -50px;
         left: -250px;
@@ -117,5 +137,62 @@
         left: -250px;
       }
     }
+    @media screen and (min-height: 1000px) {
+      video {
+        width: 145%;
+        // height: 100vh;
+        top: -50px;
+        left: -250px;
+        display: none;
+      }
+    }
   }
 }
+// .backGroundVideo {
+//   position: fixed;
+//   top: 0;
+//   right: 0;
+//   bottom: 0;
+//   left: 0;
+//   transition: 0.3s ease-in-out;
+//   // opacity: 0.6;
+//   // overflow: hidden;
+
+//   video {
+//     position: absolute;
+//     width: 100%;
+//     // height: 130vh;
+//     // top: 0;
+//     // bottom: 0;
+
+//     // padding-top: 0px;
+//   }
+//   @media screen and (max-width: 1250px) {
+//     video {
+//     }
+//   }
+//   @media screen and (max-width: 1024px) {
+//     video {
+//     }
+//   }
+//   @media screen and (max-width: 850px) {
+//     video {
+//     }
+//   }
+//   @media screen and (max-width: 739px) {
+//     video {
+//     }
+//   }
+//   @media screen and (max-width: 620px) {
+//     video {
+//     }
+//   }
+//   @media screen and (max-width: 505px) {
+//     video {
+//     }
+//   }
+//   @media screen and (max-width: 450px) {
+//     video {
+//     }
+//   }
+// }

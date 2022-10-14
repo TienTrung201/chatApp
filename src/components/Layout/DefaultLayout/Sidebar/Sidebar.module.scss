@@ -24,72 +24,49 @@
     position: absolute;
     top: 0;
     width: 100%;
-    // .face {
-    //   width: 50px;
-    //   height: 50px;
-    //   border-radius: 50%;
-    //   background-color: #d8c557;
-    //   background-color: #e2e055;
 
-    //   box-shadow: inset -1.5px 0 0 2px rgba(255, 102, 0, 0.15);
-    //   position: relative;
-    //   .eye {
-    //     width: 15px;
-    //     height: 15px;
-    //     background-color: #fff;
-    //     border-radius: 50%;
-    //     position: absolute;
-    //     top: 16px;
-    //     left: 6px;
-    //     &::after {
-    //       content: "";
-    //       width: 6px;
-    //       height: 6px;
-    //       background-color: #000;
-    //       border-radius: 50%;
-    //       position: absolute;
-    //       top: 50%;
-    //       left: 50%;
-    //       transform: translate(-50%, -50%);
-    //       animation: rolleyes 1.5s ease-in-out infinite;
-    //     }
-    //   }
-    //   .mouth {
-    //     width: 10px;
-    //     height: 2.5px;
-    //     background-color: #884d0e;
-    //     border-radius: 2.5px;
-    //     position: absolute;
-    //     bottom: 10px;
-    //     left: 50%;
-    //     transform: translateX(-50%);
-    //   }
-    //   .eye:last-child {
-    //     left: auto;
-    //     right: 6px;
-    //   }
-    //   @keyframes rolleyes {
-    //     10% {
-    //       transform: translate(-7px, -50%);
-    //     }
-    //     15% {
-    //       transform: translate(-7px, -5px);
-    //     }
-    //     20% {
-    //       transform: translate(-50%, -7.5px);
-    //     }
-    //     100% {
-    //       transform: translate(-50%, -7.5px);
-    //     }
-    //   }
-    // }
+    &::after {
+      content: "";
+      width: 100%;
+      height: 10px;
+      position: absolute;
+      bottom: -10px;
+      // background-color: red;
+    }
+    &:hover .rainy {
+      display: flex;
+    }
+    .rainy {
+      position: absolute;
+      bottom: -30px;
+      display: flex;
+      height: 30px;
+      justify-content: center;
+      background-color: rgba(36, 36, 36, 0.5);
+      border-radius: 5px;
+      border: 1px solid #838383;
+      display: none;
+      input {
+        left: 0;
+        width: 85%;
+        opacity: 0.7;
+        cursor: pointer;
+        transition: 0.3s ease-in-out;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+
     transform-style: preserve-3d;
     .wrapperCloud {
       cursor: pointer;
       transition: 0.3s ease-in-out;
-      animation: weather 0.3s linear;
+
       img {
-        width: 80px;
+        width: 60px;
+        animation: weather 0.3s linear;
       }
     }
     @keyframes weather {
