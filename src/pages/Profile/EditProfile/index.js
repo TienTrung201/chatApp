@@ -45,6 +45,9 @@ function EditProfile() {
         displayName: nameValue,
         contact: contactValue,
       });
+      Dispatch(editProfileSlice.actions.setReplaceName(false));
+      Dispatch(editProfileSlice.actions.setReplaceEmail(false));
+      Dispatch(editProfileSlice.actions.setReplaceContact(false));
     }
   };
 
