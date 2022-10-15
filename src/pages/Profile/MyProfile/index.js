@@ -92,7 +92,7 @@ function MyProfile() {
             >
               <p className={cx("PropertyName")}>contact</p>
               <p className={cx("Property--content")}>
-                {user.number === undefined ? "" : user.number}
+                {user.contact === undefined ? "" : user.contact}
               </p>
             </div>
             <div className={cx("myProfileContent__Property")}>

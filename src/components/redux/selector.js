@@ -9,3 +9,6 @@ export const isRainy = (state) => state.sideBar.isRainy;
 export const isNight = (state) => state.sideBar.isNight;
 export const volumeRain = (state) => state.sideBar.volumeRain;
 export const volumeMusic = (state) => state.sideBar.volumeMusic;
+export const replaceName = (state) => state.editProfile.name;
+export const replaceEmail = (state) => state.editProfile.email;
+export const replaceContact = (state) => state.editProfile.contact;

@@ -155,7 +155,6 @@
         }
 
         &:hover {
-          color: rgb(63, 62, 62);
           background-color: #8c35fd;
         }
         .buttonContent {
@@ -173,17 +172,4 @@
       }
     }
   }
-}
-
-/* PC medium resolution > */
-
-@media (min-width: 1113px) {
-}
-/* >= Tablet */
-@media (min-width: 739px) {
-}
-
-/* > PC low resolution */
-
-@media (min-width: 1024px) and (max-width: 1239px) {
 }

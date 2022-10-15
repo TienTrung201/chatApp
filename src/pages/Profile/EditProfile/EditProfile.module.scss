@@ -1,3 +1,13 @@
+@mixin mobile {
+  @media screen and (max-width: 739px) {
+    @content;
+  }
+}
+@mixin tablet {
+  @media screen and (min-width: 740px) and (max-width: 1023px) {
+    @content;
+  }
+}
 .wrapper::-webkit-scrollbar {
   display: none;
 }
@@ -11,7 +21,13 @@
   padding: 40px 100px;
   display: flex;
   overflow-y: scroll;
-
+  @include tablet {
+    padding: 40px 20px;
+  }
+  @include mobile {
+    padding: 10px;
+    flex-direction: column;
+  }
   .myProfileInfo {
     flex: 1;
     background-color: var(--backGround--page);
@@ -24,39 +40,96 @@
     align-items: center;
     border-radius: 20px;
     box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.05);
-
+    @include mobile {
+      flex: 1;
+      height: 250px;
+      padding-top: 23.3px;
+      padding-bottom: 20.6px;
+      margin-right: 0px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+    }
     .myProfileInfo--avata {
       width: 130px;
       height: 130px;
       border-radius: 50%;
-      overflow: hidden;
+      // overflow: hidden;
       margin-bottom: 20px;
+      position: relative;
+      @include mobile {
+        width: 86.66px;
+        height: 86.66px;
+        margin-bottom: 13.33px;
+      }
       img {
         width: 100%;
         height: 100%;
         border-radius: 50%;
+        cursor: pointer;
+      }
+      .camera {
+        position: absolute;
+        bottom: 6px;
+        right: 4px;
+        background-color: rgb(223, 222, 222);
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+
+        .camereIcon {
+          color: var(--backGround-App);
+        }
       }
     }
     .myProfileInfo--contact {
       text-align: center;
       font-size: 1.2rem;
       color: #7d7d7d;
+      @include mobile {
+        font-size: 1rem;
+      }
       .myProfileInfo--Name {
         font-size: 1.6rem;
         margin-bottom: 5px;
         color: var(--text-color);
+        @include mobile {
+          font-size: 1.4rem;
+          margin-bottom: 5px;
+        }
       }
       .myProfileInfo--Email {
         margin-bottom: 5px;
+        @include mobile {
+          margin-bottom: 2px;
+        }
       }
-      .myProfileInfo--Nation {
-      }
+      // .myProfileInfo--Nation {
+      // }
     }
+  }
+  .borderInput {
+    border: solid 2px #ccc;
+    border-radius: 5px;
+    height: 30px;
+    padding-left: 10px;
+    transition: 0.3s ease;
+  }
+  .successful:focus {
+    border: solid 2px rgb(178, 247, 161);
+  }
+  .error {
+    border-radius: 5px;
+    height: 30px;
+    border: solid 2px rgb(255, 124, 124) !important;
   }
   .myProfileContent {
     flex: 1.8;
+
     // background-color: transparent !important;
     border-radius: 20px;
+    @include mobile {
+      border-radius: 10px;
+    }
     .backgroundSpecial {
       background-color: #e1edf5;
     }
@@ -71,15 +144,102 @@
       //   flex-direction: column;
       align-items: center;
       height: 50px;
-      //   justify-content: center;
+
+      justify-content: space-between;
+      @include mobile {
+        padding: 0 15px;
+      }
     }
     .PropertyName {
-      flex: 1;
+      // flex: 1;
+      min-width: 70px;
       color: #7d7d7d;
     }
     .Property--content {
-      flex: 1;
+      // flex: 1;
       font-weight: 600;
+      min-width: 350px;
+      @include tablet {
+        min-width: 250px;
+      }
+      @include mobile {
+        min-width: 150px;
+      }
+    }
+    .replace {
+      width: 35px;
+      height: 35px;
+      // background-color: #8c35fd;
+      cursor: pointer;
+      transition: 0.3s ease-in-out;
+      &:hover {
+        transform: scale(1.1);
+      }
+      .iconReplace {
+        color: var(--backGround-App);
+        font-size: 1.6rem;
+      }
+    }
+    .noScale {
+      &:hover {
+        transform: scale(1) !important;
+      }
+    }
+  }
+  .logout {
+    // float: left;
+    display: flex;
+    // justify-content: flex-end;
+    align-items: center;
+    padding: 20px 20px 20px 0px;
+    position: relative;
+    height: 60px;
+    .opacity05 {
+      opacity: 0.5;
+    }
+    .opacity1 {
+      opacity: 1;
+    }
+    .poiter {
+      cursor: pointer;
+    }
+
+    .buttonLogout {
+      position: absolute;
+      // right: 50px;
+      bottom: 0;
+      background-color: var(--backGround-App);
+      // opacity: 0.9;
+      height: 40px;
+      width: 140px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      color: #fff;
+      transition: 0.2s ease;
+      @include mobile {
+        height: 35px;
+        width: 120px;
+        border-radius: 5px;
+        font-size: 1.4rem;
+        right: 50px !important;
+      }
+
+      &:hover {
+        // color: rgb(63, 62, 62);
+        background-color: #8c35fd;
+      }
+      // .buttonContent {
+      // }
+      .iconLogout {
+        position: absolute;
+        left: 15px;
+        font-size: 1.6rem;
+        @include mobile {
+          display: none;
+          font-size: 1.5rem;
+        }
+        // color: #fff;
+      }
     }
   }
 }

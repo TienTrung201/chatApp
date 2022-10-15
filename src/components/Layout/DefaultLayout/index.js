@@ -26,7 +26,6 @@ function DefaultLayout({ children, active }) {
   useEffect(() => {
     scrollBottom.current.scrollTop = scrollBottom.current.scrollHeight;
   });
-  console.log(isCheckNight);
   return (
     <section ref={scrollBottom} className={cx("wrapper")}>
       <Sidebar activeNav={active} />
