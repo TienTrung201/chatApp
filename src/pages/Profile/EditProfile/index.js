@@ -1,13 +1,7 @@
 import styles from "./EditProfile.module.scss";
 import classNames from "classnames/bind";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  replaceContact,
-  replaceEmail,
-  replaceName,
-  userLogin,
-  users,
-} from "@/components/redux/selector";
+import { useSelector } from "react-redux";
+import { userLogin, users } from "@/components/redux/selector";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCameraRetro,
@@ -17,18 +11,19 @@ import {
 import { db } from "@/firebase/config";
 import { useCallback, useEffect, useRef, useState } from "react";
 import LoadingProFile from "@/components/Loaddings/LoadingProFile";
-import editProfileSlice from "./EditProfileSlice";
+
 import { doc, updateDoc } from "firebase/firestore";
+// import Modal from "@/components/Modal";
 const cx = classNames.bind(styles);
 
 function EditProfile() {
-  const Dispatch = useDispatch();
   const [isLoading, setIloading] = useState(false);
   let user = useSelector(userLogin);
   const listUsers = useSelector(users);
-  const name = useSelector(replaceName);
-  const email = useSelector(replaceEmail);
-  const contact = useSelector(replaceContact);
+
+  const [name, setName] = useState(false);
+  const [email, setEmail] = useState(false);
+  const [contact, setContact] = useState(false);
   const [toggle, setToggle] = useState(true);
   const [styleButton, setStyleButton] = useState({
     right: "50px",
@@ -45,9 +40,9 @@ function EditProfile() {
         displayName: nameValue,
         contact: contactValue,
       });
-      Dispatch(editProfileSlice.actions.setReplaceName(false));
-      Dispatch(editProfileSlice.actions.setReplaceEmail(false));
-      Dispatch(editProfileSlice.actions.setReplaceContact(false));
+      setName(false);
+      setEmail(false);
+      setContact(false);
     }
   };
 
@@ -135,6 +130,7 @@ function EditProfile() {
       ) : (
         <>
           <article className={cx("myProfileInfo")}>
+            {/* <Modal /> */}
             <div className={cx("myProfileInfo--avata")}>
               <img
                 src={
@@ -190,9 +186,9 @@ function EditProfile() {
 
               <button
                 onClick={() => {
-                  Dispatch(editProfileSlice.actions.setReplaceName(!name));
-                  Dispatch(editProfileSlice.actions.setReplaceEmail(false));
-                  Dispatch(editProfileSlice.actions.setReplaceContact(false));
+                  setName(!name);
+                  setEmail(false);
+                  setContact(false);
                 }}
                 className={cx("replace", "autoCenter")}
               >
@@ -227,9 +223,9 @@ function EditProfile() {
               <button
                 style={{ opacity: 0.54, cursor: "auto" }}
                 onClick={(e) => {
-                  Dispatch(editProfileSlice.actions.setReplaceName(false));
-                  // Dispatch(editProfileSlice.actions.setReplaceEmail(true));
-                  Dispatch(editProfileSlice.actions.setReplaceContact(false));
+                  setName(false);
+                  // setEmail(false)
+                  setContact(false);
                 }}
                 className={cx("replace", "autoCenter", "noScale")}
               >
@@ -267,11 +263,9 @@ function EditProfile() {
 
               <button
                 onClick={() => {
-                  Dispatch(editProfileSlice.actions.setReplaceName(false));
-                  Dispatch(editProfileSlice.actions.setReplaceEmail(false));
-                  Dispatch(
-                    editProfileSlice.actions.setReplaceContact(!contact)
-                  );
+                  setName(false);
+                  setEmail(false);
+                  setContact(!contact);
                 }}
                 className={cx("replace", "autoCenter")}
               >

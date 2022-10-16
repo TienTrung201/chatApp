@@ -1,0 +1,82 @@
+@mixin mobile {
+  @media screen and (max-width: 739px) {
+    @content;
+  }
+}
+@mixin tablet {
+  @media screen and (min-width: 740px) and (max-width: 1023px) {
+    @content;
+  }
+}
+.wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 999;
+
+  .container {
+    width: 540px;
+    max-width: calc(100vw - 32px);
+    border-radius: 8px;
+    background-color: var(--backGround--page);
+    border: 2px solid #dce0e3;
+
+    .header {
+      height: 50px;
+      text-align: center;
+      // padding: 10px 0;
+      font-size: 20px;
+      //   font-weight: 600;
+      border-bottom: 1px solid #ccc;
+      line-height: 1rem;
+      position: relative;
+      button {
+        position: absolute;
+        right: 10px;
+        background-color: rgba(204, 204, 204, 0.3);
+        height: 35px;
+        width: 35px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: 0.2s ease-in-out;
+        &:hover {
+          background-color: rgba(204, 204, 204, 1);
+        }
+        .iconClose {
+          font-size: 2rem;
+          color: var(--backGround-App);
+        }
+      }
+    }
+    .content {
+    }
+    .footer {
+      //   height: 50px;
+      padding: 8px 0;
+      button {
+        background-color: var(--backGround-App);
+        // opacity: 0.9;
+        height: 35px;
+        width: 120px;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        color: #fff;
+        transition: 0.2s ease;
+        @include mobile {
+          height: 35px;
+          width: 120px;
+          border-radius: 5px;
+          font-size: 1.4rem;
+          right: 50px !important;
+        }
+        &:hover {
+          // color: rgb(63, 62, 62);
+          background-color: #8c35fd;
+        }
+      }
+    }
+  }
+}

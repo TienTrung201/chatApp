@@ -6,7 +6,7 @@ import styles from "./DefaultLayout.module.scss";
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import {
-  isNight,
+  // isNight,
   //  isRainy,
   isSelectedMusic,
 } from "@/components/redux/selector";
@@ -21,7 +21,7 @@ const cx = classNames.bind(styles);
 function DefaultLayout({ children, active }) {
   const scrollBottom = useRef();
   const isCheckedMusic = useSelector(isSelectedMusic);
-  const isCheckNight = useSelector(isNight);
+  // const isCheckNight = useSelector(isNight);
   // const isRain = useSelector(isRainy);
   useEffect(() => {
     scrollBottom.current.scrollTop = scrollBottom.current.scrollHeight;
