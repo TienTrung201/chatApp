@@ -190,7 +190,7 @@ function EditProfile() {
 
               <button
                 onClick={() => {
-                  Dispatch(editProfileSlice.actions.setReplaceName(true));
+                  Dispatch(editProfileSlice.actions.setReplaceName(!name));
                   Dispatch(editProfileSlice.actions.setReplaceEmail(false));
                   Dispatch(editProfileSlice.actions.setReplaceContact(false));
                 }}
@@ -269,7 +269,9 @@ function EditProfile() {
                 onClick={() => {
                   Dispatch(editProfileSlice.actions.setReplaceName(false));
                   Dispatch(editProfileSlice.actions.setReplaceEmail(false));
-                  Dispatch(editProfileSlice.actions.setReplaceContact(true));
+                  Dispatch(
+                    editProfileSlice.actions.setReplaceContact(!contact)
+                  );
                 }}
                 className={cx("replace", "autoCenter")}
               >

@@ -14,6 +14,7 @@ import {
   volumeRain,
 } from "@/components/redux/selector";
 import rain from "@/assets/audio/rain.mp3";
+import MusicPlayer from "./MusicPlayer";
 
 const cx = classNames.bind(styles);
 
@@ -43,7 +44,7 @@ function Sidebar({ activeNav }) {
   const [styleLine, setStyleLine] = useState({
     top: 0,
   });
-  const volumeRain2 = useRef();
+  const rainAudio = useRef();
   const handleActiveNav = (e) => {
     if (e.target.tagName === "A") {
       setStyleLine({ top: e.target.offsetTop });
@@ -53,21 +54,22 @@ function Sidebar({ activeNav }) {
   };
   useEffect(() => {
     if (isRain === true && isCheckedMusic) {
-      volumeRain2.current.volume = volumeRainApp / 100;
+      rainAudio.current.volume = volumeRainApp / 100;
     }
   }, [isRain, volumeRainApp, isCheckedMusic]);
   const handleChaneVolumeRain = (e) => {
-    volumeRain2.current.volume = e.target.value / 100;
+    rainAudio.current.volume = e.target.value / 100;
     Dispatch(SidebarSlide.actions.setVolumeRain(e.target.value));
   };
   return (
     <article className={cx("wrapper")}>
+      {isCheckedMusic === true ? <MusicPlayer /> : false}
       <div className={cx("logoApp", "autoCenter")}>
         {isRain === true && isCheckedMusic === true ? (
           <div className={cx("rainy")}>
             <audio
               style={{ display: "none" }}
-              ref={volumeRain2}
+              ref={rainAudio}
               src={rain}
               autoPlay
               controls
@@ -163,6 +165,7 @@ function Sidebar({ activeNav }) {
         <ul className={cx("nav__list")}>
           <li
             onClick={() => {
+              Dispatch(SidebarSlide.actions.setIsPlayingMusic(false));
               handleSelectMusic(false);
             }}
             id={"getItem"}
@@ -184,6 +187,7 @@ function Sidebar({ activeNav }) {
           <li
             onClick={() => {
               handleSelectMusic(false);
+              Dispatch(SidebarSlide.actions.setIsPlayingMusic(false));
             }}
             className={cx("nav__listItem")}
           >

@@ -44,10 +44,13 @@ export const useFireStore = (collectionName, condition) => {
 
     const unsub = onSnapshot(collectionRef, (snapshot) => {
       const documents = snapshot.docs.map((doc) => {
-        const date = doc.data().createdAt;
+        let date;
         let lastActive;
         if (doc.data().lastActive) {
           lastActive = doc.data().lastActive;
+        }
+        if (doc.data().createdAt) {
+          date = doc.data().createdAt;
         }
 
         let lastActiveDay;
@@ -87,23 +90,25 @@ export const useFireStore = (collectionName, condition) => {
         let getHours;
         let getMinutes;
 
-        getDay =
-          date.toDate().getDate() < 10
-            ? `0${date.toDate().getDate()}`
-            : date.toDate().getDate();
-        getMonth =
-          date.toDate().getMonth() < 10
-            ? `0${date.toDate().getMonth()}`
-            : date.toDate().getDate();
-        getYear = date.toDate().getFullYear();
-        getHours =
-          date.toDate().getHours() < 10
-            ? `0${date.toDate().getHours()}`
-            : date.toDate().getHours();
-        getMinutes =
-          date.toDate().getMinutes() < 10
-            ? `0${date.toDate().getMinutes()}`
-            : date.toDate().getMinutes();
+        if (date) {
+          getDay =
+            date.toDate().getDate() < 10
+              ? `0${date.toDate().getDate()}`
+              : date.toDate().getDate();
+          getMonth =
+            date.toDate().getMonth() < 10
+              ? `0${date.toDate().getMonth()}`
+              : date.toDate().getDate();
+          getYear = date.toDate().getFullYear();
+          getHours =
+            date.toDate().getHours() < 10
+              ? `0${date.toDate().getHours()}`
+              : date.toDate().getHours();
+          getMinutes =
+            date.toDate().getMinutes() < 10
+              ? `0${date.toDate().getMinutes()}`
+              : date.toDate().getMinutes();
+        }
         return {
           ...doc.data(),
           id: doc.id,

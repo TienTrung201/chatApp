@@ -1,0 +1,59 @@
+@mixin mobile {
+  @media screen and (max-width: 739px) {
+    @content;
+  }
+}
+
+.musicApp {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 80px;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  &:hover input {
+    display: flex;
+  }
+  input {
+    position: absolute;
+    top: 20px;
+    width: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    cursor: pointer;
+    // top: -20px;
+  }
+  // justify-content: space-between;
+  .controlAudio {
+    // background-color: #000;
+    position: absolute;
+    bottom: 0;
+    background-color: rgba(36, 36, 36, 0.5);
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px;
+    button {
+      width: 33.3333%;
+      cursor: pointer;
+      transition: 0.3s ease-in-out;
+
+      .icon {
+        font-size: 18px;
+        color: rgba(36, 36, 36, 0.5);
+        transition: 0.3s ease-in-out;
+        // width: 33.33333%;
+      }
+      &:hover {
+        background-color: rgba(36, 36, 36, 0.6);
+      }
+      &:hover .icon {
+        color: #fff;
+      }
+    }
+  }
+}
