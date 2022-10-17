@@ -1,5 +1,6 @@
 import styles from "./EditProfile.module.scss";
 import classNames from "classnames/bind";
+import { v4 as uuid } from "uuid";
 import { useSelector } from "react-redux";
 import { userLogin, users } from "@/components/redux/selector";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,19 +9,23 @@ import {
   faFileImport,
   faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
-import { db } from "@/firebase/config";
+import { db, storage } from "@/firebase/config";
 import { useCallback, useEffect, useRef, useState } from "react";
 import LoadingProFile from "@/components/Loaddings/LoadingProFile";
 
 import { doc, updateDoc } from "firebase/firestore";
-// import Modal from "@/components/Modal";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+
 const cx = classNames.bind(styles);
 
 function EditProfile() {
   const [isLoading, setIloading] = useState(false);
   let user = useSelector(userLogin);
   const listUsers = useSelector(users);
-
+  user = listUsers.find((userChat) => {
+    return userChat.uid === user.uid;
+  });
+  const file = useRef();
   const [name, setName] = useState(false);
   const [email, setEmail] = useState(false);
   const [contact, setContact] = useState(false);
@@ -28,10 +33,19 @@ function EditProfile() {
   const [styleButton, setStyleButton] = useState({
     right: "50px",
   });
-  user = listUsers.find((userChat) => {
-    return userChat.uid === user.uid;
-  });
+  const [linkImg, setLinkImg] = useState(user ? user.photoURL : "");
   const buttonSend = useRef();
+  const handleChangeImg = async (fileimg) => {
+    const imgRef = ref(
+      storage,
+      `avatarUser/${user.uid}/${fileimg.name}${uuid()}`
+    );
+    uploadBytes(imgRef, fileimg).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then(async (imgurl) => {
+        setLinkImg(imgurl);
+      });
+    });
+  };
   const handleSendForm = () => {
     setIloading(false);
     if (checkPhone() && checkName()) {
@@ -39,6 +53,7 @@ function EditProfile() {
       updateDoc(userUpdate, {
         displayName: nameValue,
         contact: contactValue,
+        photoURL: linkImg,
       });
       setName(false);
       setEmail(false);
@@ -130,17 +145,32 @@ function EditProfile() {
       ) : (
         <>
           <article className={cx("myProfileInfo")}>
-            {/* <Modal /> */}
+            {/* <Modal></Modal> */}
             <div className={cx("myProfileInfo--avata")}>
+              <input
+                style={{ display: "none" }}
+                accept="image/*"
+                type="file"
+                name="file"
+                ref={file}
+                onChange={(e) => {
+                  handleChangeImg(e.target.files[0]);
+                }}
+              />
               <img
                 src={
                   user.photoURL !== null
-                    ? user.photoURL
+                    ? linkImg
                     : require("../../../assets/images/photoUser.png")
                 }
                 alt=""
               />
-              <button className={cx("camera")}>
+              <button
+                onClick={() => {
+                  file.current.click();
+                }}
+                className={cx("camera")}
+              >
                 <FontAwesomeIcon
                   className={cx("camereIcon")}
                   icon={faCameraRetro}
