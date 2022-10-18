@@ -11,14 +11,28 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { isSelectedMusic, userChat } from "@/components/redux/selector";
+import {
+  isSelectedMusic,
+  userChat,
+  userLogin,
+  users,
+} from "@/components/redux/selector";
+import Modal from "@/components/Modal";
+import EditUser from "./EditUser";
 
 const cx = classNames.bind(styles);
 
 function ModalInfoChat({ modal, setModal }) {
+  let user = useSelector(userLogin);
+  const listUsers = useSelector(users);
+  user = listUsers.find((userChat) => {
+    return userChat.uid === user.uid;
+  });
   const displayUserChat = useSelector(userChat);
   const isCheckedMusic = useSelector(isSelectedMusic);
   const [isSetting, setIsSetting] = useState(false);
+
+  const [visibleModal, setVisibleModal] = useState(false);
   const screenWidth = window.innerWidth;
   const widthProfileChatRoom =
     screenWidth > 739 && screenWidth < 1023
@@ -26,6 +40,7 @@ function ModalInfoChat({ modal, setModal }) {
       : screenWidth > 1023
       ? 250
       : "calc(100% - 1px)";
+
   return (
     <AnimatePresence>
       {modal && (
@@ -58,6 +73,25 @@ function ModalInfoChat({ modal, setModal }) {
               className={cx("closeModal--icon")}
             />
           </div>
+
+          <Modal
+            visible={visibleModal}
+            seiVisible={setVisibleModal}
+            title={"Biệt danh"}
+          >
+            <div className={cx("editNickName")}>
+              <EditUser
+                remainUser={user}
+                roomId={displayUserChat.chatId}
+                userEdit={displayUserChat.user}
+              />
+              <EditUser
+                remainUser={displayUserChat.user}
+                roomId={displayUserChat.chatId}
+                userEdit={user}
+              />
+            </div>
+          </Modal>
           <div className={cx("infoUser")}>
             <div className={cx("avatar")}>
               <img
@@ -121,6 +155,9 @@ function ModalInfoChat({ modal, setModal }) {
                       className={cx("navBar")}
                     >
                       <li
+                        onClick={() => {
+                          setVisibleModal(true);
+                        }}
                         className={cx(
                           "childrentControl",
                           "nickName",

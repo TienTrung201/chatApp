@@ -130,7 +130,6 @@ function Chat() {
   //get listChats
   const listuserChat = useFireStoreGetFields("userChats", user.uid);
   //get listChats
-
   const timeNow = Timestamp.now();
 
   const handleChangeSearch = (e) => {

@@ -85,6 +85,96 @@ $widthModal: 250px;
       font-size: 2rem;
     }
   }
+  .editNickName {
+    padding: 16px;
+    .user {
+      @include mobile {
+        // flex-direction: row-reverse;
+      }
+      border-radius: 5px;
+      display: flex;
+      padding: 8px;
+      position: relative;
+      transition: 0.2s ease-in-out;
+      background-color: rgba(204, 204, 204, 0);
+      padding-right: 40px;
+      cursor: pointer;
+
+      .avata {
+        display: flex;
+        // position: relative;
+        z-index: 1;
+
+        img {
+          width: 35px;
+          height: 35px;
+          border-radius: 50%;
+        }
+        &:hover ~ .overlay {
+          background-color: rgba(204, 204, 204, 1);
+        }
+      }
+      .user__display {
+        z-index: 1;
+        padding-left: 10px;
+        flex: 1;
+        &:hover ~ .overlay {
+          background-color: rgba(204, 204, 204, 1);
+        }
+        input {
+          height: 100%;
+          border: 2px solid #dce0e3;
+          border-radius: 5px;
+          width: 100%;
+          padding-left: 10px;
+          font-size: 1.6rem;
+        }
+        .user__name {
+          font-size: 1.3rem;
+          line-height: 1.5rem;
+          // white-space: nowrap;
+          // font-weight: 300;
+        }
+        .user__active {
+          font-size: 1.3rem;
+          color: #8f97a4;
+          @include mobile {
+            font-size: 1.2rem;
+          }
+        }
+      }
+      button {
+        z-index: 1;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(204, 204, 204, 0);
+        height: 36px;
+        width: 36px;
+        border-radius: 50%;
+        transition: 0.2s ease-in-out;
+        cursor: pointer;
+        &:hover {
+          background-color: rgba(204, 204, 204, 1);
+        }
+        .iconPen {
+          font-size: 16px;
+        }
+      }
+      .overlay {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        // background-color: #afe530;
+        background-color: rgba(204, 204, 204, 0);
+        z-index: 0;
+        border-radius: 5px;
+      }
+    }
+  }
   .controlRoom {
     padding: 0 18px;
     //bug nhảy dòng khi close modle
