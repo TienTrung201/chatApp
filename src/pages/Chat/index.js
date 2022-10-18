@@ -53,7 +53,7 @@ function Chat() {
   //     });
   //   });
   // }, []);
-  //Listen resize
+  //Lắng nghe sự kiện thay đổi kích thước màn hình
   const resize = () => {
     if (window.innerWidth > 739 && window.innerWidth < 1023) {
     }
@@ -82,9 +82,9 @@ function Chat() {
       window.removeEventListener("resize", resize, true);
     };
   }, []);
-  //Listen resize
+  //Lắng nghe sự kiện thay đổi kích thước màn hình
 
-  //controlChats reponsive
+  //reponsive style ModalInfoChat
   const styleModalInfo = modalInfo === true ? { zIndex: 4, right: "0px" } : {};
   const [styleControl, setStyleControl] = useState({
     width:
@@ -125,16 +125,31 @@ function Chat() {
       });
     }
   };
-  //controlChats reponsive
+  //reponsive style ModalInfoChat
 
-  //get listChats
+  //lấy danh sách người dùng chat
   const listuserChat = useFireStoreGetFields("userChats", user.uid);
-  //get listChats
+  //lấy danh sách người dùng chat
   const timeNow = Timestamp.now();
+  //tìm kiếm người dùng
+  useEffect(() => {
+    setSearchResult(
+      allUser.filter((user) => {
+        return removeVietnameseTones(user.displayName.toLowerCase()).includes(
+          removeVietnameseTones(searchUser.toLowerCase())
+        );
+      })
+    );
+    if (searchUser === "") {
+      setSearchResult([]);
+    }
+  }, [searchUser, allUser]);
 
   const handleChangeSearch = (e) => {
     setSearchUser(e.target.value);
   };
+  //tìm kiếm người dùng
+  // tạo phòng với user
   const handleSelect = async (userSelect) => {
     const combinedId =
       userSelect.uid > user.uid
@@ -174,6 +189,8 @@ function Chat() {
       console.log("done");
     }
   };
+  // tạo phòng với user
+
   const handleSelsectUserSearch = (userSelect) => {
     // if(listuserChat.findIndex())
     if (
@@ -188,6 +205,8 @@ function Chat() {
 
     // setIsLoadingUser(true)
   };
+
+  // thay đổi người dùng  vào store
   const selectedRoom = (userSelect, userChat) => {
     const combinedId =
       userSelect[1].userInfo.uid > user.uid
@@ -205,24 +224,12 @@ function Chat() {
     };
     Dispatch(boxChatSlice.actions.setUserSelect(data));
   };
+  // thay đổi người dùng  vào store
   useEffect(() => {
     setIsLoadingUser(false); //  click user unmount -> Loadding
   }, [listuserChat]);
 
-  //searchUser to chat
-  useEffect(() => {
-    setSearchResult(
-      allUser.filter((user) => {
-        return removeVietnameseTones(user.displayName.toLowerCase()).includes(
-          removeVietnameseTones(searchUser.toLowerCase())
-        );
-      })
-    );
-    if (searchUser === "") {
-      setSearchResult([]);
-    }
-  }, [searchUser, allUser]);
-  //searchUser to chat
+  //trạng thái hoạt động
   const userLoginCheckActive = allUser.find(
     (userChat) => userChat.uid === user.uid
   );
@@ -245,6 +252,9 @@ function Chat() {
       activeUser.removeEventListener("mouseover", activeUserChat);
     };
   }, [user.uid, timeNow, userLoginCheckActive]);
+  //trạng thái hoạt động
+
+  // âm thanh gõ phím
   const inputKeyboard = useRef();
   const [volumeKeyboard, setVolumeKeyboard] = useState(0);
   const handleChaneVolumeKeyboard = (e) => {
@@ -256,12 +266,13 @@ function Chat() {
       inputKeyboard.current.volume = volumeKeyboard / 100;
     }
   }, [volumeKeyboard, isCheckedMusic]);
+  // âm thanh gõ phím
   return (
     <section
       ref={activeUsersChat}
       className={cx(
         "wrapper",
-        isCheckedMusic === true ? "backgroundTransparent" : ""
+        isCheckedMusic === true ? "backgroundTransparentApp" : ""
       )}
     >
       {isCheckedMusic === true ? (
@@ -295,7 +306,7 @@ function Chat() {
         ref={open}
         className={cx(
           "controlChat",
-          isCheckedMusic === true ? "backgroundTransparent" : ""
+          isCheckedMusic === true ? "backgroundTransparentNoHover" : ""
         )}
       >
         <div className={cx("wrapperControl")}>
@@ -304,7 +315,7 @@ function Chat() {
               className={cx(
                 "createPlus",
                 "autoCenter",
-                isCheckedMusic === true ? "backgroundTransparent" : ""
+                isCheckedMusic === true ? "backgroundTransparentNoHover" : ""
               )}
             >
               <FontAwesomeIcon className={cx("creatPlusIcon")} icon={faPlus} />
@@ -326,7 +337,10 @@ function Chat() {
             )}
           >
             <input
-              className={cx("searchText")}
+              className={cx(
+                isCheckedMusic === true ? "textWhite" : "",
+                "searchText"
+              )}
               placeholder="Search Name"
               type="text"
               onChange={handleChangeSearch}
@@ -398,10 +412,25 @@ function Chat() {
             <>
               {listuserChat.map((user, index) => {
                 const lastSent = lastSentMessage(timeNow, user[1].createdAt);
+
                 let userChat = allUser.find((userChat) => {
                   return userChat.uid === user[1].userInfo.uid;
                 });
+                let nickName;
 
+                if (user[1].listUsers) {
+                  nickName = user[1].listUsers.find(
+                    (userChat) => userChat.uid === user[1].userInfo.uid
+                  );
+                }
+
+                if (nickName === undefined) {
+                  nickName = userChat.displayName;
+                } else if (nickName.nickName.trim(" ") === "") {
+                  nickName = userChat.displayName;
+                } else {
+                  nickName = nickName.nickName;
+                }
                 const userActive = allUser.find((userChat) => {
                   return userChat.uid === user[1].userInfo.uid;
                 });
@@ -454,7 +483,7 @@ function Chat() {
                       {controlChat === false || screenWidth > 739 ? (
                         <div className={cx("user__display")}>
                           <h5 className={cx("user__name")}>
-                            {userChat !== undefined ? userChat.displayName : ""}
+                            {userChat !== undefined ? nickName : ""}
                           </h5>
                           <div className={cx("user__chatHistory")}>
                             <p className={cx("userChatHistory")}>
@@ -503,13 +532,18 @@ function Chat() {
 
       <article className={cx("rooms")}>
         <BoxChat
+          listUserChats={listuserChat}
           controlChatToBox={controlChat}
           modal={modalInfo}
           setModal={setModalInfo}
         />
       </article>
       <article style={styleModalInfo} className={cx("ModalInfoChat")}>
-        <ModalInfoChat modal={modalInfo} setModal={setModalInfo} />
+        <ModalInfoChat
+          listUserChats={listuserChat}
+          modal={modalInfo}
+          setModal={setModalInfo}
+        />
       </article>
     </section>
   );

@@ -2,7 +2,7 @@ import styles from "./BoxChat.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { isSelectedMusic, userChat, users } from "@/components/redux/selector";
 import Message from "./Message";
@@ -13,8 +13,8 @@ import LoadingListUser from "@/components/Loaddings/LoadingListUser";
 import NoMessage from "@/components/NoMessage";
 const cx = classNames.bind(styles);
 
-function BoxChat({ modal, setModal }) {
-  const displayUserChat = useSelector(userChat);
+function BoxChat({ modal, setModal, listUserChats }) {
+  const roomChatInfo = useSelector(userChat);
   const allUser = useSelector(users);
   const isCheckedMusic = useSelector(isSelectedMusic);
   const boxMessage = useRef();
@@ -22,32 +22,57 @@ function BoxChat({ modal, setModal }) {
   useEffect(() => {
     boxMessage.current.scrollTop = boxMessage.current.scrollHeight;
   }, [messages]);
+  //get message
   useEffect(() => {
-    if (displayUserChat.chatId === "") {
+    if (roomChatInfo.chatId === "") {
       setMessage(undefined);
     } else {
-      const ubsub = onSnapshot(
-        doc(db, "chats", displayUserChat.chatId),
-        (doc) => {
-          doc.exists() && setMessage(doc.data());
-        }
-      );
+      const ubsub = onSnapshot(doc(db, "chats", roomChatInfo.chatId), (doc) => {
+        doc.exists() && setMessage(doc.data());
+      });
       return () => {
         ubsub();
         setMessage(false);
       };
     }
-  }, [displayUserChat.chatId]);
+  }, [roomChatInfo.chatId]);
   const userActive = allUser.find((userChat) => {
-    return userChat.uid === displayUserChat.user.uid;
+    return userChat.uid === roomChatInfo.user.uid;
   });
+  //get message
+
+  // trạng thái hoạt động
   let active;
   if (userActive === undefined) {
     active = undefined;
   } else {
     active = userActive.lastActive;
   }
+  // trạng thái hoạt động
+  //lấy biệt danh
+  const findCurrentRoom = listUserChats.find(
+    (roomList) => roomChatInfo.chatId === roomList[0]
+  );
+  let roomChat;
 
+  if (findCurrentRoom !== undefined) {
+    if (findCurrentRoom[1].listUsers) {
+      roomChat = findCurrentRoom[1].listUsers.find((user) => {
+        return user.uid === roomChatInfo.user.uid;
+      });
+    }
+  }
+
+  const nickName = useCallback(() => {
+    if (roomChat === undefined) {
+      return roomChatInfo.user.displayName;
+    } else if (roomChat.nickName.trim(" ") === "") {
+      return roomChatInfo.user.displayName;
+    } else {
+      return roomChat.nickName;
+    }
+  }, [roomChat, roomChatInfo.user.displayName]);
+  //lấy biệt danh
   return (
     <div className={cx("wrapper")}>
       <div
@@ -66,8 +91,8 @@ function BoxChat({ modal, setModal }) {
               ) : (
                 <img
                   src={
-                    displayUserChat.user.photoURL !== null
-                      ? displayUserChat.user.photoURL
+                    roomChatInfo.user.photoURL !== null
+                      ? roomChatInfo.user.photoURL
                       : require("../../../assets/images/photoUser.png")
                   }
                   alt=""
@@ -81,9 +106,7 @@ function BoxChat({ modal, setModal }) {
             </div>
             <div className={cx("user__display")}>
               <h5 className={cx("user__name")}>
-                {messages === undefined
-                  ? false
-                  : displayUserChat.user.displayName}
+                {messages === undefined ? false : nickName()}
               </h5>
 
               <p className={cx("user__active")}>{checkActiveUser(active)}</p>
@@ -104,7 +127,7 @@ function BoxChat({ modal, setModal }) {
         </div>
       </div>
       <div ref={boxMessage} className={cx("boxMessage")}>
-        {displayUserChat.chatId === "" ? (
+        {roomChatInfo.chatId === "" ? (
           <NoMessage />
         ) : messages === undefined ? (
           false

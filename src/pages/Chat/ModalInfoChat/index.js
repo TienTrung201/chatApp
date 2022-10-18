@@ -9,7 +9,7 @@ import {
   faImage,
   faSignature,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   isSelectedMusic,
@@ -22,13 +22,13 @@ import EditUser from "./EditUser";
 
 const cx = classNames.bind(styles);
 
-function ModalInfoChat({ modal, setModal }) {
+function ModalInfoChat({ modal, setModal, listUserChats }) {
   let user = useSelector(userLogin);
   const listUsers = useSelector(users);
   user = listUsers.find((userChat) => {
     return userChat.uid === user.uid;
   });
-  const displayUserChat = useSelector(userChat);
+  const roomChatInfo = useSelector(userChat);
   const isCheckedMusic = useSelector(isSelectedMusic);
   const [isSetting, setIsSetting] = useState(false);
 
@@ -41,6 +41,26 @@ function ModalInfoChat({ modal, setModal }) {
       ? 250
       : "calc(100% - 1px)";
 
+  const findCurrentRoom = listUserChats.find(
+    (roomList) => roomChatInfo.chatId === roomList[0]
+  );
+  let roomChat;
+  if (findCurrentRoom) {
+    if (findCurrentRoom[1].listUsers !== undefined)
+      roomChat = findCurrentRoom[1].listUsers.find((user) => {
+        return user.uid === roomChatInfo.user.uid;
+      });
+  }
+
+  const nickName = useCallback(() => {
+    if (roomChat === undefined) {
+      return roomChatInfo.user.displayName;
+    } else if (roomChat.nickName.trim(" ") === "") {
+      return roomChatInfo.user.displayName;
+    } else {
+      return roomChat.nickName;
+    }
+  }, [roomChat, roomChatInfo.user.displayName]);
   return (
     <AnimatePresence>
       {modal && (
@@ -59,7 +79,7 @@ function ModalInfoChat({ modal, setModal }) {
           }}
           className={cx(
             "wrapper",
-            isCheckedMusic === true ? "backgroundTransparent" : ""
+            isCheckedMusic === true ? "backgroundTransparentNoHover" : ""
           )}
         >
           <div
@@ -81,14 +101,16 @@ function ModalInfoChat({ modal, setModal }) {
           >
             <div className={cx("editNickName")}>
               <EditUser
+                listUserRoom={listUserChats}
                 remainUser={user}
-                roomId={displayUserChat.chatId}
-                userEdit={displayUserChat.user}
+                roomId={roomChatInfo.chatId}
+                userEdit={roomChatInfo.user}
               />
               <EditUser
-                remainUser={displayUserChat.user}
-                roomId={displayUserChat.chatId}
+                remainUser={roomChatInfo.user}
+                roomId={roomChatInfo.chatId}
                 userEdit={user}
+                listUserRoom={listUserChats}
               />
             </div>
           </Modal>
@@ -96,16 +118,14 @@ function ModalInfoChat({ modal, setModal }) {
             <div className={cx("avatar")}>
               <img
                 src={
-                  displayUserChat.user.photoURL !== null
-                    ? displayUserChat.user.photoURL
+                  roomChatInfo.user.photoURL !== null
+                    ? roomChatInfo.user.photoURL
                     : require("../../../assets/images/photoUser.png")
                 }
                 alt=""
               />
             </div>
-            <h1 className={cx("nameUser")}>
-              {displayUserChat.user.displayName}
-            </h1>
+            <h1 className={cx("nameUser")}>{nickName()}</h1>
           </div>
           <div className={cx("controlRoom")}>
             <ul className={cx("controlList")}>

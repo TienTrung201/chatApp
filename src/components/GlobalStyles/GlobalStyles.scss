@@ -67,21 +67,35 @@ body {
     // height: 100vh;
   }
 }
+.backgroundTransparentApp {
+  background-color: transparent !important;
+  opacity: 0;
+}
+.backgroundTransparentApp:hover {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  opacity: 1;
+}
 .backgroundTransparent {
   background-color: transparent !important;
+
   // border: 2px solid #838383;
 }
 .backgroundTransparent:hover {
+  border: 1px solid #838383;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+.backgroundTransparentNoHover {
+  background-color: transparent !important;
   border: 1px solid #838383;
 }
 .borderHover {
   border: 1px solid #838383;
 }
 
-.backgroundTransparent h4,
-.backgroundTransparent h1,
-.backgroundTransparent h5,
-.backgroundTransparent h2 {
+.backgroundTransparentApp h4,
+.backgroundTransparentApp h1,
+.backgroundTransparentApp h5,
+.backgroundTransparentApp h2 {
   color: #fff;
   opacity: 0.8;
 }

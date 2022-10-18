@@ -2,14 +2,16 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames/bind";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSelector } from "react-redux";
+import { isSelectedMusic } from "../redux/selector";
 // import { useState } from "react";
 //npm i classnames ...........cssBY
 
 import styles from "./Modal.module.scss";
 
 const cx = classNames.bind(styles);
-
 function Modal({ children, title, save, visible, seiVisible }) {
+  const isCheckedMusic = useSelector(isSelectedMusic);
   return (
     <AnimatePresence>
       {visible && (
@@ -30,10 +32,13 @@ function Modal({ children, title, save, visible, seiVisible }) {
               y: -700,
               transition: { duration: 0.2 },
             }}
-            className={cx("container")}
+            className={cx(
+              "container",
+              isCheckedMusic === true ? "backgroundTransparent" : ""
+            )}
           >
             <div className={cx("header", "autoCenter")}>
-              <h3> {title}</h3>
+              <h2> {title}</h2>
               <button
                 onClick={() => {
                   seiVisible(false);
