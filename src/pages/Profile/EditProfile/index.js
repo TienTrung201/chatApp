@@ -77,6 +77,8 @@ function EditProfile() {
   const [nameValue, setNameValue] = useState(initName);
   const [emailValue, setEmailValue] = useState(initEmail);
   const [contactValue, setContactValue] = useState(initContact);
+  const contactRef = useRef();
+  const nameRef = useRef();
   const handleChangeValue = (setValue, e) => {
     setValue(e.target.value);
   };
@@ -136,6 +138,16 @@ function EditProfile() {
     };
   }, [styleButton.right, toggle, checkName, checkPhone]);
 
+  useEffect(() => {
+    if (nameRef.current) {
+      nameRef.current.focus();
+    }
+  }, [name]);
+  useEffect(() => {
+    if (contactRef.current) {
+      contactRef.current.focus();
+    }
+  }, [contact]);
   return (
     <section className={cx("wrapper")}>
       {user === undefined ? (
@@ -188,6 +200,8 @@ function EditProfile() {
               <p className={cx("PropertyName")}>Name</p>
               {name === true ? (
                 <input
+                  ref={nameRef}
+                  spellCheck="false"
                   type="text"
                   placeholder="Name"
                   value={nameValue}
@@ -232,6 +246,7 @@ function EditProfile() {
               <p className={cx("PropertyName")}>Email</p>
               {email === true ? (
                 <input
+                  spellCheck="false"
                   type="text"
                   placeholder="email"
                   value={emailValue}
@@ -269,6 +284,8 @@ function EditProfile() {
               <p className={cx("PropertyName")}>contact</p>
               {contact === true ? (
                 <input
+                  ref={contactRef}
+                  spellCheck="false"
                   type="text"
                   value={contactValue}
                   placeholder="phone number"

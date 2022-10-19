@@ -32,24 +32,28 @@ function Modal({ children, title, save, visible, seiVisible }) {
               y: -700,
               transition: { duration: 0.2 },
             }}
-            className={cx(
-              "container",
-              isCheckedMusic === true ? "backgroundTransparent" : ""
-            )}
+            className={cx("container")}
           >
-            <div className={cx("header", "autoCenter")}>
-              <h2> {title}</h2>
-              <button
-                onClick={() => {
-                  seiVisible(false);
-                }}
-              >
-                <FontAwesomeIcon className={cx("iconClose")} icon={faClose} />
-              </button>
-            </div>
-            <article className={cx("content")}>{children}</article>
-            <div className={cx("footer", "autoCenter")}>
-              {save === true ? <button>Lưu</button> : false}
+            <div
+              className={cx(
+                "wrapperModal",
+                isCheckedMusic === true ? "backgroundTransparent" : ""
+              )}
+            >
+              <div className={cx("header", "autoCenter")}>
+                <h2> {title}</h2>
+                <button
+                  onClick={() => {
+                    seiVisible(false);
+                  }}
+                >
+                  <FontAwesomeIcon className={cx("iconClose")} icon={faClose} />
+                </button>
+              </div>
+              <article className={cx("content")}>{children}</article>
+              <div className={cx("footer", "autoCenter")}>
+                {save === true ? <button>Lưu</button> : false}
+              </div>
             </div>
           </motion.div>
         </section>

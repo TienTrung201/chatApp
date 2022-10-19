@@ -130,6 +130,7 @@
   .error {
     border-radius: 5px;
     height: 30px;
+    padding-left: 10px;
     border: solid 2px rgb(255, 124, 124) !important;
   }
   .myProfileContent {
@@ -170,6 +171,7 @@
       height: 30px;
       font-weight: 600;
       min-width: 350px;
+      font-size: 1.6rem;
       @include tablet {
         min-width: 250px;
       }
