@@ -237,14 +237,18 @@ function Chat() {
   useEffect(() => {
     const activeUser = activeUsersChat.current;
     const activeUserChat = () => {
-      if (
-        checkActiveUser(userLoginCheckActive.lastActive) !== "Đang hoạt động" &&
-        checkActiveUser(userLoginCheckActive.lastActive) !== ""
-      ) {
-        const userUpdate = doc(db, "users", user.uid);
-        updateDoc(userUpdate, {
-          lastActive: serverTimestamp(),
-        });
+      //vừa thêm if(userLoginCheckActive) vì báo đỏ
+      if (userLoginCheckActive) {
+        if (
+          checkActiveUser(userLoginCheckActive.lastActive) !==
+            "Đang hoạt động" &&
+          checkActiveUser(userLoginCheckActive.lastActive) !== ""
+        ) {
+          const userUpdate = doc(db, "users", user.uid);
+          updateDoc(userUpdate, {
+            lastActive: serverTimestamp(),
+          });
+        }
       }
     };
     activeUser.addEventListener("mouseover", activeUserChat);

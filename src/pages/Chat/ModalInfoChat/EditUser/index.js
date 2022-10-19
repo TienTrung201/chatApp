@@ -146,6 +146,9 @@ function EditUser({ userEdit, roomId, remainUser, listUserRoom }) {
             onChange={(e) => {
               handleChangName(e);
             }}
+            onBlur={() => {
+              editUserChat();
+            }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 editUserChat();
