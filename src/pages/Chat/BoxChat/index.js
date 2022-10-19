@@ -147,7 +147,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
         <div
           className={cx(
             "controlMessage",
-            isCheckedMusic === true ? "backgroundTransparent" : ""
+            isCheckedMusic === true ? "backgroundTransparentBlackBorder" : ""
           )}
         >
           <InputChat />

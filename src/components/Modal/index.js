@@ -37,7 +37,9 @@ function Modal({ children, title, save, visible, seiVisible }) {
             <div
               className={cx(
                 "wrapperModal",
-                isCheckedMusic === true ? "backgroundTransparent" : ""
+                isCheckedMusic === true
+                  ? "backgroundTransparentBlackBorder"
+                  : ""
               )}
             >
               <div className={cx("header", "autoCenter")}>

@@ -333,7 +333,7 @@ function Chat() {
           <div
             className={cx(
               "wrapperSearch",
-              isCheckedMusic === true ? "backgroundTransparent" : ""
+              isCheckedMusic === true ? "backgroundTransparentBlackBorder" : ""
             )}
           >
             <input
@@ -423,14 +423,16 @@ function Chat() {
                     (userChat) => userChat.uid === user[1].userInfo.uid
                   );
                 }
-
-                if (nickName === undefined) {
-                  nickName = userChat.displayName;
-                } else if (nickName.nickName.trim(" ") === "") {
-                  nickName = userChat.displayName;
-                } else {
-                  nickName = nickName.nickName;
+                if (userChat) {
+                  if (nickName === undefined) {
+                    nickName = userChat.displayName;
+                  } else if (nickName.nickName.trim(" ") === "") {
+                    nickName = userChat.displayName;
+                  } else {
+                    nickName = nickName.nickName;
+                  }
                 }
+
                 const userActive = allUser.find((userChat) => {
                   return userChat.uid === user[1].userInfo.uid;
                 });

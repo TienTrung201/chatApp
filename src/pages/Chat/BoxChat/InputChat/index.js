@@ -20,6 +20,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 const cx = classNames.bind(styles);
 function InputChat() {
@@ -28,6 +29,8 @@ function InputChat() {
   const [valueInput, setValueInput] = useState("");
   const file = useRef();
   const [imgFile, setImgFile] = useState(null);
+  const [imgUrl, setImgUrl] = useState(null);
+  const [fullPath, setFullPath] = useState(null);
   const isCheckedMusic = useSelector(isSelectedMusic);
   const createGetSize = (imageFile, getSize) => {
     var image;
@@ -44,35 +47,28 @@ function InputChat() {
   const handleSubmit = async () => {
     setValueInput("");
     setImgFile(false);
+    setImgUrl(null);
 
-    if (imgFile) {
-      const imgRef = ref(
-        storage,
-        `imagesChats/${displayUserChat.chatId}/${imgFile.name}${uuid()}`
-      );
+    if (imgUrl !== null) {
       createGetSize(imgFile, (w, h) => {
-        uploadBytes(imgRef, imgFile).then((snapshot) => {
-          getDownloadURL(snapshot.ref).then(async (imgUrl) => {
-            try {
-              await updateDoc(doc(db, "chats", displayUserChat.chatId), {
-                messages: arrayUnion({
-                  id: uuid(),
-                  text: valueInput,
-                  senderId: user.uid,
-                  createdAt: Timestamp.now(),
-                  image: {
-                    url: imgUrl,
-                    fullPath: snapshot.metadata.fullPath,
-                    width: w,
-                    height: h,
-                  },
-                }),
-              });
-            } catch (e) {
-              console.log("e");
-            }
+        try {
+          updateDoc(doc(db, "chats", displayUserChat.chatId), {
+            messages: arrayUnion({
+              id: uuid(),
+              text: valueInput,
+              senderId: user.uid,
+              createdAt: Timestamp.now(),
+              image: {
+                url: imgUrl,
+                fullPath: fullPath,
+                width: w,
+                height: h,
+              },
+            }),
           });
-        });
+        } catch (e) {
+          console.log("e");
+        }
       });
     } else {
       if (valueInput.trim(" ") === "") {
@@ -119,6 +115,19 @@ function InputChat() {
   const handleChange = (e) => {
     setValueInput(e.target.value);
   };
+  const handleChangeFile = (imgFile) => {
+    const imgRef = ref(
+      storage,
+      `imagesChats/${displayUserChat.chatId}/${imgFile.name}${uuid()}`
+    );
+    uploadBytes(imgRef, imgFile).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((imgUrl) => {
+        setImgUrl(imgUrl);
+        setFullPath(snapshot.metadata.fullPath);
+        setImgFile(imgFile);
+      });
+    });
+  };
   return (
     <>
       <input
@@ -128,7 +137,9 @@ function InputChat() {
         name="file"
         ref={file}
         onChange={(e) => {
-          setImgFile(e.target.files[0]);
+          // setImgFile(e.target.files[0]);
+          handleChangeFile(e.target.files[0]);
+          e.target.value = "";
         }}
       />
       <button
@@ -140,6 +151,26 @@ function InputChat() {
         <FontAwesomeIcon className={cx("addFile-icon")} icon={faImages} />
       </button>
       <div className={cx("wrapperTextMessage", "autoCenter")}>
+        {imgUrl !== null ? (
+          <div className={cx("img-container")}>
+            <div className={cx("imgWaitingSend")}>
+              <button
+                onClick={() => {
+                  setImgFile(false);
+                  setImgUrl(null);
+                  imgFile.current.value = "";
+                }}
+                className={cx("close", "autoCenter")}
+              >
+                <FontAwesomeIcon icon={faClose} className={cx("iconClose")} />
+              </button>
+              <img src={imgUrl} alt="" />
+            </div>
+          </div>
+        ) : (
+          false
+        )}
+
         <input
           className={cx(isCheckedMusic === true ? "textWhite" : "")}
           autoComplete="off"

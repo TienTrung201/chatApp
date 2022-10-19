@@ -80,6 +80,10 @@ body {
 
   // border: 2px solid #838383;
 }
+.backgroundTransparentBlackBorder {
+  border: 1px solid #838383;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
 .backgroundTransparent:hover {
   border: 1px solid #838383;
   background-color: rgba(0, 0, 0, 0.5) !important;

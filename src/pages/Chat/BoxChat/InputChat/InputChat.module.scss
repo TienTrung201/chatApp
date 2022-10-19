@@ -23,9 +23,43 @@
   // background-color: #8f97a4;
   // min-height: 50px;
   display: flex;
-  align-items: center;
+  // align-items: center;
+  flex-direction: column;
   flex: 1;
   height: 100%;
+  .img-container {
+    height: 56px;
+    width: 100%;
+
+    .imgWaitingSend {
+      height: 40px;
+      width: 40px;
+      position: relative;
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 5px;
+        object-fit: cover;
+        z-index: 0;
+      }
+      .close {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        z-index: 1;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        .iconClose {
+          font-size: 1.2rem;
+        }
+      }
+    }
+  }
+
   .inputMessage::-webkit-scrollbar {
     display: none;
   }
