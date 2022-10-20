@@ -8,6 +8,29 @@
     @content;
   }
 }
+.boxRemove {
+  width: 100px;
+  border-radius: 5px;
+  // border: 1px solid #838383;
+  // background-color: #fff;
+  box-shadow: 0px 0px 5px rgb(0 0 0 / 10%);
+  border: 4px solid var(--backGround--page);
+  overflow: hidden;
+  .removeMessage {
+    border-radius: 5px;
+    height: 25px;
+    cursor: pointer;
+    &:hover {
+      background-color: #dbdbdb;
+    }
+    span {
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: #000;
+      text-shadow: 0 0 rgb(129, 129, 129);
+    }
+  }
+}
 
 .message__chat {
   display: flex;
@@ -18,7 +41,9 @@
   &:last-child {
     margin-bottom: 0px;
   }
-
+  &:hover .boxText .optionTextMessage {
+    display: flex;
+  }
   .boxText {
     background-color: var(--backGround-App);
     padding: 15px;
@@ -26,6 +51,39 @@
     border-radius: 20px;
     max-width: 60%;
     margin-top: 5px;
+    position: relative;
+
+    .optionTextMessage {
+      position: absolute;
+      right: 100%;
+      // width: 50px;
+      margin: 0 5px;
+      display: flex;
+      align-items: center;
+      top: 50%;
+      transform: translateY(-50%);
+      justify-content: space-around;
+      display: none;
+      button {
+        // background-color: aqua;
+        border-radius: 50%;
+        width: 22px;
+        height: 22px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #8f97a4;
+        }
+        &:hover .icon {
+          color: #696969;
+        }
+        .icon {
+          color: #8f97a4;
+          font-size: 1.4rem;
+        }
+      }
+    }
+
     .textMessage {
       font-size: 1.4rem;
       color: #fff;
@@ -79,6 +137,13 @@
     max-width: 60%;
     margin-top: 5px;
     width: fit-content;
+    position: relative;
+    .optionTextMessage {
+      left: 100%;
+      width: 65px;
+      margin: 0 5px;
+      flex-direction: row-reverse;
+    }
     .textMessage {
       font-size: 1.4rem;
       color: #fff;
