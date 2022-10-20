@@ -36,6 +36,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
       };
     }
   }, [roomChatInfo.chatId]);
+  //get message
   const userActive = allUser.find((userChat) => {
     return userChat.uid === roomChatInfo.user.uid;
   });
@@ -136,7 +137,13 @@ function BoxChat({ modal, setModal, listUserChats }) {
         ) : (
           <>
             {messages.messages.map((message, i) => {
-              return <Message data={message} key={i} />;
+              return (
+                <Message
+                  allMessage={messages.messages}
+                  data={message}
+                  key={i}
+                />
+              );
             })}
           </>
         )}

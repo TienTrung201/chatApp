@@ -8,29 +8,6 @@
     @content;
   }
 }
-.boxRemove {
-  width: 100px;
-  border-radius: 5px;
-  // border: 1px solid #838383;
-  // background-color: #fff;
-  box-shadow: 0px 0px 5px rgb(0 0 0 / 10%);
-  border: 4px solid var(--backGround--page);
-  overflow: hidden;
-  .removeMessage {
-    border-radius: 5px;
-    height: 25px;
-    cursor: pointer;
-    &:hover {
-      background-color: #dbdbdb;
-    }
-    span {
-      font-size: 1.5rem;
-      font-weight: 500;
-      color: #000;
-      text-shadow: 0 0 rgb(129, 129, 129);
-    }
-  }
-}
 
 .message__chat {
   display: flex;
@@ -43,6 +20,24 @@
   }
   &:hover .boxText .optionTextMessage {
     display: flex;
+  }
+
+  .boxTextDeletedMessage {
+    background-color: var(--backGround--page);
+    padding: 6px 12px;
+    // padding-bottom: 8px;
+    border-radius: 20px;
+    max-width: 60%;
+    margin-top: 5px;
+    position: relative;
+    border: 1px solid #838383;
+    width: fit-content;
+    .deletedMessage {
+      // background-color:;
+      span {
+        color: #838383;
+      }
+    }
   }
   .boxText {
     background-color: var(--backGround-App);
@@ -64,24 +59,24 @@
       transform: translateY(-50%);
       justify-content: space-around;
       display: none;
-      button {
-        // background-color: aqua;
-        border-radius: 50%;
-        width: 22px;
-        height: 22px;
-        cursor: pointer;
+      // .buttonControlText {
+      //   // background-color: aqua;
+      //   border-radius: 50%;
+      //   width: 22px;
+      //   height: 22px;
+      //   cursor: pointer;
 
-        &:hover {
-          background-color: #8f97a4;
-        }
-        &:hover .icon {
-          color: #696969;
-        }
-        .icon {
-          color: #8f97a4;
-          font-size: 1.4rem;
-        }
-      }
+      //   &:hover {
+      //     background-color: #8f97a4;
+      //   }
+      //   &:hover .icon {
+      //     color: #696969;
+      //   }
+      //   .icon {
+      //     color: #8f97a4;
+      //     font-size: 1.4rem;
+      //   }
+      // }
     }
 
     .textMessage {
@@ -129,6 +124,7 @@
       max-width: 40%;
     }
   }
+
   .boxText {
     background-color: var(--backGround-App);
     padding: 15px;

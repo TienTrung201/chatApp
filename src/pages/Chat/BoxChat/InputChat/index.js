@@ -24,7 +24,7 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 const cx = classNames.bind(styles);
 function InputChat() {
-  const displayUserChat = useSelector(userChat);
+  const roomChatInfo = useSelector(userChat);
   const user = useSelector(userLogin);
   const [valueInput, setValueInput] = useState("");
   const file = useRef();
@@ -52,7 +52,7 @@ function InputChat() {
     if (imgUrl !== null) {
       createGetSize(imgFile, (w, h) => {
         try {
-          updateDoc(doc(db, "chats", displayUserChat.chatId), {
+          updateDoc(doc(db, "chats", roomChatInfo.chatId), {
             messages: arrayUnion({
               id: uuid(),
               text: valueInput,
@@ -75,7 +75,7 @@ function InputChat() {
         return;
       }
       try {
-        await updateDoc(doc(db, "chats", displayUserChat.chatId), {
+        await updateDoc(doc(db, "chats", roomChatInfo.chatId), {
           messages: arrayUnion({
             id: uuid(),
             text: valueInput,
@@ -89,19 +89,19 @@ function InputChat() {
     }
 
     try {
-      await updateDoc(doc(db, "userChats", displayUserChat.user.uid), {
-        [displayUserChat.chatId + ".lastMessage"]: {
+      await updateDoc(doc(db, "userChats", roomChatInfo.user.uid), {
+        [roomChatInfo.chatId + ".lastMessage"]: {
           text: valueInput,
           sender: user.displayName,
         },
-        [displayUserChat.chatId + ".createdAt"]: serverTimestamp(),
+        [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
       });
       await updateDoc(doc(db, "userChats", user.uid), {
-        [displayUserChat.chatId + ".lastMessage"]: {
+        [roomChatInfo.chatId + ".lastMessage"]: {
           text: valueInput,
           sender: user.displayName,
         },
-        [displayUserChat.chatId + ".createdAt"]: serverTimestamp(),
+        [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
       });
     } catch (e) {
       console.log(e);
@@ -118,7 +118,7 @@ function InputChat() {
   const handleChangeFile = (imgFile) => {
     const imgRef = ref(
       storage,
-      `imagesChats/${displayUserChat.chatId}/${imgFile.name}${uuid()}`
+      `imagesChats/${roomChatInfo.chatId}/${imgFile.name}${uuid()}`
     );
     uploadBytes(imgRef, imgFile).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((imgUrl) => {
