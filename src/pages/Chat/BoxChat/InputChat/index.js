@@ -23,7 +23,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 const cx = classNames.bind(styles);
-function InputChat() {
+function InputChat({ myNickNameChat }) {
   const roomChatInfo = useSelector(userChat);
   const user = useSelector(userLogin);
   const [valueInput, setValueInput] = useState("");
@@ -92,14 +92,14 @@ function InputChat() {
       await updateDoc(doc(db, "userChats", roomChatInfo.user.uid), {
         [roomChatInfo.chatId + ".lastMessage"]: {
           text: valueInput,
-          sender: user.displayName,
+          sender: myNickNameChat,
         },
         [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
       });
       await updateDoc(doc(db, "userChats", user.uid), {
         [roomChatInfo.chatId + ".lastMessage"]: {
           text: valueInput,
-          sender: user.displayName,
+          sender: myNickNameChat,
         },
         [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
       });

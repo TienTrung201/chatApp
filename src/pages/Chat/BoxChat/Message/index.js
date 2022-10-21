@@ -1,6 +1,7 @@
 import { userChat, userLogin } from "@/components/redux/selector";
 
 import classNames from "classnames/bind";
+import { useState } from "react";
 
 import { useSelector } from "react-redux";
 import ControlMessage from "./ControlMessage";
@@ -8,7 +9,7 @@ import styles from "./Message.module.scss";
 
 const cx = classNames.bind(styles);
 
-function Message({ data, allMessage }) {
+function Message({ data, allMessage, myNickNameChat }) {
   const heightImageScroll = window.innerWidth > 739 ? "200px" : "100px";
   const userLoginChat = useSelector(userLogin);
   const roomChatInfo = useSelector(userChat);
@@ -37,7 +38,7 @@ function Message({ data, allMessage }) {
       ? `0${data.createdAt.toDate().getMinutes()}`
       : data.createdAt.toDate().getMinutes();
   //last send message
-  console.log(data.type);
+  const [isFocusMessage, setIsFocusMessage] = useState();
   return (
     <>
       {userLoginChat.uid === data.senderId ? (
@@ -59,8 +60,21 @@ function Message({ data, allMessage }) {
                 </div>
               ) : (
                 <div className={cx("boxText")}>
-                  <div className={cx("optionTextMessage")}>
+                  <div
+                    onClick={() => {
+                      setIsFocusMessage(!isFocusMessage);
+                    }}
+                    onBlur={() => {
+                      setIsFocusMessage(false);
+                    }}
+                    className={cx(
+                      "optionTextMessage",
+                      isFocusMessage === true ? "focus" : ""
+                    )}
+                  >
                     <ControlMessage
+                      myNickName={myNickNameChat}
+                      userLogin={userLoginChat}
                       allMess={allMessage}
                       currentMessage={data}
                     />
@@ -100,8 +114,20 @@ function Message({ data, allMessage }) {
                   </div>
                 ) : (
                   <div className={cx("boxText")}>
-                    <div className={cx("optionTextMessage")}>
+                    <div
+                      onClick={() => {
+                        setIsFocusMessage(!isFocusMessage);
+                      }}
+                      onBlur={() => {
+                        setIsFocusMessage(false);
+                      }}
+                      className={cx(
+                        "optionTextMessage",
+                        isFocusMessage === true ? "focus" : ""
+                      )}
+                    >
                       <ControlMessage
+                        friendChat={true}
                         allMess={allMessage}
                         currentMessage={data}
                       />

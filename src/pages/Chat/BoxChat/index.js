@@ -4,7 +4,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { isSelectedMusic, userChat, users } from "@/components/redux/selector";
+import {
+  isSelectedMusic,
+  userChat,
+  userLogin,
+  users,
+} from "@/components/redux/selector";
 import Message from "./Message";
 import InputChat from "./InputChat";
 import { doc, onSnapshot, Timestamp } from "firebase/firestore";
@@ -16,6 +21,7 @@ const cx = classNames.bind(styles);
 function BoxChat({ modal, setModal, listUserChats }) {
   const roomChatInfo = useSelector(userChat);
   const allUser = useSelector(users);
+  const user = useSelector(userLogin);
   const isCheckedMusic = useSelector(isSelectedMusic);
   const boxMessage = useRef();
   const [messages, setMessage] = useState(undefined);
@@ -55,14 +61,28 @@ function BoxChat({ modal, setModal, listUserChats }) {
     (roomList) => roomChatInfo.chatId === roomList[0]
   );
   let roomChat;
-
+  let myName;
   if (findCurrentRoom !== undefined) {
     if (findCurrentRoom[1].listUsers) {
       roomChat = findCurrentRoom[1].listUsers.find((user) => {
         return user.uid === roomChatInfo.user.uid;
       });
     }
+    if (findCurrentRoom[1].listUsers) {
+      myName = findCurrentRoom[1].listUsers.find((userchat) => {
+        return userchat.uid === user.uid;
+      });
+    }
   }
+  const myNickName = useCallback(() => {
+    if (myName === undefined) {
+      return myName.displayName;
+    } else if (myName.nickName.trim(" ") === "") {
+      return myName.displayName;
+    } else {
+      return myName.nickName;
+    }
+  }, [myName]);
 
   const nickName = useCallback(() => {
     if (roomChat === undefined) {
@@ -74,6 +94,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
     }
   }, [roomChat, roomChatInfo.user.displayName]);
   //lấy biệt danh
+
   return (
     <div className={cx("wrapper")}>
       <div
@@ -139,6 +160,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
             {messages.messages.map((message, i) => {
               return (
                 <Message
+                  myNickNameChat={myNickName()}
                   allMessage={messages.messages}
                   data={message}
                   key={i}
@@ -157,7 +179,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
             isCheckedMusic === true ? "backgroundTransparentBlackBorder" : ""
           )}
         >
-          <InputChat />
+          <InputChat myNickNameChat={myNickName()} />
         </div>
       )}
     </div>
