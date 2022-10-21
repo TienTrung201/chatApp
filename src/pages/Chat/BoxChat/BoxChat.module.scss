@@ -100,6 +100,7 @@ $active--Color: #31a24c;
     }
   }
   .boxMessage {
+    overflow: hidden;
     flex: 1;
     display: flex;
     // justify-content: flex-end;

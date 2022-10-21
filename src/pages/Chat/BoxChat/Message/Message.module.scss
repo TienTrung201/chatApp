@@ -98,30 +98,33 @@
   &:hover .imgMessage .imgMessageOptions {
     display: flex;
   }
-  // .imgMessage {
-  //   max-width: 60%;
-  //   max-height: 200px;
-  //   width: max-content;
-  //   // overflow: hidden;
-  //   border-radius: 10px;
-  //   position: relative;
-  //   .imgMessageOptions {
-  //     position: absolute;
-  //     left: 100%;
-  //     top: 50%;
-  //     transform: translateY(-50%);
-  //     display: flex;
-  //     display: none;
-  //     flex-direction: row-reverse;
-  //   }
+  .imgMessage {
+    max-width: 60%;
+    // max-height: 200px;
+    // // width: max-content;
+    // // overflow: hidden;
+    // border-radius: 10px;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    align-items: center;
+    // position: relative;
+    // width: 80%;
+    .imgMessageOptions {
+      // position: absolute;
+      display: flex;
+      // display: none;
+      flex-direction: row-reverse;
+    }
 
-  //   @include mobile {
-  //     max-height: 150px;
-  //   }
-  //   @include tablet {
-  //     max-width: 40%;
-  //   }
-  // }
+    @include mobile {
+      max-height: 150px;
+      // max-width: 40%;
+    }
+    @include tablet {
+      // max-width: 40%;
+    }
+  }
   img {
     width: max-content;
     max-width: 60%;
@@ -134,7 +137,7 @@
       max-height: 100px;
     }
     @include tablet {
-      max-width: 40%;
+      max-width: 100%;
     }
   }
   .boxText {
