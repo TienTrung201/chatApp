@@ -158,7 +158,7 @@ function InputChat({ myNickNameChat }) {
                 onClick={() => {
                   setImgFile(false);
                   setImgUrl(null);
-                  imgFile.current.value = "";
+                  file.current.value = "";
                 }}
                 className={cx("close", "autoCenter")}
               >

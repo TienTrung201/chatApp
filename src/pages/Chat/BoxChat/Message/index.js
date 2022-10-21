@@ -44,12 +44,78 @@ function Message({ data, allMessage, myNickNameChat }) {
       {userLoginChat.uid === data.senderId ? (
         <div className={cx("message__chat", "user")}>
           {data.image ? (
-            <img style={styleImage} src={data.image.url} alt="" />
-          ) : (
-            false
-          )}
-          {data.text.trim(" ") === "" ? (
-            false
+            <>
+              {data.type === "remove" ? (
+                <div className={cx("boxTextDeletedMessage")}>
+                  <div className={cx("deletedMessage")}>
+                    <span>tin nhắn đã bị thu hồi</span>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className={cx("imgMessage")}>
+                    {data.text.trim(" ") === "" ? (
+                      <div
+                        onClick={() => {
+                          setIsFocusMessage(!isFocusMessage);
+                        }}
+                        onBlur={() => {
+                          setIsFocusMessage(false);
+                        }}
+                        className={cx(
+                          "optionTextMessage",
+                          "imgMessageOptions",
+                          isFocusMessage === true ? "focus" : ""
+                        )}
+                      >
+                        <ControlMessage
+                          myNickName={myNickNameChat}
+                          userLogin={userLoginChat}
+                          allMess={allMessage}
+                          currentMessage={data}
+                        />
+                      </div>
+                    ) : (
+                      false
+                    )}
+
+                    <img style={styleImage} src={data.image.url} alt="" />
+                  </div>
+                  {data.text.trim(" ") === "" ? (
+                    false
+                  ) : (
+                    <>
+                      <div className={cx("boxText")}>
+                        <div
+                          onClick={() => {
+                            setIsFocusMessage(!isFocusMessage);
+                          }}
+                          onBlur={() => {
+                            setIsFocusMessage(false);
+                          }}
+                          className={cx(
+                            "optionTextMessage",
+                            isFocusMessage === true ? "focus" : ""
+                          )}
+                        >
+                          <ControlMessage
+                            myNickName={myNickNameChat}
+                            userLogin={userLoginChat}
+                            allMess={allMessage}
+                            currentMessage={data}
+                          />
+                        </div>
+
+                        <p className={cx("textMessage")}>{data.text}</p>
+                        <p
+                          className={cx("textTime")}
+                        >{`${getHours}:${getMinutes}`}</p>
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
+            </>
           ) : (
             <>
               {data.type === "remove" ? (
@@ -102,8 +168,75 @@ function Message({ data, allMessage, myNickNameChat }) {
             />
           </div>
           <div className={cx("messageChat")}>
-            {data.text.trim(" ") === "" ? (
-              false
+            {data.image ? (
+              <>
+                {data.type === "remove" ? (
+                  <div className={cx("boxTextDeletedMessage")}>
+                    <div className={cx("deletedMessage")}>
+                      <span>tin nhắn đã bị thu hồi</span>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {data.text.trim(" ") === "" ? (
+                      false
+                    ) : (
+                      <>
+                        <div className={cx("boxText")}>
+                          <div
+                            onClick={() => {
+                              setIsFocusMessage(!isFocusMessage);
+                            }}
+                            onBlur={() => {
+                              setIsFocusMessage(false);
+                            }}
+                            className={cx(
+                              "optionTextMessage",
+                              isFocusMessage === true ? "focus" : ""
+                            )}
+                          >
+                            <ControlMessage
+                              friendChat={true}
+                              allMess={allMessage}
+                              currentMessage={data}
+                            />
+                          </div>
+                          <p className={cx("textMessage")}>{data.text}</p>
+                          <p
+                            className={cx("textTime")}
+                          >{`${getHours}:${getMinutes}`}</p>
+                        </div>
+                      </>
+                    )}
+                    <div className={cx("imgMessage")}>
+                      {data.text.trim(" ") === "" ? (
+                        <div
+                          onClick={() => {
+                            setIsFocusMessage(!isFocusMessage);
+                          }}
+                          onBlur={() => {
+                            setIsFocusMessage(false);
+                          }}
+                          className={cx(
+                            "optionTextMessage",
+                            "imgMessageOptions",
+                            isFocusMessage === true ? "focus" : ""
+                          )}
+                        >
+                          <ControlMessage
+                            friendChat={true}
+                            allMess={allMessage}
+                            currentMessage={data}
+                          />
+                        </div>
+                      ) : (
+                        false
+                      )}
+                      <img style={styleImage} src={data.image.url} alt="" />
+                    </div>
+                  </>
+                )}
+              </>
             ) : (
               <>
                 {data.type === "remove" ? (
@@ -139,11 +272,6 @@ function Message({ data, allMessage, myNickNameChat }) {
                   </div>
                 )}
               </>
-            )}
-            {data.image ? (
-              <img style={styleImage} src={data.image.url} alt="" />
-            ) : (
-              false
             )}
           </div>
         </div>

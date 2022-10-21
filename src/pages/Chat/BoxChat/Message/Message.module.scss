@@ -21,6 +21,7 @@
   &:hover .boxText .optionTextMessage {
     display: flex;
   }
+
   .focus {
     display: flex !important;
   }
@@ -93,16 +94,42 @@
   flex-direction: column-reverse;
   flex: 1;
   // margin-bottom: 20px;
-  img {
-    width: max-content;
+  &:hover .imgMessage .imgMessageOptions {
+    display: flex;
+  }
+  .imgMessage {
     max-width: 60%;
     max-height: 200px;
-    // min-height: 150px !important;
+    width: max-content;
+    // overflow: hidden;
     border-radius: 10px;
-    object-fit: cover;
-    cursor: pointer;
+    position: relative;
+    .imgMessageOptions {
+      position: absolute;
+      left: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      display: none;
+      flex-direction: row-reverse;
+    }
+    img {
+      // width: max-content;
+      // max-width: 60%;
+      // max-height: 200px;
+      // min-height: 150px !important;
+      border-radius: 10px;
+      object-fit: cover;
+      cursor: pointer;
+      // @include mobile {
+      //   max-height: 100px;
+      // }
+      // @include tablet {
+      //   max-width: 40%;
+      // }
+    }
     @include mobile {
-      max-height: 100px;
+      max-height: 150px;
     }
     @include tablet {
       max-width: 40%;
@@ -151,18 +178,45 @@
 }
 .user {
   flex-direction: column;
-  img {
-    width: max-content;
+  &:hover .imgMessage .imgMessageOptions {
+    display: flex;
+  }
+  .imgMessage {
     max-width: 60%;
     max-height: 200px;
+    width: max-content;
+    // overflow: hidden;
     border-radius: 10px;
-    object-fit: cover;
-    // min-height: 150px !important;
+    position: relative;
+    .imgMessageOptions {
+      position: absolute;
+      right: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      display: none;
+    }
     @include mobile {
       max-height: 150px;
     }
     @include tablet {
-      max-width: 40%;
+      // max-width: 40%;
+    }
+  }
+
+  img {
+    // width: max-content;
+    // max-width: 60%;
+    // max-height: 200px;
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    // min-height: 150px !important;
+    @include mobile {
+      // max-height: 150px;
+    }
+    @include tablet {
+      // max-width: 100%;
     }
   }
   .textTime {
