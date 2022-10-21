@@ -124,7 +124,7 @@
     @include tablet {
       // max-width: 40%;
     }
-    img {
+    .imgMessageSending {
       width: max-content;
       max-width: 60%;
       max-height: 200px;
@@ -193,6 +193,27 @@
     // overflow: hidden;
     border-radius: 10px;
     position: relative;
+    img {
+      // width: max-content;
+      // max-width: 60%;
+      // max-height: 200px;
+      // width: 100%;
+      border-radius: 10px;
+      object-fit: cover;
+
+      // min-height: 150px !important;
+      @include mobile {
+        // max-height: 150px;
+        // width: 150px;
+        // height: 80px;
+      }
+      @media screen and (max-width: 400px) {
+        width: 130px;
+      }
+      @include tablet {
+        max-width: 100%;
+      }
+    }
     .imgMessageOptions {
       position: absolute;
       right: 100%;
@@ -209,27 +230,6 @@
     }
   }
 
-  img {
-    // width: max-content;
-    // max-width: 60%;
-    // max-height: 200px;
-    // width: 100%;
-    border-radius: 10px;
-    object-fit: cover;
-
-    // min-height: 150px !important;
-    @include mobile {
-      // max-height: 150px;
-      // width: 150px;
-      // height: 80px;
-    }
-    @media screen and (max-width: 400px) {
-      width: 130px;
-    }
-    @include tablet {
-      max-width: 100%;
-    }
-  }
   .textTime {
     // float: left;
     text-align: right;

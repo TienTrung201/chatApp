@@ -70,6 +70,7 @@
     .icon {
       width: 28px !important;
       height: 28px !important;
+
       cursor: pointer;
       &:hover img {
         transform: scale(1.2);
@@ -77,8 +78,8 @@
       }
 
       img {
-        width: 28px;
-        height: 28px;
+        width: 28px !important;
+        height: 28px !important;
         max-width: 100%;
         transition: 0.2s ease-in-out;
       }

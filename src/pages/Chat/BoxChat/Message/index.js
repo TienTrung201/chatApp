@@ -224,7 +224,8 @@ function Message({ data, allMessage, myNickNameChat }) {
                           )}
                         >
                           <ControlMessage
-                            friendChat={true}
+                            myNickName={myNickNameChat}
+                            userLogin={userLoginChat}
                             allMess={allMessage}
                             currentMessage={data}
                           />
@@ -232,7 +233,12 @@ function Message({ data, allMessage, myNickNameChat }) {
                       ) : (
                         false
                       )}
-                      <img style={styleImage} src={data.image.url} alt="" />
+                      <img
+                        className={cx("imgMessageSending")}
+                        style={styleImage}
+                        src={data.image.url}
+                        alt=""
+                      />
                     </div>
                   </>
                 )}
