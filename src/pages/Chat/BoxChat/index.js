@@ -76,13 +76,13 @@ function BoxChat({ modal, setModal, listUserChats }) {
   }
   const myNickName = useCallback(() => {
     if (myName === undefined) {
-      return myName.displayName;
+      return user.displayName;
     } else if (myName.nickName.trim(" ") === "") {
-      return myName.displayName;
+      return user.displayName;
     } else {
       return myName.nickName;
     }
-  }, [myName]);
+  }, [myName, user]);
 
   const nickName = useCallback(() => {
     if (roomChat === undefined) {

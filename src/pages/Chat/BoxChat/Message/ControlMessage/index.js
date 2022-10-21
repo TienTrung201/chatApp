@@ -18,7 +18,7 @@ function ControlMessage({
   myNickName,
 }) {
   const roomChatInfo = useSelector(userChat);
-  console.log(myNickName);
+
   const handleRemoveMessage = async (message) => {
     const currentMessage = allMess.find((messageData) => {
       return messageData.id === message.id;
