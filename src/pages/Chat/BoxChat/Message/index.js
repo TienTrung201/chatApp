@@ -168,44 +168,6 @@ function Message({ data, allMessage, myNickNameChat }) {
             />
           </div>
           <div className={cx("messageChat")}>
-            {data.text.trim(" ") === "" ? (
-              false
-            ) : (
-              <>
-                {data.type === "remove" ? (
-                  <div className={cx("boxTextDeletedMessage")}>
-                    <div className={cx("deletedMessage")}>
-                      <span>tin nhắn đã bị thu hồi</span>
-                    </div>
-                  </div>
-                ) : (
-                  <div className={cx("boxText")}>
-                    <div
-                      onClick={() => {
-                        setIsFocusMessage(!isFocusMessage);
-                      }}
-                      onBlur={() => {
-                        setIsFocusMessage(false);
-                      }}
-                      className={cx(
-                        "optionTextMessage",
-                        isFocusMessage === true ? "focus" : ""
-                      )}
-                    >
-                      <ControlMessage
-                        friendChat={true}
-                        allMess={allMessage}
-                        currentMessage={data}
-                      />
-                    </div>
-                    <p className={cx("textMessage")}>{data.text}</p>
-                    <p
-                      className={cx("textTime")}
-                    >{`${getHours}:${getMinutes}`}</p>
-                  </div>
-                )}
-              </>
-            )}
             {data.image ? (
               <>
                 {data.type === "remove" ? (

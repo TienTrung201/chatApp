@@ -110,6 +110,12 @@ $active--Color: #31a24c;
     padding-bottom: 20px;
     overflow-y: scroll;
     padding-right: 2px;
+    @include mobile {
+      // max-width: 305px;
+    }
+    @media screen and (max-width: 400px) {
+      max-width: calc(100% - 10px);
+    }
     .loader {
       background-color: aqua;
     }
