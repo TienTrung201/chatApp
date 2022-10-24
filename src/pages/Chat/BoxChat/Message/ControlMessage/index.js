@@ -5,9 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFaceSmileBeam } from "@fortawesome/free-regular-svg-icons";
 import { faEllipsisVertical, faShare } from "@fortawesome/free-solid-svg-icons";
 import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
-import { db } from "@/firebase/config";
+import { db, storage } from "@/firebase/config";
 import { useSelector } from "react-redux";
 import { userChat } from "@/components/redux/selector";
+import { deleteObject, ref } from "firebase/storage";
 const cx = classNames.bind(styles);
 
 function ControlMessage({
@@ -25,8 +26,20 @@ function ControlMessage({
     });
     const allmessageRoom = allMess.map((message) => {
       if (message.id === currentMessage.id) {
+        if (message.image) {
+          const desertRef = ref(storage, message.image.fullPath);
+          deleteObject(desertRef)
+            .then(() => {
+              // File deleted successfully
+            })
+            .catch((error) => {
+              // Uh-oh, an error occurred!
+            });
+        }
+
         return {
           ...currentMessage,
+          text: "",
           type: "remove",
         };
       }

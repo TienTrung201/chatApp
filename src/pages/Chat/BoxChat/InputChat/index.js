@@ -19,7 +19,12 @@ import {
   Timestamp,
   updateDoc,
 } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 const cx = classNames.bind(styles);
@@ -27,6 +32,7 @@ function InputChat({ myNickNameChat }) {
   const roomChatInfo = useSelector(userChat);
   const user = useSelector(userLogin);
   const [valueInput, setValueInput] = useState("");
+  const [oldPicture, setOldPicture] = useState(null);
   const file = useRef();
   const [imgFile, setImgFile] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
@@ -48,6 +54,7 @@ function InputChat({ myNickNameChat }) {
     setValueInput("");
     setImgFile(false);
     setImgUrl(null);
+    setOldPicture(null);
 
     if (imgUrl !== null) {
       createGetSize(imgFile, (w, h) => {
@@ -67,7 +74,7 @@ function InputChat({ myNickNameChat }) {
             }),
           });
         } catch (e) {
-          console.log("e");
+          console.log(e);
         }
       });
     } else {
@@ -116,11 +123,27 @@ function InputChat({ myNickNameChat }) {
     setValueInput(e.target.value);
   };
   const handleChangeFile = (imgFile) => {
+    const idRandom = uuid();
     const imgRef = ref(
       storage,
-      `imagesChats/${roomChatInfo.chatId}/${imgFile.name}${uuid()}`
+      `imagesChats/${roomChatInfo.chatId}/${imgFile.name}${idRandom}`
+    );
+    setOldPicture(
+      `imagesChats/${roomChatInfo.chatId}/${imgFile.name}${idRandom}`
     );
     uploadBytes(imgRef, imgFile).then((snapshot) => {
+      console.log(oldPicture);
+      if (oldPicture !== null) {
+        const desertRef = ref(storage, oldPicture);
+        deleteObject(desertRef)
+          .then(() => {
+            console.log("xóa storage");
+            // File deleted successfully
+          })
+          .catch((error) => {
+            // Uh-oh, an error occurred!
+          });
+      }
       getDownloadURL(snapshot.ref).then((imgUrl) => {
         setImgUrl(imgUrl);
         setFullPath(snapshot.metadata.fullPath);
@@ -156,6 +179,18 @@ function InputChat({ myNickNameChat }) {
             <div className={cx("imgWaitingSend")}>
               <button
                 onClick={() => {
+                  if (oldPicture !== null) {
+                    const desertRef = ref(storage, oldPicture);
+                    deleteObject(desertRef)
+                      .then(() => {
+                        console.log("xóa storage");
+                        // File deleted successfully
+                      })
+                      .catch((error) => {
+                        // Uh-oh, an error occurred!
+                      });
+                  }
+                  setOldPicture(null);
                   setImgFile(false);
                   setImgUrl(null);
                   file.current.value = "";

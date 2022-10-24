@@ -208,7 +208,7 @@
         // height: 80px;
       }
       @media screen and (max-width: 400px) {
-        width: 130px;
+        max-width: 200px;
       }
       @include tablet {
         max-width: 100%;

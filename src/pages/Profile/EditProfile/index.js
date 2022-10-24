@@ -14,7 +14,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import LoadingProFile from "@/components/Loaddings/LoadingProFile";
 
 import { doc, updateDoc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 
 const cx = classNames.bind(styles);
 
@@ -30,18 +35,33 @@ function EditProfile() {
   const [email, setEmail] = useState(false);
   const [contact, setContact] = useState(false);
   const [toggle, setToggle] = useState(true);
+  const [oldPicture, setOldPicture] = useState(null);
   const [styleButton, setStyleButton] = useState({
     right: "50px",
   });
   const [linkImg, setLinkImg] = useState(user ? user.photoURL : "");
   const buttonSend = useRef();
-  const handleChangeImg = async (fileimg) => {
+  const handleChangeImg = (fileimg) => {
+    const idRandom = uuid();
     const imgRef = ref(
       storage,
-      `avatarUser/${user.uid}/${fileimg.name}${uuid()}`
+      `avatarUser/${user.uid}/${fileimg.name}${idRandom}`
     );
+    setOldPicture(`avatarUser/${user.uid}/${fileimg.name}${idRandom}`);
     uploadBytes(imgRef, fileimg).then((snapshot) => {
-      getDownloadURL(snapshot.ref).then(async (imgurl) => {
+      if (oldPicture !== null) {
+        const desertRef = ref(storage, oldPicture);
+        deleteObject(desertRef)
+          .then(() => {
+            console.log("xóa storage");
+            // File deleted successfully
+          })
+          .catch((error) => {
+            // Uh-oh, an error occurred!
+          });
+      }
+
+      getDownloadURL(snapshot.ref).then((imgurl) => {
         setLinkImg(imgurl);
       });
     });
@@ -58,6 +78,7 @@ function EditProfile() {
       setName(false);
       setEmail(false);
       setContact(false);
+      setOldPicture(null);
     }
   };
 

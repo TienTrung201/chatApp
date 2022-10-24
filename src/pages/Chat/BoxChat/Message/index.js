@@ -224,6 +224,7 @@ function Message({ data, allMessage, myNickNameChat }) {
                           )}
                         >
                           <ControlMessage
+                            friendChat={true}
                             myNickName={myNickNameChat}
                             userLogin={userLoginChat}
                             allMess={allMessage}
