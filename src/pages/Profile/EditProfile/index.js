@@ -35,50 +35,56 @@ function EditProfile() {
   const [email, setEmail] = useState(false);
   const [contact, setContact] = useState(false);
   const [toggle, setToggle] = useState(true);
-  const [oldPicture, setOldPicture] = useState(null);
   const [styleButton, setStyleButton] = useState({
     right: "50px",
   });
-  const [linkImg, setLinkImg] = useState(user ? user.photoURL : "");
   const buttonSend = useRef();
+  const [imgFile, setImgFile] = useState(null);
+  const [imgUrl, setImgUrl] = useState(user ? user.photoURL : "");
   const handleChangeImg = (fileimg) => {
-    const idRandom = uuid();
-    const imgRef = ref(
-      storage,
-      `avatarUser/${user.uid}/${fileimg.name}${idRandom}`
-    );
-    setOldPicture(`avatarUser/${user.uid}/${fileimg.name}${idRandom}`);
-    uploadBytes(imgRef, fileimg).then((snapshot) => {
-      if (oldPicture !== null) {
-        const desertRef = ref(storage, oldPicture);
-        deleteObject(desertRef)
-          .then(() => {
-            console.log("xóa storage");
-            // File deleted successfully
-          })
-          .catch((error) => {
-            // Uh-oh, an error occurred!
-          });
-      }
-
-      getDownloadURL(snapshot.ref).then((imgurl) => {
-        setLinkImg(imgurl);
-      });
-    });
+    setImgFile(fileimg);
+    setImgUrl(URL.createObjectURL(fileimg));
   };
   const handleSendForm = () => {
     setIloading(false);
-    if (checkPhone() && checkName()) {
+    setImgFile(false);
+    // setImgUrl("");
+    setName(false);
+    setEmail(false);
+    setContact(false);
+    if (user.fullPath) {
+      const desertRef = ref(storage, user.fullPath);
+      deleteObject(desertRef)
+        .then(() => {
+          // File deleted successfully
+        })
+        .catch((error) => {
+          // Uh-oh, an error occurred!
+        });
+    }
+    if (imgFile) {
+      const idRandom = uuid();
+      const imgRef = ref(
+        storage,
+        `avatarUser/${user.uid}/${imgFile.name}${idRandom}`
+      );
+      uploadBytes(imgRef, imgFile).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((imgurl) => {
+          const userUpdate = doc(db, "users", user.uid);
+          updateDoc(userUpdate, {
+            displayName: nameValue,
+            contact: contactValue,
+            photoURL: imgurl,
+            fullPath: snapshot.metadata.fullPath,
+          });
+        });
+      });
+    } else if (checkPhone() && checkName()) {
       const userUpdate = doc(db, "users", user.uid);
       updateDoc(userUpdate, {
         displayName: nameValue,
         contact: contactValue,
-        photoURL: linkImg,
       });
-      setName(false);
-      setEmail(false);
-      setContact(false);
-      setOldPicture(null);
     }
   };
 
@@ -188,12 +194,13 @@ function EditProfile() {
                 ref={file}
                 onChange={(e) => {
                   handleChangeImg(e.target.files[0]);
+                  e.target.value = "";
                 }}
               />
               <img
                 src={
                   user.photoURL !== null
-                    ? linkImg
+                    ? imgUrl
                     : require("../../../assets/images/photoUser.png")
                 }
                 alt=""
