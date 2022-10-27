@@ -9,7 +9,24 @@ import styles from "./Message.module.scss";
 
 const cx = classNames.bind(styles);
 
-function Message({ data, allMessage, myNickNameChat }) {
+function Message({
+  data,
+  allMessage,
+  myNickNameChat,
+  centerMessageSend,
+  changeMessUserSend,
+  changeMessUserSend2,
+  firstMessage,
+}) {
+  let displayAvata = true;
+  if (centerMessageSend === true) {
+    displayAvata = false;
+  } else if (firstMessage === true) {
+    displayAvata = false;
+  }
+  if (changeMessUserSend2 === true) {
+    displayAvata = false;
+  }
   const heightImageScroll = window.innerWidth > 739 ? "200px" : "100px";
   const userLoginChat = useSelector(userLogin);
   const roomChatInfo = useSelector(userChat);
@@ -28,21 +45,27 @@ function Message({ data, allMessage, myNickNameChat }) {
   };
   //image scroll top bug
 
-  //last send message
-  const getHours =
-    data.createdAt.toDate().getHours() < 10
-      ? `0${data.createdAt.toDate().getHours()}`
-      : data.createdAt.toDate().getHours();
-  const getMinutes =
-    data.createdAt.toDate().getMinutes() < 10
-      ? `0${data.createdAt.toDate().getMinutes()}`
-      : data.createdAt.toDate().getMinutes();
-  //last send message
+  // //last send message
+  // const getHours =
+  //   data.createdAt.toDate().getHours() < 10
+  //     ? `0${data.createdAt.toDate().getHours()}`
+  //     : data.createdAt.toDate().getHours();
+  // const getMinutes =
+  //   data.createdAt.toDate().getMinutes() < 10
+  //     ? `0${data.createdAt.toDate().getMinutes()}`
+  //     : data.createdAt.toDate().getMinutes();
+  // //last send message
   const [isFocusMessage, setIsFocusMessage] = useState();
   return (
     <>
       {userLoginChat.uid === data.senderId ? (
-        <div className={cx("message__chat", "user")}>
+        <div
+          className={cx(
+            "message__chat",
+            "user",
+            changeMessUserSend2 === true ? "mgtop_20px" : ""
+          )}
+        >
           {data.image ? (
             <>
               {data.type === "remove" ? (
@@ -85,7 +108,15 @@ function Message({ data, allMessage, myNickNameChat }) {
                     false
                   ) : (
                     <>
-                      <div className={cx("boxText")}>
+                      <div
+                        className={cx(
+                          "boxText",
+                          centerMessageSend ? "borderRadiusRight-8" : "",
+                          changeMessUserSend ? "borderRadius_rightTop-8" : "",
+                          changeMessUserSend2 ? "borderRadius_rightBt-8" : "",
+                          firstMessage ? "borderRadius_rightBt-8" : ""
+                        )}
+                      >
                         <div
                           onClick={() => {
                             setIsFocusMessage(!isFocusMessage);
@@ -107,9 +138,9 @@ function Message({ data, allMessage, myNickNameChat }) {
                         </div>
 
                         <p className={cx("textMessage")}>{data.text}</p>
-                        <p
+                        {/* <p
                           className={cx("textTime")}
-                        >{`${getHours}:${getMinutes}`}</p>
+                        >{`${getHours}:${getMinutes}`}</p> */}
                       </div>
                     </>
                   )}
@@ -125,7 +156,15 @@ function Message({ data, allMessage, myNickNameChat }) {
                   </div>
                 </div>
               ) : (
-                <div className={cx("boxText")}>
+                <div
+                  className={cx(
+                    "boxText",
+                    centerMessageSend ? "borderRadiusRight-8" : "",
+                    changeMessUserSend ? "borderRadius_rightTop-8" : "",
+                    changeMessUserSend2 ? "borderRadius_rightBt-8" : "",
+                    firstMessage ? "borderRadius_rightBt-8" : ""
+                  )}
+                >
                   <div
                     onClick={() => {
                       setIsFocusMessage(!isFocusMessage);
@@ -147,25 +186,35 @@ function Message({ data, allMessage, myNickNameChat }) {
                   </div>
 
                   <p className={cx("textMessage")}>{data.text}</p>
-                  <p
+                  {/* <p
                     className={cx("textTime")}
-                  >{`${getHours}:${getMinutes}`}</p>
+                  >{`${getHours}:${getMinutes}`}</p> */}
                 </div>
               )}
             </>
           )}
         </div>
       ) : (
-        <div className={cx("message__chat", "friend")}>
+        <div
+          className={cx(
+            "message__chat",
+            "friend",
+            changeMessUserSend2 === true ? "mgtop_20px" : ""
+          )}
+        >
           <div className={cx("avatar")}>
-            <img
-              src={
-                roomChatInfo.user.photoURL !== null
-                  ? roomChatInfo.user.photoURL
-                  : require("../../../../assets/images/photoUser.png")
-              }
-              alt=""
-            />
+            {displayAvata === true ? (
+              <img
+                src={
+                  roomChatInfo.user.photoURL !== null
+                    ? roomChatInfo.user.photoURL
+                    : require("../../../../assets/images/photoUser.png")
+                }
+                alt=""
+              />
+            ) : (
+              false
+            )}
           </div>
           <div className={cx("messageChat")}>
             {data.image ? (
@@ -182,7 +231,15 @@ function Message({ data, allMessage, myNickNameChat }) {
                       false
                     ) : (
                       <>
-                        <div className={cx("boxText")}>
+                        <div
+                          className={cx(
+                            "boxText",
+                            centerMessageSend ? "borderRadiusLeft-8" : "",
+                            changeMessUserSend ? "borderRadius_leftTop-8" : "",
+                            changeMessUserSend2 ? "borderRadius_leftBt-8" : "",
+                            firstMessage ? "borderRadius_leftBt-8" : ""
+                          )}
+                        >
                           <div
                             onClick={() => {
                               setIsFocusMessage(!isFocusMessage);
@@ -202,9 +259,9 @@ function Message({ data, allMessage, myNickNameChat }) {
                             />
                           </div>
                           <p className={cx("textMessage")}>{data.text}</p>
-                          <p
+                          {/* <p
                             className={cx("textTime")}
-                          >{`${getHours}:${getMinutes}`}</p>
+                          >{`${getHours}:${getMinutes}`}</p> */}
                         </div>
                       </>
                     )}
@@ -253,7 +310,15 @@ function Message({ data, allMessage, myNickNameChat }) {
                     </div>
                   </div>
                 ) : (
-                  <div className={cx("boxText")}>
+                  <div
+                    className={cx(
+                      "boxText",
+                      centerMessageSend ? "borderRadiusLeft-8" : "",
+                      changeMessUserSend ? "borderRadius_leftTop-8" : "",
+                      changeMessUserSend2 ? "borderRadius_leftBt-8" : "",
+                      firstMessage ? "borderRadius_leftBt-8" : ""
+                    )}
+                  >
                     <div
                       onClick={() => {
                         setIsFocusMessage(!isFocusMessage);
@@ -273,9 +338,9 @@ function Message({ data, allMessage, myNickNameChat }) {
                       />
                     </div>
                     <p className={cx("textMessage")}>{data.text}</p>
-                    <p
+                    {/* <p
                       className={cx("textTime")}
-                    >{`${getHours}:${getMinutes}`}</p>
+                    >{`${getHours}:${getMinutes}`}</p> */}
                   </div>
                 )}
               </>

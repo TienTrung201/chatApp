@@ -81,7 +81,7 @@ function ControlMessage({
       >
         <Tippy
           trigger="click"
-          placement="top"
+          placement="right"
           interactive="true" // cho phep hanh dong tren ket qua
           content={
             <div

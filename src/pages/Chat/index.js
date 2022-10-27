@@ -244,6 +244,8 @@ function Chat() {
             "Đang hoạt động" &&
           checkActiveUser(userLoginCheckActive.lastActive) !== ""
         ) {
+          console.log(checkActiveUser(userLoginCheckActive.lastActive));
+          console.log("bug");
           const userUpdate = doc(db, "users", user.uid);
           updateDoc(userUpdate, {
             lastActive: serverTimestamp(),

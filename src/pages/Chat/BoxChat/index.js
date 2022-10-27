@@ -16,6 +16,7 @@ import { doc, onSnapshot, Timestamp } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import LoadingListUser from "@/components/Loaddings/LoadingListUser";
 import NoMessage from "@/components/NoMessage";
+
 const cx = classNames.bind(styles);
 
 function BoxChat({ modal, setModal, listUserChats }) {
@@ -158,6 +159,102 @@ function BoxChat({ modal, setModal, listUserChats }) {
         ) : (
           <>
             {messages.messages.map((message, i) => {
+              for (let j = 0; j < messages.messages.length; j++) {
+                if (messages.messages[i - 1] === undefined) {
+                  if (messages.messages[i + 1] === undefined) {
+                    break;
+                  }
+                  if (
+                    messages.messages[i].senderId ===
+                    messages.messages[i + 1].senderId
+                  ) {
+                    return (
+                      <Message
+                        firstMessage={true}
+                        myNickNameChat={myNickName()}
+                        allMessage={messages.messages}
+                        data={message}
+                        key={i}
+                      />
+                    );
+                  }
+
+                  break;
+                }
+                if (messages.messages[i + 1] === undefined) {
+                  if (messages.messages[i - 1] === undefined) {
+                    break;
+                  }
+                  if (
+                    messages.messages[i].senderId ===
+                    messages.messages[i - 1].senderId
+                  )
+                    return (
+                      <Message
+                        changeMessUserSend={true}
+                        myNickNameChat={myNickName()}
+                        allMessage={messages.messages}
+                        data={message}
+                        key={i}
+                      />
+                    );
+                }
+                if (
+                  messages.messages[i + 1] === undefined ||
+                  messages.messages[i - 1] === undefined
+                ) {
+                  break;
+                }
+                if (
+                  messages.messages[i].senderId !==
+                    messages.messages[i + 1].senderId &&
+                  messages.messages[i].senderId ===
+                    messages.messages[i - 1].senderId
+                ) {
+                  return (
+                    <Message
+                      changeMessUserSend={true}
+                      myNickNameChat={myNickName()}
+                      allMessage={messages.messages}
+                      data={message}
+                      key={i}
+                    />
+                  );
+                } else if (
+                  messages.messages[i].senderId ===
+                    messages.messages[i + 1].senderId &&
+                  messages.messages[i].senderId !==
+                    messages.messages[i - 1].senderId
+                ) {
+                  // console.log(message.text);
+                  // break;
+                  return (
+                    <Message
+                      changeMessUserSend2={true}
+                      myNickNameChat={myNickName()}
+                      allMessage={messages.messages}
+                      data={message}
+                      key={i}
+                    />
+                  );
+                }
+                if (
+                  messages.messages[i].senderId ===
+                    messages.messages[i - 1].senderId &&
+                  messages.messages[i].senderId ===
+                    messages.messages[i + 1].senderId
+                ) {
+                  return (
+                    <Message
+                      centerMessageSend={true}
+                      myNickNameChat={myNickName()}
+                      allMessage={messages.messages}
+                      data={message}
+                      key={i}
+                    />
+                  );
+                }
+              }
               return (
                 <Message
                   myNickNameChat={myNickName()}

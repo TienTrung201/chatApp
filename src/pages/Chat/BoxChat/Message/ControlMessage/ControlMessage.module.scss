@@ -41,6 +41,7 @@
   .removeMessage {
     border-radius: 5px;
     height: 30px;
+    background-color: var(--backGround--page);
     cursor: pointer;
     &:hover {
       background-color: #dbdbdb;
