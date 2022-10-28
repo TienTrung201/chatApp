@@ -13,3 +13,4 @@ export const volumeMusic = (state) => state.sideBar.volumeMusic;
 export const replaceName = (state) => state.editProfile.name;
 export const replaceEmail = (state) => state.editProfile.email;
 export const replaceContact = (state) => state.editProfile.contact;
+export const isSendMessageTogle = (state) => state.userChat.isSendMessageTogle;

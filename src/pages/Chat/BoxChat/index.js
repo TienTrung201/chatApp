@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   isSelectedMusic,
+  isSendMessageTogle,
   userChat,
   userLogin,
   users,
@@ -27,10 +28,10 @@ function BoxChat({ modal, setModal, listUserChats }) {
   const isCheckedMusic = useSelector(isSelectedMusic);
   const boxMessage = useRef();
   const [messages, setMessage] = useState(undefined);
-
+  const isSendMessage = useSelector(isSendMessageTogle);
   useEffect(() => {
     boxMessage.current.scrollTop = boxMessage.current.scrollHeight;
-  }, [messages]);
+  }, [isSendMessage]);
   //get message
   useEffect(() => {
     if (roomChatInfo.chatId === "") {
@@ -228,7 +229,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
                   if (messages[i].senderId === messages[i - 1].senderId)
                     return (
                       <Message
-                        changeMessUserSend={true}
+                        firstMessageSend={true}
                         myNickNameChat={myNickName()}
                         allMessage={messages}
                         data={message}
@@ -248,7 +249,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
                 ) {
                   return (
                     <Message
-                      changeMessUserSend={true}
+                      firstMessageSend={true}
                       myNickNameChat={myNickName()}
                       allMessage={messages}
                       data={message}
@@ -263,7 +264,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
                   // break;
                   return (
                     <Message
-                      changeMessUserSend2={true}
+                      endSendMessage={true}
                       myNickNameChat={myNickName()}
                       allMessage={messages}
                       data={message}

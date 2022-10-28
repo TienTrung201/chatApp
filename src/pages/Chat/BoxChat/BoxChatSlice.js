@@ -7,11 +7,15 @@ export const boxChatSlice = createSlice({
     userChat: {
       chatId: "",
       user: {},
+      isSendMessageTogle: true,
     },
   },
   reducers: {
     setUserSelect: (state, action) => {
       state.userChat = action.payload;
+    },
+    setIsSendMessageTogle: (state, action) => {
+      state.isSendMessageTogle = action.payload;
     },
   },
 });

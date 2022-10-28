@@ -4,11 +4,11 @@ import Tippy from "@tippyjs/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFaceSmileBeam } from "@fortawesome/free-regular-svg-icons";
 import { faEllipsisVertical, faShare } from "@fortawesome/free-solid-svg-icons";
-// import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
-// import { db, storage } from "@/firebase/config";
-// import { useSelector } from "react-redux";
-// import { userChat } from "@/components/redux/selector";
-// import { deleteObject, ref } from "firebase/storage";
+import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import { db, storage } from "@/firebase/config";
+import { useSelector } from "react-redux";
+import { userChat } from "@/components/redux/selector";
+import { deleteObject, ref } from "firebase/storage";
 const cx = classNames.bind(styles);
 
 function ControlMessage({
@@ -18,57 +18,57 @@ function ControlMessage({
   userLogin,
   myNickName,
 }) {
-  // const roomChatInfo = useSelector(userChat);
+  const roomChatInfo = useSelector(userChat);
 
   const handleRemoveMessage = async (message) => {
-    // const currentMessage = allMess.find((messageData) => {
-    //   return messageData.id === message.id;
-    // });
-    // const allmessageRoom = allMess.map((message) => {
-    //   if (message.id === currentMessage.id) {
-    //     if (message.image) {
-    //       const desertRef = ref(storage, message.image.fullPath);
-    //       deleteObject(desertRef)
-    //         .then(() => {
-    //           // File deleted successfully
-    //         })
-    //         .catch((error) => {
-    //           // Uh-oh, an error occurred!
-    //         });
-    //     }
-    //     return {
-    //       ...currentMessage,
-    //       text: "",
-    //       type: "remove",
-    //     };
-    //   }
-    //   return message;
-    // });
-    // try {
-    //   updateDoc(doc(db, "chats", roomChatInfo.chatId), {
-    //     messages: allmessageRoom,
-    //   });
-    // } catch (e) {
-    //   console.log(e);
-    // }
-    // try {
-    //   await updateDoc(doc(db, "userChats", roomChatInfo.user.uid), {
-    //     [roomChatInfo.chatId + ".lastMessage"]: {
-    //       text: "Đã thu hồi tin nhắn",
-    //       sender: myNickName,
-    //     },
-    //     [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
-    //   });
-    //   await updateDoc(doc(db, "userChats", userLogin.uid), {
-    //     [roomChatInfo.chatId + ".lastMessage"]: {
-    //       text: "Đã thu hồi tin nhắn",
-    //       sender: myNickName,
-    //     },
-    //     [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
-    //   });
-    // } catch (e) {
-    //   console.log(e);
-    // }
+    const currentMessage = allMess.find((messageData) => {
+      return messageData.id === message.id;
+    });
+    const allmessageRoom = allMess.map((message) => {
+      if (message.id === currentMessage.id) {
+        if (message.image) {
+          const desertRef = ref(storage, message.image.fullPath);
+          deleteObject(desertRef)
+            .then(() => {
+              // File deleted successfully
+            })
+            .catch((error) => {
+              // Uh-oh, an error occurred!
+            });
+        }
+        return {
+          ...currentMessage,
+          text: "",
+          type: "remove",
+        };
+      }
+      return message;
+    });
+    try {
+      updateDoc(doc(db, "chats", roomChatInfo.chatId), {
+        messages: allmessageRoom.reverse(),
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    try {
+      await updateDoc(doc(db, "userChats", roomChatInfo.user.uid), {
+        [roomChatInfo.chatId + ".lastMessage"]: {
+          text: "Đã thu hồi tin nhắn",
+          sender: myNickName,
+        },
+        [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
+      });
+      await updateDoc(doc(db, "userChats", userLogin.uid), {
+        [roomChatInfo.chatId + ".lastMessage"]: {
+          text: "Đã thu hồi tin nhắn",
+          sender: myNickName,
+        },
+        [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

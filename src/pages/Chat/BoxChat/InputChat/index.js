@@ -3,9 +3,10 @@ import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImages, faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   isSelectedMusic,
+  isSendMessageTogle,
   userChat,
   userLogin,
 } from "@/components/redux/selector";
@@ -21,6 +22,7 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
+import boxChatSlice from "../BoxChatSlice";
 
 const cx = classNames.bind(styles);
 function InputChat({ myNickNameChat }) {
@@ -31,6 +33,8 @@ function InputChat({ myNickNameChat }) {
   const [imgFile, setImgFile] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
   const isCheckedMusic = useSelector(isSelectedMusic);
+  const isSendMessage = useSelector(isSendMessageTogle);
+  const Dispatch = useDispatch();
   const createGetSize = (imageFile, getSize) => {
     var image;
     var _URL = window.URL || window.webkitURL;
@@ -47,7 +51,7 @@ function InputChat({ myNickNameChat }) {
     setValueInput("");
     setImgFile(false);
     setImgUrl(null);
-
+    Dispatch(boxChatSlice.actions.setIsSendMessageTogle(!isSendMessage));
     if (imgFile) {
       const imgRef = ref(
         storage,

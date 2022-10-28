@@ -14,8 +14,8 @@ function Message({
   allMessage,
   myNickNameChat,
   centerMessageSend,
-  changeMessUserSend,
-  changeMessUserSend2,
+  firstMessageSend,
+  endSendMessage,
   firstMessage,
 }) {
   let displayAvata = true;
@@ -24,7 +24,7 @@ function Message({
   } else if (firstMessage === true) {
     displayAvata = false;
   }
-  if (changeMessUserSend2 === true) {
+  if (firstMessageSend === true) {
     displayAvata = false;
   }
   const heightImageScroll = window.innerWidth > 739 ? "200px" : "100px";
@@ -63,7 +63,7 @@ function Message({
           className={cx(
             "message__chat",
             "user",
-            changeMessUserSend === true ? "mgtop_20px" : ""
+            firstMessageSend === true ? "mgtop_20px" : ""
           )}
         >
           {data.image ? (
@@ -112,8 +112,8 @@ function Message({
                         className={cx(
                           "boxText",
                           centerMessageSend ? "borderRadiusRight-8" : "",
-                          changeMessUserSend ? "borderRadius_rightBt-8" : "",
-                          changeMessUserSend2 ? "borderRadius_rightTop-8" : "",
+                          firstMessageSend ? "borderRadius_rightBt-8" : "",
+                          endSendMessage ? "borderRadius_rightTop-8" : "",
                           firstMessage ? "borderRadius_rightTop-8" : ""
                         )}
                       >
@@ -160,8 +160,8 @@ function Message({
                   className={cx(
                     "boxText",
                     centerMessageSend ? "borderRadiusRight-8" : "",
-                    changeMessUserSend ? "borderRadius_rightBt-8" : "",
-                    changeMessUserSend2 ? "borderRadius_rightTop-8" : "",
+                    firstMessageSend ? "borderRadius_rightBt-8" : "",
+                    endSendMessage ? "borderRadius_rightTop-8" : "",
                     firstMessage ? "borderRadius_rightTop-8" : ""
                   )}
                 >
@@ -199,7 +199,7 @@ function Message({
           className={cx(
             "message__chat",
             "friend",
-            changeMessUserSend === true ? "mgtop_20px" : ""
+            firstMessageSend === true ? "mgtop_20px" : ""
           )}
         >
           <div className={cx("avatar")}>
@@ -235,8 +235,8 @@ function Message({
                           className={cx(
                             "boxText",
                             centerMessageSend ? "borderRadiusLeft-8" : "",
-                            changeMessUserSend ? "borderRadius_leftBt-8" : "",
-                            changeMessUserSend2 ? "borderRadius_leftTop-8" : "",
+                            firstMessageSend ? "borderRadius_leftBt-8" : "",
+                            endSendMessage ? "borderRadius_leftTop-8" : "",
                             firstMessage ? "borderRadius_leftTop-8" : ""
                           )}
                         >
@@ -314,8 +314,8 @@ function Message({
                     className={cx(
                       "boxText",
                       centerMessageSend ? "borderRadiusLeft-8" : "",
-                      changeMessUserSend ? "borderRadius_leftBt-8" : "",
-                      changeMessUserSend2 ? "borderRadius_leftTop-8" : "",
+                      firstMessageSend ? "borderRadius_leftBt-8" : "",
+                      endSendMessage ? "borderRadius_leftTop-8" : "",
                       firstMessage ? "borderRadius_leftTop-8" : ""
                     )}
                   >
