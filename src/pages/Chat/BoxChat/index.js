@@ -220,7 +220,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
                         myNickNameChat={myNickName()}
                         allMessage={messages}
                         data={message}
-                        key={i}
+                        key={message.id}
                       />
                     );
                   }
@@ -239,7 +239,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
                         myNickNameChat={myNickName()}
                         allMessage={messages}
                         data={message}
-                        key={i}
+                        key={message.id}
                       />
                     );
                 }
@@ -260,7 +260,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
                       myNickNameChat={myNickName()}
                       allMessage={messages}
                       data={message}
-                      key={i}
+                      key={message.id}
                     />
                   );
                 } else if (
@@ -276,7 +276,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
                       myNickNameChat={myNickName()}
                       allMessage={messages}
                       data={message}
-                      key={i}
+                      key={message.id}
                     />
                   );
                 }
@@ -291,7 +291,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
                       myNickNameChat={myNickName()}
                       allMessage={messages}
                       data={message}
-                      key={i}
+                      key={message.id}
                     />
                   );
                 }
@@ -302,7 +302,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
                   myNickNameChat={myNickName()}
                   allMessage={messages}
                   data={message}
-                  key={i}
+                  key={message.id}
                 />
               );
             })}

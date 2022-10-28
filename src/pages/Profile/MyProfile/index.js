@@ -1,7 +1,10 @@
 import styles from "./MyProfile.module.scss";
 import classNames from "classnames/bind";
 import { useDispatch, useSelector } from "react-redux";
-import { userLogin, users } from "@/components/redux/selector";
+import {
+  userLogin,
+  //  users
+} from "@/components/redux/selector";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { signOut } from "firebase/auth";
@@ -17,7 +20,7 @@ function MyProfile() {
   const Dispatch = useDispatch();
   const [isLoading, setIloading] = useState(false);
   let user = useSelector(userLogin);
-  const listUsers = useSelector(users);
+  // const listUsers = useSelector(users);
 
   const handleLogout = () => {
     signOut(auth).then(() => {
@@ -36,9 +39,12 @@ function MyProfile() {
       }, 1200);
     });
   };
-  user = listUsers.find((userChat) => {
-    return userChat.uid === user.uid;
-  });
+  // user = listUsers.find((userChat) => {
+  //   return userChat.uid === user.uid;
+  // });
+  // if (false) {
+  //   console.log(listUsers);
+  // }
 
   return (
     // {user.displayName === undefined?}

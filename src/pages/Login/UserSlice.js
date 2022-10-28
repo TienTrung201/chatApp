@@ -21,6 +21,9 @@ export const userSlice = createSlice({
     setUserSelect: (state, action) => {
       state.userSelect = action.payload;
     },
+    addUsers: (state, action) => {
+      state.users = state.users.push(action.payload);
+    },
   },
 });
 export default userSlice;
