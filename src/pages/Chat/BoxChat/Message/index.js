@@ -63,7 +63,7 @@ function Message({
           className={cx(
             "message__chat",
             "user",
-            changeMessUserSend2 === true ? "mgtop_20px" : ""
+            changeMessUserSend === true ? "mgtop_20px" : ""
           )}
         >
           {data.image ? (
@@ -112,9 +112,9 @@ function Message({
                         className={cx(
                           "boxText",
                           centerMessageSend ? "borderRadiusRight-8" : "",
-                          changeMessUserSend ? "borderRadius_rightTop-8" : "",
-                          changeMessUserSend2 ? "borderRadius_rightBt-8" : "",
-                          firstMessage ? "borderRadius_rightBt-8" : ""
+                          changeMessUserSend ? "borderRadius_rightBt-8" : "",
+                          changeMessUserSend2 ? "borderRadius_rightTop-8" : "",
+                          firstMessage ? "borderRadius_rightTop-8" : ""
                         )}
                       >
                         <div
@@ -160,9 +160,9 @@ function Message({
                   className={cx(
                     "boxText",
                     centerMessageSend ? "borderRadiusRight-8" : "",
-                    changeMessUserSend ? "borderRadius_rightTop-8" : "",
-                    changeMessUserSend2 ? "borderRadius_rightBt-8" : "",
-                    firstMessage ? "borderRadius_rightBt-8" : ""
+                    changeMessUserSend ? "borderRadius_rightBt-8" : "",
+                    changeMessUserSend2 ? "borderRadius_rightTop-8" : "",
+                    firstMessage ? "borderRadius_rightTop-8" : ""
                   )}
                 >
                   <div
@@ -199,7 +199,7 @@ function Message({
           className={cx(
             "message__chat",
             "friend",
-            changeMessUserSend2 === true ? "mgtop_20px" : ""
+            changeMessUserSend === true ? "mgtop_20px" : ""
           )}
         >
           <div className={cx("avatar")}>
@@ -235,9 +235,9 @@ function Message({
                           className={cx(
                             "boxText",
                             centerMessageSend ? "borderRadiusLeft-8" : "",
-                            changeMessUserSend ? "borderRadius_leftTop-8" : "",
-                            changeMessUserSend2 ? "borderRadius_leftBt-8" : "",
-                            firstMessage ? "borderRadius_leftBt-8" : ""
+                            changeMessUserSend ? "borderRadius_leftBt-8" : "",
+                            changeMessUserSend2 ? "borderRadius_leftTop-8" : "",
+                            firstMessage ? "borderRadius_leftTop-8" : ""
                           )}
                         >
                           <div
@@ -314,9 +314,9 @@ function Message({
                     className={cx(
                       "boxText",
                       centerMessageSend ? "borderRadiusLeft-8" : "",
-                      changeMessUserSend ? "borderRadius_leftTop-8" : "",
-                      changeMessUserSend2 ? "borderRadius_leftBt-8" : "",
-                      firstMessage ? "borderRadius_leftBt-8" : ""
+                      changeMessUserSend ? "borderRadius_leftBt-8" : "",
+                      changeMessUserSend2 ? "borderRadius_leftTop-8" : "",
+                      firstMessage ? "borderRadius_leftTop-8" : ""
                     )}
                   >
                     <div

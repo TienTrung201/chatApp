@@ -2,7 +2,7 @@ import styles from "./BoxChat.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   isSelectedMusic,
@@ -27,10 +27,9 @@ function BoxChat({ modal, setModal, listUserChats }) {
   const isCheckedMusic = useSelector(isSelectedMusic);
   const boxMessage = useRef();
   const [messages, setMessage] = useState(undefined);
-
-  useEffect(() => {
-    boxMessage.current.scrollTop = boxMessage.current.scrollHeight;
-  }, [messages]);
+  // useEffect(() => {
+  //   boxMessage.current.scrollTop = boxMessage.current.scrollHeight;
+  // }, [messages]);
   //get message
   useEffect(() => {
     if (roomChatInfo.chatId === "") {
@@ -98,19 +97,19 @@ function BoxChat({ modal, setModal, listUserChats }) {
     }
   }, [roomChat, roomChatInfo.user.displayName]);
   //lấy biệt danh
-  //scroll infinite
   const [curentIndexMessage, setCurrentIndexMessage] = useState(20);
   const addDataScroll = () => {
-    setTimeout(() => {
-      if (curentIndexMessage < messages.length) {
-        setCurrentIndexMessage((prev) => prev + 20);
-      }
-    }, 500);
+    if (curentIndexMessage < messages.length) {
+      setCurrentIndexMessage((prev) => prev + 10);
+    }
+    console.log("add data");
   };
-  useEffect(() => {
-    setCurrentIndexMessage(20);
-  }, [roomChatInfo]);
-  //scroll infinite
+  const messagesScroll = useMemo(() => {
+    if (!messages) {
+      return [];
+    }
+    return messages.slice(0, curentIndexMessage);
+  }, [curentIndexMessage, messages]);
 
   return (
     <div className={cx("wrapper")}>
@@ -174,45 +173,32 @@ function BoxChat({ modal, setModal, listUserChats }) {
           <LoadingListUser />
         ) : (
           <InfiniteScroll
-            dataLength={curentIndexMessage}
+            dataLength={messagesScroll.length}
             style={{ display: "flex", flexDirection: "column-reverse" }}
             scrollableTarget="scrollableDiv"
             next={addDataScroll}
             hasMore={true}
-            loader={
-              curentIndexMessage < messages.length ? (
-                <div
-                  style={{
-                    paddingTop: "10px",
-                    paddingBottom: "10px",
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                  className={cx("Loading")}
-                >
-                  <LoadingListUser />
-                </div>
-              ) : (
-                false
-              )
-            }
             inverse={true}
+            loader={<h4>Loading...</h4>}
           >
-            {messages.map((message, i) => {
-              if (i > curentIndexMessage) {
-                return false;
-              }
-              for (let j = 0; j < messages.length; j++) {
-                if (messages[i - 1] === undefined) {
-                  if (messages[i + 1] === undefined) {
+            {messagesScroll.map((message, i) => {
+              // if (i > curentIndexMessage) {
+              //   return false;
+              // }
+              for (let j = 0; j < messagesScroll.length; j++) {
+                if (messagesScroll[i - 1] === undefined) {
+                  if (messagesScroll[i + 1] === undefined) {
                     break;
                   }
-                  if (messages[i].senderId === messages[i + 1].senderId) {
+                  if (
+                    messagesScroll[i].senderId ===
+                    messagesScroll[i + 1].senderId
+                  ) {
                     return (
                       <Message
                         firstMessage={true}
                         myNickNameChat={myNickName()}
-                        allMessage={messages}
+                        allMessage={messagesScroll}
                         data={message}
                         key={i}
                       />
@@ -221,43 +207,48 @@ function BoxChat({ modal, setModal, listUserChats }) {
 
                   break;
                 }
-                if (messages[i + 1] === undefined) {
-                  if (messages[i - 1] === undefined) {
+                if (messagesScroll[i + 1] === undefined) {
+                  if (messagesScroll[i - 1] === undefined) {
                     break;
                   }
-                  if (messages[i].senderId === messages[i - 1].senderId)
+                  if (
+                    messagesScroll[i].senderId ===
+                    messagesScroll[i - 1].senderId
+                  )
                     return (
                       <Message
                         changeMessUserSend={true}
                         myNickNameChat={myNickName()}
-                        allMessage={messages}
+                        allMessage={messagesScroll}
                         data={message}
                         key={i}
                       />
                     );
                 }
                 if (
-                  messages[i + 1] === undefined ||
-                  messages[i - 1] === undefined
+                  messagesScroll[i + 1] === undefined ||
+                  messagesScroll[i - 1] === undefined
                 ) {
                   break;
                 }
                 if (
-                  messages[i].senderId !== messages[i + 1].senderId &&
-                  messages[i].senderId === messages[i - 1].senderId
+                  messagesScroll[i].senderId !==
+                    messagesScroll[i + 1].senderId &&
+                  messagesScroll[i].senderId === messagesScroll[i - 1].senderId
                 ) {
                   return (
                     <Message
                       changeMessUserSend={true}
                       myNickNameChat={myNickName()}
-                      allMessage={messages}
+                      allMessage={messagesScroll}
                       data={message}
                       key={i}
                     />
                   );
                 } else if (
-                  messages[i].senderId === messages[i + 1].senderId &&
-                  messages[i].senderId !== messages[i - 1].senderId
+                  messagesScroll[i].senderId ===
+                    messagesScroll[i + 1].senderId &&
+                  messagesScroll[i].senderId !== messagesScroll[i - 1].senderId
                 ) {
                   // console.log(message.text);
                   // break;
@@ -265,21 +256,22 @@ function BoxChat({ modal, setModal, listUserChats }) {
                     <Message
                       changeMessUserSend2={true}
                       myNickNameChat={myNickName()}
-                      allMessage={messages}
+                      allMessage={messagesScroll}
                       data={message}
                       key={i}
                     />
                   );
                 }
                 if (
-                  messages[i].senderId === messages[i - 1].senderId &&
-                  messages[i].senderId === messages[i + 1].senderId
+                  messagesScroll[i].senderId ===
+                    messagesScroll[i - 1].senderId &&
+                  messagesScroll[i].senderId === messagesScroll[i + 1].senderId
                 ) {
                   return (
                     <Message
                       centerMessageSend={true}
                       myNickNameChat={myNickName()}
-                      allMessage={messages}
+                      allMessage={messagesScroll}
                       data={message}
                       key={i}
                     />
@@ -289,7 +281,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
               return (
                 <Message
                   myNickNameChat={myNickName()}
-                  allMessage={messages}
+                  allMessage={messagesScroll}
                   data={message}
                   key={i}
                 />

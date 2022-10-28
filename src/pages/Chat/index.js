@@ -246,6 +246,7 @@ function Chat() {
         ) {
           console.log(checkActiveUser(userLoginCheckActive.lastActive));
           console.log("bug");
+          console.log(userLoginCheckActive.displayName);
           const userUpdate = doc(db, "users", user.uid);
           updateDoc(userUpdate, {
             lastActive: serverTimestamp(),
@@ -518,11 +519,11 @@ function Chat() {
                 );
               })}
               {isloadingUser && (
-                <div className={cx("Loading")}>
+                <div style={{ paddingTop: "10px" }} className={cx("Loading")}>
                   <LoadingListUser />
                 </div>
               )}
-              {/* <div className={cx("Loading")}>
+              {/* <div style={{ paddingTop: "10px" }} className={cx("Loading")}>
                 <LoadingListUser />
               </div> */}
             </>
