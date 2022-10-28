@@ -73,32 +73,34 @@ function ControlMessage({
 
   return (
     <>
-      <div
-        style={{ display: friendChat === true ? "none" : "" }}
-        className={cx("wrapperTippy")}
-      >
-        <Tippy
-          trigger="click"
-          placement="right"
-          interactive="true" // cho phep hanh dong tren ket qua
-          content={
-            <div
-              onClick={() => {
-                handleRemoveMessage(currentMessage);
-              }}
-              className={cx("boxRemove")}
-            >
-              <div className={cx("removeMessage", "autoCenter")}>
-                <span className={cx("autoCenter")}>Gỡ tin nhắn</span>
+      {!friendChat && (
+        <div className={cx("wrapperTippy")}>
+          <Tippy
+            trigger="click"
+            placement="top"
+            interactive="true" // cho phep hanh dong tren ket qua
+            content={
+              <div
+                onClick={() => {
+                  handleRemoveMessage(currentMessage);
+                }}
+                className={cx("boxRemove")}
+              >
+                <div className={cx("removeMessage", "autoCenter")}>
+                  <span className={cx("autoCenter")}>Gỡ tin nhắn</span>
+                </div>
               </div>
-            </div>
-          }
-        >
-          <button className={cx("buttonControlText", "autoCenter")}>
-            <FontAwesomeIcon className={cx("icon")} icon={faEllipsisVertical} />
-          </button>
-        </Tippy>
-      </div>
+            }
+          >
+            <button className={cx("buttonControlText", "autoCenter")}>
+              <FontAwesomeIcon
+                className={cx("icon")}
+                icon={faEllipsisVertical}
+              />
+            </button>
+          </Tippy>
+        </div>
+      )}
 
       <button className={cx("buttonControlText", "autoCenter")}>
         <FontAwesomeIcon className={cx("icon")} icon={faShare} />
@@ -106,7 +108,7 @@ function ControlMessage({
       <div className={cx("wrapperTippy")}>
         <Tippy
           trigger="click"
-          placement="top"
+          placement={friendChat ? "top-start" : "top-end"}
           interactive // cho phep hanh dong tren ket qua
           content={
             <div className={cx("boxListIcon")}>

@@ -17,6 +17,7 @@ function Message({
   firstMessageSend,
   endSendMessage,
   firstMessage,
+  zIndex,
 }) {
   let displayAvata = true;
   if (centerMessageSend === true) {
@@ -60,6 +61,7 @@ function Message({
     <>
       {userLoginChat.uid === data.senderId ? (
         <div
+          style={{ zIndex: zIndex }}
           className={cx(
             "message__chat",
             "user",
@@ -196,6 +198,7 @@ function Message({
         </div>
       ) : (
         <div
+          style={{ zIndex: zIndex }}
           className={cx(
             "message__chat",
             "friend",

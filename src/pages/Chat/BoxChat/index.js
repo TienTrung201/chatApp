@@ -176,7 +176,11 @@ function BoxChat({ modal, setModal, listUserChats }) {
         ) : (
           <InfiniteScroll
             dataLength={curentIndexMessage}
-            style={{ display: "flex", flexDirection: "column-reverse" }}
+            style={{
+              display: "flex",
+              flexDirection: "column-reverse",
+              overflowX: "hidden",
+            }}
             scrollableTarget="scrollableDiv"
             next={addDataScroll}
             hasMore={true}
@@ -211,6 +215,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
                   if (messages[i].senderId === messages[i + 1].senderId) {
                     return (
                       <Message
+                        zIndex={curentIndexMessage - i}
                         firstMessage={true}
                         myNickNameChat={myNickName()}
                         allMessage={messages}
@@ -229,6 +234,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
                   if (messages[i].senderId === messages[i - 1].senderId)
                     return (
                       <Message
+                        zIndex={curentIndexMessage - i}
                         firstMessageSend={true}
                         myNickNameChat={myNickName()}
                         allMessage={messages}
@@ -249,6 +255,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
                 ) {
                   return (
                     <Message
+                      zIndex={curentIndexMessage - i}
                       firstMessageSend={true}
                       myNickNameChat={myNickName()}
                       allMessage={messages}
@@ -264,6 +271,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
                   // break;
                   return (
                     <Message
+                      zIndex={curentIndexMessage - i}
                       endSendMessage={true}
                       myNickNameChat={myNickName()}
                       allMessage={messages}
@@ -278,6 +286,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
                 ) {
                   return (
                     <Message
+                      zIndex={curentIndexMessage - i}
                       centerMessageSend={true}
                       myNickNameChat={myNickName()}
                       allMessage={messages}
@@ -289,6 +298,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
               }
               return (
                 <Message
+                  zIndex={curentIndexMessage - i}
                   myNickNameChat={myNickName()}
                   allMessage={messages}
                   data={message}

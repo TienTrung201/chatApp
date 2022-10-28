@@ -15,7 +15,7 @@ $active--Color: #31a24c;
   flex-direction: column;
   flex: 1;
   justify-content: space-between;
-
+  overflow: hidden;
   @include mobile {
     padding: 16px 5px 0px 5px;
   }
