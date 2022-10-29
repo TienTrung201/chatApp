@@ -2,7 +2,7 @@ import styles from "./EditProfile.module.scss";
 import classNames from "classnames/bind";
 import { v4 as uuid } from "uuid";
 import { useSelector } from "react-redux";
-import { userLogin, users } from "@/components/redux/selector";
+import { userLogin } from "@/components/redux/selector";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCameraRetro,
@@ -20,16 +20,29 @@ import {
   ref,
   uploadBytes,
 } from "firebase/storage";
+import { useMemo } from "react";
+import { useFireStore } from "@/hooks/useFirestor";
 
 const cx = classNames.bind(styles);
 
 function EditProfile() {
   const [isLoading, setIloading] = useState(false);
   let user = useSelector(userLogin);
-  const listUsers = useSelector(users);
-  user = listUsers.find((userChat) => {
-    return userChat.uid === user.uid;
-  });
+  const conditionUser = useMemo(() => {
+    return {
+      fieldName: "displayName",
+      operator: "!=",
+      compareValue: "getAll",
+    };
+  }, []);
+
+  const newUsers = useFireStore("users", conditionUser);
+  const userEdit = useMemo(() => {
+    return newUsers.find((userChat) => {
+      return userChat.uid === user.uid;
+    });
+  }, [newUsers, user.uid]);
+
   const file = useRef();
   const [name, setName] = useState(false);
   const [email, setEmail] = useState(false);
@@ -40,7 +53,8 @@ function EditProfile() {
   });
   const buttonSend = useRef();
   const [imgFile, setImgFile] = useState(null);
-  const [imgUrl, setImgUrl] = useState(user ? user.photoURL : "");
+  const [imgUrl, setImgUrl] = useState(userEdit ? userEdit.photoURL : "");
+
   const handleChangeImg = (fileimg) => {
     setImgFile(fileimg);
     setImgUrl(URL.createObjectURL(fileimg));
@@ -52,8 +66,8 @@ function EditProfile() {
     setName(false);
     setEmail(false);
     setContact(false);
-    if (user.fullPath) {
-      const desertRef = ref(storage, user.fullPath);
+    if (userEdit.fullPath) {
+      const desertRef = ref(storage, userEdit.fullPath);
       deleteObject(desertRef)
         .then(() => {
           // File deleted successfully
@@ -88,24 +102,25 @@ function EditProfile() {
     }
   };
 
-  let initName;
-  let initEmail;
-  let initContact;
-
-  if (user) {
-    initName = user.displayName;
-    initEmail = user.email;
-    if (user.contact) {
-      initContact = user.contact;
-    } else {
-      initContact = "";
+  const [nameValue, setNameValue] = useState("name");
+  const [emailValue, setEmailValue] = useState("");
+  const [contactValue, setContactValue] = useState("");
+  useEffect(() => {
+    if (userEdit) {
+      setNameValue(userEdit.displayName);
+      setImgUrl(userEdit.photoURL);
+      setEmailValue(userEdit.email);
+      if (userEdit.contact) {
+        setContactValue(userEdit.contact);
+      } else {
+        setContactValue("");
+      }
     }
-  }
-  const [nameValue, setNameValue] = useState(initName);
-  const [emailValue, setEmailValue] = useState(initEmail);
-  const [contactValue, setContactValue] = useState(initContact);
+  }, [userEdit]);
+
   const contactRef = useRef();
   const nameRef = useRef();
+
   const handleChangeValue = (setValue, e) => {
     setValue(e.target.value);
   };
@@ -197,14 +212,17 @@ function EditProfile() {
                   e.target.value = "";
                 }}
               />
-              <img
-                src={
-                  user.photoURL !== null
-                    ? imgUrl
-                    : require("../../../assets/images/photoUser.png")
-                }
-                alt=""
-              />
+              {imgUrl && (
+                <img
+                  src={
+                    user.photoURL !== null
+                      ? imgUrl
+                      : require("../../../assets/images/photoUser.png")
+                  }
+                  alt=""
+                />
+              )}
+
               <button
                 onClick={() => {
                   file.current.click();
@@ -218,7 +236,12 @@ function EditProfile() {
               </button>
             </div>
             <div className={cx("myProfileInfo--contact")}>
-              <h2 className={cx("myProfileInfo--Name")}>{user.displayName}</h2>
+              <h2
+                style={{ height: "20px" }}
+                className={cx("myProfileInfo--Name")}
+              >
+                {userEdit ? userEdit.displayName : ""}
+              </h2>
               <p className={cx("myProfileInfo--Email")}>{user.email}</p>
               <p className={cx("myProfileInfo--Nation")}>Viet Nam</p>
             </div>

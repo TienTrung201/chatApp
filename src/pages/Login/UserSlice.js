@@ -22,7 +22,7 @@ export const userSlice = createSlice({
       state.userSelect = action.payload;
     },
     addUsers: (state, action) => {
-      state.users = state.users.push(action.payload);
+      state.users.push(action.payload);
     },
   },
 });

@@ -9,9 +9,9 @@ import {
 import BoxChat, { checkActiveUser } from "@/pages/Chat/BoxChat";
 import { Link } from "react-router-dom";
 import ModalInfoChat from "./ModalInfoChat";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { isSelectedMusic, userLogin, users } from "@/components/redux/selector";
+import { isSelectedMusic, userLogin } from "@/components/redux/selector";
 import userSlice from "../Login/UserSlice";
 import {
   doc,
@@ -22,7 +22,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "@/firebase/config";
-import { useFireStoreGetFields } from "@/hooks/useFirestor";
+import { useFireStore, useFireStoreGetFields } from "@/hooks/useFirestor";
 import LoadingListUser from "@/components/Loaddings/LoadingListUser";
 import boxChatSlice from "./BoxChat/BoxChatSlice";
 import keyboard from "@/assets/audio/keyboard.mp3";
@@ -34,7 +34,19 @@ function Chat() {
   const user = useSelector(userLogin);
   const isCheckedMusic = useSelector(isSelectedMusic);
   const Dispatch = useDispatch();
-  const allUser = useSelector(users);
+  const conditionUser = useMemo(() => {
+    return {
+      fieldName: "displayName",
+      operator: "!=",
+      compareValue: "getAll",
+    };
+  }, []);
+
+  // const newUsers = useFireStore("users", conditionUser);
+  // const allUser = useSelector(users);
+  const allUser = useFireStore("users", conditionUser);
+
+  // console.log(allUser);
   const [modalInfo, setModalInfo] = useState(false);
   const [controlChat, setControlChat] = useState(true);
   const [searchUser, setSearchUser] = useState("");
@@ -129,6 +141,7 @@ function Chat() {
 
   //lấy danh sách người dùng chat
   const listuserChat = useFireStoreGetFields("userChats", user.uid);
+
   //lấy danh sách người dùng chat
   const timeNow = Timestamp.now();
   //tìm kiếm người dùng

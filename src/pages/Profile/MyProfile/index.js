@@ -1,18 +1,16 @@
 import styles from "./MyProfile.module.scss";
 import classNames from "classnames/bind";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  userLogin,
-  //  users
-} from "@/components/redux/selector";
+import { userLogin } from "@/components/redux/selector";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { signOut } from "firebase/auth";
 import { auth } from "@/firebase/config";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import userSlice from "@/pages/Login/UserSlice";
 import LoadingProFile from "@/components/Loaddings/LoadingProFile";
 import boxChatSlice from "@/pages/Chat/BoxChat/BoxChatSlice";
+import { useFireStore } from "@/hooks/useFirestor";
 
 const cx = classNames.bind(styles);
 
@@ -20,8 +18,16 @@ function MyProfile() {
   const Dispatch = useDispatch();
   const [isLoading, setIloading] = useState(false);
   let user = useSelector(userLogin);
-  // const listUsers = useSelector(users);
 
+  const conditionUser = useMemo(() => {
+    return {
+      fieldName: "displayName",
+      operator: "!=",
+      compareValue: "getAll",
+    };
+  }, []);
+
+  const newUsers = useFireStore("users", conditionUser);
   const handleLogout = () => {
     signOut(auth).then(() => {
       setIloading(true);
@@ -39,9 +45,10 @@ function MyProfile() {
       }, 1200);
     });
   };
-  // user = listUsers.find((userChat) => {
-  //   return userChat.uid === user.uid;
-  // });
+
+  user = newUsers.find((userChat) => {
+    return userChat.uid === user.uid;
+  });
   // if (false) {
   //   console.log(listUsers);
   // }

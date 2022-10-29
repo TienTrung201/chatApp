@@ -9,23 +9,32 @@ import {
   faImage,
   faSignature,
 } from "@fortawesome/free-solid-svg-icons";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   isSelectedMusic,
   userChat,
   userLogin,
-  users,
+  // users,
 } from "@/components/redux/selector";
 import Modal from "@/components/Modal";
 import EditUser from "./EditUser";
+import { useFireStore } from "@/hooks/useFirestor";
 
 const cx = classNames.bind(styles);
 
 function ModalInfoChat({ modal, setModal, listUserChats }) {
   let user = useSelector(userLogin);
-  const listUsers = useSelector(users);
-  user = listUsers.find((userChat) => {
+  const conditionUser = useMemo(() => {
+    return {
+      fieldName: "displayName",
+      operator: "!=",
+      compareValue: "getAll",
+    };
+  }, []);
+  // const listuserChat = useFireStore("users", conditionUser);
+  const allUser = useFireStore("users", conditionUser);
+  user = allUser.find((userChat) => {
     return userChat.uid === user.uid;
   });
   const roomChatInfo = useSelector(userChat);
@@ -46,8 +55,8 @@ function ModalInfoChat({ modal, setModal, listUserChats }) {
   );
   let roomChat;
   if (findCurrentRoom) {
-    if (findCurrentRoom[1].listUsers !== undefined)
-      roomChat = findCurrentRoom[1].listUsers.find((user) => {
+    if (findCurrentRoom[1].allUser !== undefined)
+      roomChat = findCurrentRoom[1].allUser.find((user) => {
         return user.uid === roomChatInfo.user.uid;
       });
   }
