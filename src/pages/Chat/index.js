@@ -554,6 +554,7 @@ function Chat() {
 
       <article className={cx("rooms")}>
         <BoxChat
+          allUsers={allUser}
           listUserChats={listuserChat}
           controlChatToBox={controlChat}
           modal={modalInfo}

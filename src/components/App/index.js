@@ -1,7 +1,7 @@
 import { auth } from "@/firebase/config";
-import { useFireStore } from "@/hooks/useFirestor";
+// import { useFireStore } from "@/hooks/useFirestor";
 import userSlice from "@/pages/Login/UserSlice";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -9,15 +9,15 @@ function AppCheckLofgin({ children }) {
   const navigate = useNavigate();
   const Dispatch = useDispatch();
   const [countCheckUser, setCountCheckUser] = useState(0);
-  const conditionUser = useMemo(() => {
-    return {
-      fieldName: "displayName",
-      operator: "!=",
-      compareValue: "getAll",
-    };
-  }, []);
+  // const conditionUser = useMemo(() => {
+  //   return {
+  //     fieldName: "displayName",
+  //     operator: "!=",
+  //     compareValue: "getAll",
+  //   };
+  // }, []);
 
-  const users = useFireStore("users", conditionUser);
+  // const users = useFireStore("users", conditionUser);
   useEffect(() => {
     if (countCheckUser > 1) {
       return;
@@ -48,10 +48,10 @@ function AppCheckLofgin({ children }) {
       };
     });
   }, [Dispatch, countCheckUser, navigate]);
-  useEffect(() => {
-    Dispatch(userSlice.actions.setUsers(users));
-    console.log("Dispatch users");
-  }, [users, Dispatch]);
+  // useEffect(() => {
+  //   Dispatch(userSlice.actions.setUsers(users));
+  //   console.log("Dispatch users");
+  // }, [users, Dispatch]);
   // const conditionChats = useMemo(() => {
   //   return {
   //     fieldName: "messages",

@@ -9,7 +9,7 @@ import {
   isSendMessageTogle,
   userChat,
   userLogin,
-  users,
+  // users,
 } from "@/components/redux/selector";
 import Message from "./Message";
 import InputChat from "./InputChat";
@@ -21,9 +21,9 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 const cx = classNames.bind(styles);
 
-function BoxChat({ modal, setModal, listUserChats }) {
+function BoxChat({ modal, setModal, listUserChats, allUsers }) {
   const roomChatInfo = useSelector(userChat);
-  const allUser = useSelector(users);
+  // const allUser = useSelector(users);
   const user = useSelector(userLogin);
   const isCheckedMusic = useSelector(isSelectedMusic);
   const boxMessage = useRef();
@@ -48,7 +48,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
     }
   }, [roomChatInfo.chatId]);
   //get message
-  const userActive = allUser.find((userChat) => {
+  const userActive = allUsers.find((userChat) => {
     return userChat.uid === roomChatInfo.user.uid;
   });
   //get message
