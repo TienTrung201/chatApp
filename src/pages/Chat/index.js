@@ -251,6 +251,7 @@ function Chat() {
     const activeUser = activeUsersChat.current;
     const activeUserChat = () => {
       //vừa thêm if(userLoginCheckActive) vì báo đỏ
+
       if (userLoginCheckActive) {
         if (
           checkActiveUser(userLoginCheckActive.lastActive) !==
@@ -259,7 +260,6 @@ function Chat() {
         ) {
           console.log(checkActiveUser(userLoginCheckActive.lastActive));
           console.log("bug");
-          console.log(userLoginCheckActive.displayName);
           const userUpdate = doc(db, "users", user.uid);
           updateDoc(userUpdate, {
             lastActive: serverTimestamp(),

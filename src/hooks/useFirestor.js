@@ -68,7 +68,7 @@ export const useFireStore = (collectionName, condition) => {
           lastActiveMonth =
             lastActive.toDate().getMonth() < 10
               ? `0${lastActive.toDate().getMonth()}`
-              : lastActive.toDate().getDate();
+              : lastActive.toDate().getMonth();
           lastActiveYear = lastActive.toDate().getFullYear();
           lastActiveHours =
             lastActive.toDate().getHours() < 10
@@ -98,7 +98,7 @@ export const useFireStore = (collectionName, condition) => {
           getMonth =
             date.toDate().getMonth() < 10
               ? `0${date.toDate().getMonth()}`
-              : date.toDate().getDate();
+              : date.toDate().getMonth();
           getYear = date.toDate().getFullYear();
           getHours =
             date.toDate().getHours() < 10
