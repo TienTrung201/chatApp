@@ -1,0 +1,52 @@
+$bOrgeTransparent: #fff4e6;
+$bPinkTransparent: #fff0f7;
+$widthModal: 250px;
+$widthModal: 250px;
+@mixin mobile {
+  @media screen and (max-width: 739px) {
+    @content;
+  }
+}
+@mixin tablet {
+  @media screen and (min-width: 740px) and (max-width: 1023px) {
+    @content;
+  }
+}
+.avata {
+  // width: 70px;
+  height: 60px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  span {
+    text-align: center;
+    font-size: 1.2rem;
+    width: 70px;
+  }
+  // background-color: #7dbbf5;
+  position: relative;
+  @include mobile {
+    width: 45px;
+    height: 45px;
+  }
+  .close {
+    position: absolute;
+    top: -4px;
+    right: 3px;
+    z-index: 1;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    .iconClose {
+      font-size: 1.2rem;
+    }
+  }
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+}

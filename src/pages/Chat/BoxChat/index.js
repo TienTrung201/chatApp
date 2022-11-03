@@ -31,7 +31,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
   const isSendMessage = useSelector(isSendMessageTogle);
   useEffect(() => {
     boxMessage.current.scrollTop = boxMessage.current.scrollHeight;
-  }, [isSendMessage]);
+  }, [isSendMessage, messages]);
   //get message
   useEffect(() => {
     if (roomChatInfo.chatId === "") {

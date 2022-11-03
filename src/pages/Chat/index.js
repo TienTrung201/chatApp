@@ -26,7 +26,8 @@ import { useFireStore, useFireStoreGetFields } from "@/hooks/useFirestor";
 import LoadingListUser from "@/components/Loaddings/LoadingListUser";
 import boxChatSlice from "./BoxChat/BoxChatSlice";
 import keyboard from "@/assets/audio/keyboard.mp3";
-
+import Modal from "@/components/Modal";
+import { v4 as uuid } from "uuid";
 const cx = classNames.bind(styles);
 
 function Chat() {
@@ -45,13 +46,13 @@ function Chat() {
   // const newUsers = useFireStore("users", conditionUser);
   // const allUser = useSelector(users);
   const allUser = useFireStore("users", conditionUser);
-
   // console.log(allUser);
   const [modalInfo, setModalInfo] = useState(false);
   const [controlChat, setControlChat] = useState(true);
   const [searchUser, setSearchUser] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [isloadingUser, setIsLoadingUser] = useState(false);
+  const [visibleModal, setVisibleModal] = useState(false);
 
   const open = useRef();
   const screenWidth = window.innerWidth;
@@ -141,7 +142,6 @@ function Chat() {
 
   //lấy danh sách người dùng chat
   const listuserChat = useFireStoreGetFields("userChats", user.uid);
-
   //lấy danh sách người dùng chat
   const timeNow = Timestamp.now();
   //tìm kiếm người dùng
@@ -162,6 +162,36 @@ function Chat() {
     setSearchUser(e.target.value);
   };
   //tìm kiếm người dùng
+  const [nameGroup, setNameGroup] = useState("");
+  const handleChangeNameGroup = (e) => {
+    setNameGroup(e.target.value);
+  };
+  const handleCreateGroupChat = async () => {
+    const idRoom = "group" + user.uid + uuid();
+    try {
+      await setDoc(doc(db, "chats", idRoom), {
+        messages: [],
+      });
+      await updateDoc(doc(db, "userChats", user.uid), {
+        [idRoom + ".userInfo"]: {
+          uid: idRoom,
+          displayName: nameGroup,
+          photoURL: "",
+        },
+        [idRoom + ".createdAt"]: serverTimestamp(),
+        [idRoom + ".listUsers"]: [
+          {
+            displayName: user.displayName,
+            nickName: user.displayName,
+            uid: user.uid,
+          },
+        ],
+        [idRoom + ".type"]: "group",
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
   // tạo phòng với user
   const handleSelect = async (userSelect) => {
     const combinedId =
@@ -221,20 +251,34 @@ function Chat() {
 
   // thay đổi người dùng  vào store
   const selectedRoom = (userSelect, userChat) => {
-    const combinedId =
-      userSelect[1].userInfo.uid > user.uid
-        ? userSelect[1].userInfo.uid + user.uid
-        : user.uid + userSelect[1].userInfo.uid;
+    let data;
+    if (userSelect[1].type === "group") {
+      data = {
+        chatId: userSelect[1].userInfo.uid,
+        user: {
+          ...userSelect[1].userInfo,
+          type: "group",
+          photoURL: userSelect[1].userInfo.photoURL,
+          displayName: userSelect[1].userInfo.displayName,
+          lastActive: user.lastActive,
+        },
+      };
+    } else {
+      const combinedId =
+        userSelect[1].userInfo.uid > user.uid
+          ? userSelect[1].userInfo.uid + user.uid
+          : user.uid + userSelect[1].userInfo.uid;
+      data = {
+        chatId: combinedId,
+        user: {
+          ...userSelect[1].userInfo,
+          photoURL: userChat.photoURL,
+          displayName: userChat.displayName,
+          lastActive: userChat.lastActive,
+        },
+      };
+    }
 
-    const data = {
-      chatId: combinedId,
-      user: {
-        ...userSelect[1].userInfo,
-        photoURL: userChat.photoURL,
-        displayName: userChat.displayName,
-        lastActive: userChat.lastActive,
-      },
-    };
     Dispatch(boxChatSlice.actions.setUserSelect(data));
   };
   // thay đổi người dùng  vào store
@@ -295,6 +339,29 @@ function Chat() {
         isCheckedMusic === true ? "backgroundTransparentApp" : ""
       )}
     >
+      <Modal
+        visible={visibleModal}
+        seiVisible={setVisibleModal}
+        title={"Tạo Group"}
+        save="Tạo nhóm"
+        haldleSendModal={handleCreateGroupChat}
+      >
+        <div className={cx("createGroup")}>
+          <div className={cx("nameGroup")}>
+            <label htmlFor="name" className={cx("lableName")}>
+              Tên nhóm
+            </label>
+            <input
+              name="name"
+              id="name"
+              value={nameGroup}
+              className={cx("inputName")}
+              placeholder="tên nhóm"
+              onChange={handleChangeNameGroup}
+            />
+          </div>
+        </div>
+      </Modal>
       {isCheckedMusic === true ? (
         <div className={cx("wrapperKeyboard")}>
           <audio
@@ -332,6 +399,9 @@ function Chat() {
         <div className={cx("wrapperControl")}>
           <div className={cx("createNew")}>
             <div
+              onClick={() => {
+                setVisibleModal(true);
+              }}
               className={cx(
                 "createPlus",
                 "autoCenter",
@@ -340,12 +410,14 @@ function Chat() {
             >
               <FontAwesomeIcon className={cx("creatPlusIcon")} icon={faPlus} />
             </div>
+
             {controlChat === false || screenWidth > 739 ? (
               <h4 className={cx("create__title")}>Create New</h4>
             ) : (
               false
             )}
           </div>
+
           <div className={cx("wrapperTitle")}>
             <h2 className={cx("title__Chat")}>Chat</h2>
             {/* <FontAwesomeIcon /> */}
@@ -483,14 +555,26 @@ function Chat() {
                   >
                     <Link to={"#"} className={cx("user")}>
                       <div className={cx("avata", "autoCenter")}>
-                        <img
-                          src={
-                            userChat !== undefined
-                              ? userChat.photoURL
-                              : require("../../assets/images/photoUser.png")
-                          }
-                          alt=""
-                        />
+                        {user[1].type === "group" ? (
+                          <img
+                            src={
+                              user[1].userInfo.photoURL !== ""
+                                ? user[1].userInfo.photoURL
+                                : require("../../assets/images/photoUser.png")
+                            }
+                            alt=""
+                          />
+                        ) : (
+                          <img
+                            src={
+                              userChat !== undefined
+                                ? userChat.photoURL
+                                : require("../../assets/images/photoUser.png")
+                            }
+                            alt=""
+                          />
+                        )}
+
                         {checkActiveUser(active) === "Đang hoạt động" ? (
                           <span className={cx("active")}></span>
                         ) : (
@@ -504,9 +588,16 @@ function Chat() {
                       </div>
                       {controlChat === false || screenWidth > 739 ? (
                         <div className={cx("user__display")}>
-                          <h5 className={cx("user__name")}>
-                            {userChat !== undefined ? nickName : ""}
-                          </h5>
+                          {user[1].type === "group" ? (
+                            <h5 className={cx("user__name")}>
+                              {user[1].userInfo.displayName}
+                            </h5>
+                          ) : (
+                            <h5 className={cx("user__name")}>
+                              {userChat !== undefined ? nickName : ""}
+                            </h5>
+                          )}
+
                           <div className={cx("user__chatHistory")}>
                             <p className={cx("userChatHistory")}>
                               {user[1].lastMessage === undefined
@@ -563,6 +654,7 @@ function Chat() {
       </article>
       <article style={styleModalInfo} className={cx("ModalInfoChat")}>
         <ModalInfoChat
+          allUsers={allUser}
           listUserChats={listuserChat}
           modal={modalInfo}
           setModal={setModalInfo}
@@ -573,7 +665,7 @@ function Chat() {
 }
 
 export default Chat;
-function removeVietnameseTones(str) {
+export function removeVietnameseTones(str) {
   str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
   str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
   str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");

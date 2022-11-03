@@ -78,6 +78,7 @@
           transition: all 0.3s ease;
           color: #fff;
           transition: 0.2s ease;
+          cursor: pointer;
           @include mobile {
             height: 35px;
             width: 120px;

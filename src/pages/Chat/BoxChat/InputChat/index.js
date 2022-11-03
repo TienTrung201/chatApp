@@ -100,20 +100,30 @@ function InputChat({ myNickNameChat }) {
     }
 
     try {
-      await updateDoc(doc(db, "userChats", roomChatInfo.user.uid), {
-        [roomChatInfo.chatId + ".lastMessage"]: {
-          text: valueInput,
-          sender: myNickNameChat,
-        },
-        [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
-      });
-      await updateDoc(doc(db, "userChats", user.uid), {
-        [roomChatInfo.chatId + ".lastMessage"]: {
-          text: valueInput,
-          sender: myNickNameChat,
-        },
-        [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
-      });
+      if (roomChatInfo.user.type === "group") {
+        await updateDoc(doc(db, "userChats", user.uid), {
+          [roomChatInfo.chatId + ".lastMessage"]: {
+            text: valueInput,
+            sender: myNickNameChat,
+          },
+          [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
+        });
+      } else {
+        await updateDoc(doc(db, "userChats", roomChatInfo.user.uid), {
+          [roomChatInfo.chatId + ".lastMessage"]: {
+            text: valueInput,
+            sender: myNickNameChat,
+          },
+          [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
+        });
+        await updateDoc(doc(db, "userChats", user.uid), {
+          [roomChatInfo.chatId + ".lastMessage"]: {
+            text: valueInput,
+            sender: myNickNameChat,
+          },
+          [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
+        });
+      }
     } catch (e) {
       console.log(e);
     }

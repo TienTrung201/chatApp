@@ -470,3 +470,25 @@ $active--Color: #31a24c;
     // background-color: var(--backGround--page);
   }
 }
+.createGroup {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  // align-items: center;
+  .nameGroup {
+    height: 30px;
+    .lableName {
+      padding-right: 20px;
+      font-size: 1.6rem;
+    }
+    .inputName {
+      height: 100%;
+      border: 2px solid #dce0e3;
+      border-radius: 5px;
+      width: 60%;
+      padding-left: 10px;
+      font-size: 1.6rem;
+      flex: 1;
+    }
+  }
+}

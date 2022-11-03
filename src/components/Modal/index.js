@@ -10,7 +10,14 @@ import { isSelectedMusic } from "../redux/selector";
 import styles from "./Modal.module.scss";
 
 const cx = classNames.bind(styles);
-function Modal({ children, title, save, visible, seiVisible }) {
+function Modal({
+  children,
+  title,
+  save,
+  visible,
+  seiVisible,
+  haldleSendModal,
+}) {
   const isCheckedMusic = useSelector(isSelectedMusic);
   return (
     <AnimatePresence>
@@ -54,7 +61,16 @@ function Modal({ children, title, save, visible, seiVisible }) {
               </div>
               <article className={cx("content")}>{children}</article>
               <div className={cx("footer", "autoCenter")}>
-                {save === true ? <button>Lưu</button> : false}
+                {save && (
+                  <button
+                    onClick={() => {
+                      haldleSendModal();
+                      seiVisible(false);
+                    }}
+                  >
+                    {save}
+                  </button>
+                )}
               </div>
             </div>
           </motion.div>

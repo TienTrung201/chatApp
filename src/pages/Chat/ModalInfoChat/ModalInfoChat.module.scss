@@ -192,6 +192,7 @@ $widthModal: 250px;
       .content {
         transition: 0.3s ease-in-out;
       }
+
       .setting {
         background-color: $bOrgeTransparent;
         transition: 0.3s ease-in-out;
@@ -201,6 +202,28 @@ $widthModal: 250px;
         }
         .icon {
           color: #e5a730;
+        }
+      }
+      .addUser {
+        background-color: $bOrgeTransparent;
+        transition: 0.3s ease-in-out;
+        &:hover {
+          border: 0px;
+          color: #f790b8 !important;
+        }
+        .icon {
+          color: #f790b8;
+        }
+      }
+      .nameGroup {
+        background-color: $bOrgeTransparent;
+        transition: 0.3s ease-in-out;
+        &:hover {
+          border: 0px;
+          color: #328ee4 !important;
+        }
+        .icon {
+          color: #7dbbf5;
         }
       }
       .nickName {
@@ -258,6 +281,187 @@ $widthModal: 250px;
           font-size: 1.4rem;
           font-weight: 600;
           user-select: none;
+        }
+      }
+    }
+  }
+}
+.editNameGroup {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  // align-items: center;
+
+  .nameGroup {
+    height: 30px;
+    .lableName {
+      padding-right: 20px;
+      font-size: 1.6rem;
+    }
+    .inputName {
+      height: 100%;
+      border: 2px solid #dce0e3;
+      border-radius: 5px;
+      width: 60%;
+      padding-left: 10px;
+      font-size: 1.6rem;
+      flex: 1;
+    }
+  }
+  .addUser {
+    height: 40px;
+    .inputName {
+      height: 100%;
+      border: 2px solid #dce0e3;
+      border-radius: 5px;
+      width: 100%;
+      padding-left: 10px;
+      font-size: 1.6rem;
+      flex: 1;
+    }
+  }
+}
+.addUserGroup {
+  height: 450px;
+  justify-content: space-between;
+  .selectUser {
+    flex: 1;
+    .listUserSelected {
+      padding: 10px 10px;
+      height: 100%;
+      overflow-x: scroll;
+      display: flex;
+      .avata {
+        // width: 70px;
+        height: 60px;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        span {
+          text-align: center;
+          font-size: 1.2rem;
+          width: 70px;
+        }
+        // background-color: #7dbbf5;
+        position: relative;
+        @include mobile {
+          width: 45px;
+          height: 45px;
+        }
+        .close {
+          position: absolute;
+          top: -4px;
+          right: 3px;
+          z-index: 1;
+          border: 1px solid rgba(0, 0, 0, 0.1);
+          background-color: #fff;
+          border-radius: 50%;
+          width: 20px;
+          height: 20px;
+          cursor: pointer;
+          .iconClose {
+            font-size: 1.2rem;
+          }
+        }
+        img {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+        }
+      }
+    }
+
+    h5 {
+      color: #848589;
+    }
+  }
+  .listUserSearch {
+    height: 240px;
+    overflow-y: scroll;
+    .userItem {
+      display: flex;
+      align-items: center;
+      border-radius: 10px;
+      height: 60px;
+      position: relative;
+      cursor: pointer;
+      &:hover {
+        background-color: rgba(204, 204, 204, 1);
+      }
+      .avata {
+        width: 50px;
+        height: 50px;
+        // @include mobile {
+        //   width: 40px;
+        //   height: 40px;
+        // }
+        position: relative;
+        @include mobile {
+          width: 45px;
+          height: 45px;
+        }
+
+        img {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          // @include mobile {
+          //   width: 35px;
+          //   height: 35px;
+          // }
+        }
+      }
+      .inputCheck {
+        position: absolute;
+        right: 20px;
+        height: 70px;
+        width: 16px;
+      }
+      .user__display {
+        padding-top: 1px;
+        white-space: nowrap;
+
+        // flex: 1;
+        @include mobile {
+          // display: none; // useState
+        }
+        .user__name {
+          font-size: 1.5rem;
+          // font-weight: 400;
+          line-height: 1.5rem;
+
+          // @include mobile {
+          //   font-size: 1.3rem;
+          //   line-height: 1.3rem;
+          // }
+          @include tablet() {
+            max-width: 130px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+        .user__chatHistory {
+          font-size: 1rem;
+          color: #8f97a4;
+          display: flex;
+          // justify-content: space-between;
+          .userChatHistory {
+            max-width: 120px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            @include mobile {
+              max-width: 200px;
+            }
+            @include tablet() {
+              max-width: 70px;
+            }
+          }
+          p {
+            margin-right: 2px;
+          }
         }
       }
     }
