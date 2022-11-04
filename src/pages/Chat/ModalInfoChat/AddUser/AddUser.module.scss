@@ -25,10 +25,7 @@ $widthModal: 250px;
   }
   // background-color: #7dbbf5;
   position: relative;
-  @include mobile {
-    width: 45px;
-    height: 45px;
-  }
+
   .close {
     position: absolute;
     top: -4px;

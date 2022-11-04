@@ -1,7 +1,8 @@
 import { userChat, userLogin } from "@/components/redux/selector";
+import { useFireStore } from "@/hooks/useFirestor";
 
 import classNames from "classnames/bind";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { useSelector } from "react-redux";
 import ControlMessage from "./ControlMessage";
@@ -19,18 +20,40 @@ function Message({
   firstMessage,
   zIndex,
 }) {
+  const userLoginChat = useSelector(userLogin);
+  const roomChatInfo = useSelector(userChat);
+
+  const conditionUser = useMemo(() => {
+    return {
+      fieldName: "displayName",
+      operator: "!=",
+      compareValue: "getAll",
+    };
+  }, []);
+
+  const allUser = useFireStore("users", conditionUser);
+  let userChatSender = useMemo(() => {
+    return allUser.find((userChat) => {
+      return userChat.uid === data.senderId;
+    });
+  }, [allUser, data.senderId]);
+
   let displayAvata = true;
   if (centerMessageSend === true) {
-    displayAvata = false;
-  } else if (firstMessage === true) {
     displayAvata = false;
   }
   if (firstMessageSend === true) {
     displayAvata = false;
   }
+  if (
+    firstMessageSend === undefined &&
+    firstMessage === undefined &&
+    centerMessageSend === undefined &&
+    endSendMessage === undefined
+  ) {
+  }
+
   const heightImageScroll = window.innerWidth > 739 ? "200px" : "100px";
-  const userLoginChat = useSelector(userLogin);
-  const roomChatInfo = useSelector(userChat);
 
   //image scroll top bug
   const styleImage = {
@@ -65,7 +88,13 @@ function Message({
           className={cx(
             "message__chat",
             "user",
-            firstMessageSend === true ? "mgtop_20px" : ""
+            firstMessageSend === true ? "mgtop_20px" : "",
+            firstMessageSend === undefined &&
+              firstMessage === undefined &&
+              centerMessageSend === undefined &&
+              endSendMessage === undefined
+              ? "mgtop_20px"
+              : ""
           )}
         >
           {data.image ? (
@@ -202,15 +231,45 @@ function Message({
           className={cx(
             "message__chat",
             "friend",
-            firstMessageSend === true ? "mgtop_20px" : ""
+            firstMessageSend === true ? "mgtop_20px" : "",
+            firstMessageSend === undefined &&
+              firstMessage === undefined &&
+              centerMessageSend === undefined &&
+              endSendMessage === undefined
+              ? "mgtop_20px"
+              : ""
           )}
         >
+          {roomChatInfo.user.type === "group" ? (
+            <>
+              {firstMessageSend && (
+                <span className={cx("nameUserSend")}>
+                  {userChatSender !== undefined
+                    ? userChatSender.displayName
+                    : ""}{" "}
+                </span>
+              )}
+              {firstMessageSend === undefined &&
+                firstMessage === undefined &&
+                centerMessageSend === undefined &&
+                endSendMessage === undefined && (
+                  <span className={cx("nameUserSend")}>
+                    {userChatSender !== undefined
+                      ? userChatSender.displayName
+                      : ""}{" "}
+                  </span>
+                )}
+            </>
+          ) : (
+            false
+          )}
+
           <div className={cx("avatar")}>
             {displayAvata === true ? (
               <img
                 src={
-                  roomChatInfo.user.photoURL !== null
-                    ? roomChatInfo.user.photoURL
+                  userChatSender !== undefined
+                    ? userChatSender.photoURL
                     : require("../../../../assets/images/photoUser.png")
                 }
                 alt=""

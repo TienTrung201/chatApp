@@ -4,12 +4,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleLeft,
+  faCheck,
   faChevronDown,
   faGear,
   faImage,
   faPen,
   faSignature,
   faUserPlus,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
@@ -23,6 +25,8 @@ import Modal from "@/components/Modal";
 import EditUser from "./EditUser";
 import { useFireStore } from "@/hooks/useFirestor";
 import AddUser from "./AddUser";
+import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import { db } from "@/firebase/config";
 
 const cx = classNames.bind(styles);
 
@@ -30,22 +34,9 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
   let user = useSelector(userLogin);
   const [searchUser, setSearchUser] = useState("");
   const [searchResult, setSearchResult] = useState([]);
-  console.log(searchResult);
-  useEffect(() => {
-    setSearchResult(
-      allUsers.filter((user) => {
-        return user.displayName
-          .toLowerCase()
-          .includes(searchUser.toLowerCase());
-      })
-    );
-    if (searchUser === "") {
-      setSearchResult([]);
-    }
-  }, [searchUser, allUsers]);
-  const handleChangeSearch = (e) => {
-    setSearchUser(e.target.value);
-  };
+
+  const roomChatInfo = useSelector(userChat);
+  const [currentUserRoom, setCurrentUserRoom] = useState([]);
   const conditionUser = useMemo(() => {
     return {
       fieldName: "displayName",
@@ -58,9 +49,114 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
   user = allUser.find((userChat) => {
     return userChat.uid === user.uid;
   });
-  const roomChatInfo = useSelector(userChat);
+  const [usersRoomSearch, setUsersRoomSearch] = useState([]);
+  const handleAddusersGroup = async () => {
+    const listUserRoomAdd = currentUserRoom;
+    usersRoomSearch.forEach((user) => {
+      if (user.checked === true) {
+        listUserRoomAdd.push({
+          displayName: user.displayName,
+          nickName: user.displayName,
+          uid: user.uid,
+        });
+      }
+    });
+    await updateDoc(doc(db, "userChats", user.uid), {
+      [roomChatInfo.chatId + ".userInfo"]: {
+        uid: roomChatInfo.chatId,
+        displayName: roomChatInfo.user.displayName,
+        photoURL: roomChatInfo.user.photoURL,
+      },
+      [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
+      [roomChatInfo.chatId + ".listUsers"]: listUserRoomAdd,
+      [roomChatInfo.chatId + ".type"]: "group",
+    });
+    listUserRoomAdd.forEach(async (user) => {
+      await updateDoc(doc(db, "userChats", user.uid), {
+        [roomChatInfo.chatId + ".userInfo"]: {
+          uid: roomChatInfo.chatId,
+          displayName: roomChatInfo.user.displayName,
+          photoURL: roomChatInfo.user.photoURL,
+        },
+        [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
+        [roomChatInfo.chatId + ".listUsers"]: listUserRoomAdd,
+        [roomChatInfo.chatId + ".type"]: "group",
+      });
+    });
+  };
+  const addUserCheckedToggle = (id) => {
+    setUsersRoomSearch(
+      usersRoomSearch.map((user) => {
+        if (user.uid === id) {
+          return {
+            ...user,
+            checked: !user.checked,
+          };
+        }
+        return { ...user };
+      })
+    );
+    setSearchResult(
+      searchResult.map((user) => {
+        if (user.uid === id) {
+          return {
+            ...user,
+            checked: !user.checked,
+          };
+        }
+        return { ...user };
+      })
+    );
+  };
+  useEffect(() => {
+    const listUserRoom = listUserChats.find((room) => {
+      return room[0] === roomChatInfo.chatId;
+    });
+
+    let userRoom = [];
+    if (listUserRoom !== undefined) {
+      setCurrentUserRoom(listUserRoom[1].listUsers);
+      userRoom = allUsers.map((users) => {
+        for (let i = 0; i < listUserRoom[1].listUsers.length; i++) {
+          if (users.uid === listUserRoom[1].listUsers[i].uid) {
+            return false;
+          }
+        }
+        return users;
+      });
+    } else {
+      userRoom = [];
+    }
+    const userRoomSearch = [];
+
+    for (let i = 0; i < userRoom.length; i++) {
+      if (userRoom[i] !== false) {
+        userRoomSearch.push({ ...userRoom[i], checked: false });
+      }
+    }
+    //sửa user room thêm checked
+    setUsersRoomSearch(userRoomSearch);
+  }, [allUsers, listUserChats, roomChatInfo.chatId]);
+  useEffect(() => {
+    setSearchResult(
+      usersRoomSearch.filter((user) => {
+        return user.displayName
+          .toLowerCase()
+          .includes(searchUser.toLowerCase());
+      })
+    );
+
+    if (searchUser === "") {
+      setSearchResult([]);
+    }
+  }, [searchUser, usersRoomSearch]);
+  const handleChangeSearch = (e) => {
+    setSearchUser(e.target.value);
+  };
+
   const isCheckedMusic = useSelector(isSelectedMusic);
   const [isSetting, setIsSetting] = useState(false);
+  const [isListUserGroup, setIsListUserGroup] = useState(false);
   const [typeModal, setTypeModal] = useState("");
   const [visibleModal, setVisibleModal] = useState(false);
   const screenWidth = window.innerWidth;
@@ -168,6 +264,7 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
               seiVisible={setVisibleModal}
               title={"Thêm thành viên"}
               save="Thêm"
+              haldleSendModal={handleAddusersGroup}
             >
               <div className={cx("editNameGroup", "addUserGroup")}>
                 <div className={cx("nameGroup", "addUser")}>
@@ -182,17 +279,26 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                 </div>
                 <div className={cx("selectUser")}>
                   <div className={cx("listUserSelected")}>
-                    {allUsers.map((user) => {
-                      return <AddUser user={user} key={user.uid} />;
+                    {usersRoomSearch.map((user) => {
+                      if (user.checked === true) {
+                        return <AddUser user={user} key={user.uid} />;
+                      }
+                      return false;
                     })}
                   </div>
 
                   {/* <h5 className={cx("autoCenter")}>Chưa chọn người dùng nào</h5> */}
                 </div>
                 <ul className={cx("listUserSearch")}>
-                  {allUsers.map((user, i) => {
+                  {searchResult.map((user, i) => {
                     return (
-                      <li key={user.uid} className={cx("userItem")}>
+                      <li
+                        onClick={() => {
+                          addUserCheckedToggle(user.uid);
+                        }}
+                        key={user.uid}
+                        className={cx("userItem")}
+                      >
                         <div className={cx("avata", "autoCenter")}>
                           <img
                             src={
@@ -203,7 +309,17 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                             alt=""
                           />
                         </div>
-                        <input type="checkbox" className={cx("inputCheck")} />
+                        {user.checked === true ? (
+                          <div className={cx("inputCheck", "autoCenter")}>
+                            <FontAwesomeIcon
+                              className={cx("iconCheck")}
+                              icon={faCheck}
+                            />
+                          </div>
+                        ) : (
+                          <div className={cx("inputCheck")}></div>
+                        )}
+
                         <div className={cx("user__display")}>
                           <h5 className={cx("user__name")}>
                             {user.displayName}
@@ -405,6 +521,89 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                 ) : (
                   false
                 )}
+              </li>
+
+              <li
+                onClick={() => {
+                  setIsListUserGroup(!isListUserGroup);
+                }}
+                className={cx(
+                  "controlItem",
+                  "usersGroup",
+                  isCheckedMusic === true ? "backgroundTransparent" : ""
+                )}
+              >
+                <div className={cx("boxBug")}>
+                  <div className={cx("wrappIcon", "autoCenter")}>
+                    <FontAwesomeIcon className={cx("icon")} icon={faUsers} />
+                  </div>
+                  <FontAwesomeIcon
+                    className={cx("iconOpen")}
+                    icon={faChevronDown}
+                    style={
+                      isListUserGroup === true
+                        ? { rotate: "-90deg" }
+                        : { rotate: "0deg" }
+                    }
+                  />
+                  <p className={cx("content", "imageHover")}>Xem thành viên</p>
+                </div>
+                <AnimatePresence>
+                  {isListUserGroup && (
+                    <motion.ul
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{
+                        transition: { stiffness: 300 },
+                        opacity: 1,
+                        height: "auto",
+                      }}
+                      exit={{
+                        opacity: 0,
+                        height: 0,
+                        transition: { duration: 0.2 },
+                      }}
+                      className={cx("navBar")}
+                    >
+                      {currentUserRoom.map((user) => {
+                        let avata;
+                        let name;
+                        allUser.forEach((userFind) => {
+                          if (userFind.uid === user.uid) {
+                            avata = userFind.photoURL;
+                            name = userFind.displayName;
+                          }
+                        });
+                        return (
+                          <li
+                            onClick={() => {}}
+                            key={user.uid}
+                            className={cx(
+                              "userItem",
+                              isCheckedMusic === true
+                                ? "backgroundTransparent"
+                                : ""
+                            )}
+                          >
+                            <div className={cx("avata", "autoCenter")}>
+                              <img
+                                src={
+                                  avata !== null
+                                    ? avata
+                                    : require("../../../assets/images/photoUser.png")
+                                }
+                                alt=""
+                              />
+                            </div>
+
+                            <div className={cx("user__display")}>
+                              <h5 className={cx("user__name")}>{name}</h5>
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </motion.ul>
+                  )}
+                </AnimatePresence>
               </li>
               <li
                 className={cx(

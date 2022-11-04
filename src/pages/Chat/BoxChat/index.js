@@ -24,7 +24,10 @@ const cx = classNames.bind(styles);
 function BoxChat({ modal, setModal, listUserChats, allUsers }) {
   const roomChatInfo = useSelector(userChat);
   // const allUser = useSelector(users);
-  const user = useSelector(userLogin);
+  let user = useSelector(userLogin);
+  user = allUsers.find((userChat) => {
+    return userChat.uid === user.uid;
+  });
   const isCheckedMusic = useSelector(isSelectedMusic);
   const boxMessage = useRef();
   const [messages, setMessage] = useState(undefined);
@@ -79,10 +82,12 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
       });
     }
   }
+
   const myNickName = useCallback(() => {
     if (myName === undefined) {
       return user.displayName;
-    } else if (myName.nickName.trim(" ") === "") {
+    }
+    if (myName.nickName.trim(" ") === "") {
       return user.displayName;
     } else {
       return myName.nickName;
@@ -318,7 +323,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
             isCheckedMusic === true ? "backgroundTransparentBlackBorder" : ""
           )}
         >
-          <InputChat myNickNameChat={myNickName()} />
+          <InputChat userSend={user} myNickNameChat={myNickName()} />
         </div>
       )}
     </div>

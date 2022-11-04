@@ -503,7 +503,7 @@ function Chat() {
           ) : (
             <>
               {listuserChat.map((user, index) => {
-                const lastSent = lastSentMessage(timeNow, user[1].createdAt);
+                const lastSend = lastSendMessage(timeNow, user[1].createdAt);
 
                 let userChat = allUser.find((userChat) => {
                   return userChat.uid === user[1].userInfo.uid;
@@ -611,7 +611,7 @@ function Chat() {
                             <p>
                               {user[1].lastMessage === undefined
                                 ? false
-                                : "·" + lastSent}
+                                : "·" + lastSend}
                             </p>
                           </div>
                         </div>
@@ -696,7 +696,7 @@ export function removeVietnameseTones(str) {
   // );
   return str;
 }
-export function lastSentMessage(timeNow, timeSendMessage) {
+export function lastSendMessage(timeNow, timeSendMessage) {
   if (timeSendMessage === null) {
     return "";
   }

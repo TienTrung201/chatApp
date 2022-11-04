@@ -77,6 +77,7 @@ $widthModal: 250px;
         width: 100%;
         height: 100%;
         border-radius: 50%;
+        object-fit: cover;
         // border: 9px solid rgb(19, 173, 27);
       }
     }
@@ -246,6 +247,54 @@ $widthModal: 250px;
           color: #c383a5;
         }
       }
+      .usersGroup {
+        background-color: #ebf3bc;
+        .userItem {
+          display: flex;
+          align-items: center;
+          .avata {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            position: relative;
+
+            img {
+              width: 30px;
+              height: 30px;
+              border-radius: 50%;
+            }
+          }
+
+          .user__display {
+            padding-top: 1px;
+            white-space: nowrap;
+
+            // flex: 1;
+            @include mobile {
+              // display: none; // useState
+            }
+            .user__name {
+              font-size: 1.4rem;
+              line-height: 1.5rem;
+
+              @include tablet() {
+                max-width: 130px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+              }
+            }
+          }
+        }
+
+        &:hover .imageHover {
+          color: #8fa320;
+        }
+        .icon {
+          color: #8fa320;
+        }
+      }
 
       .controlItem {
         // flex-direction: ;
@@ -271,7 +320,9 @@ $widthModal: 250px;
             height: 30px;
             border-radius: 50%;
             margin-right: 5px;
-
+            display: flex;
+            align-items: center;
+            justify-content: center;
             .icon {
             }
           }
@@ -344,10 +395,10 @@ $widthModal: 250px;
         }
         // background-color: #7dbbf5;
         position: relative;
-        @include mobile {
-          width: 45px;
-          height: 45px;
-        }
+        // @include mobile {
+        //   width: 45px;
+        //   height: 45px;
+        // }
         .close {
           position: absolute;
           top: -4px;
@@ -367,6 +418,7 @@ $widthModal: 250px;
           width: 40px;
           height: 40px;
           border-radius: 50%;
+          object-fit: cover;
         }
       }
     }
@@ -411,11 +463,20 @@ $widthModal: 250px;
           // }
         }
       }
+      .inputCheck.autoCenter {
+        background-color: #ccd;
+      }
       .inputCheck {
         position: absolute;
         right: 20px;
-        height: 70px;
-        width: 16px;
+        height: 18px;
+        width: 18px;
+        // background-color: #848589;
+        border: solid 2px #848589;
+        .iconCheck {
+          position: absolute;
+          font-size: 1.3rem;
+        }
       }
       .user__display {
         padding-top: 1px;
