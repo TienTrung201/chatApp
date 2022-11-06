@@ -32,7 +32,8 @@ const cx = classNames.bind(styles);
 
 function Chat() {
   console.log("Chat");
-  const user = useSelector(userLogin);
+  let user = useSelector(userLogin);
+  const idUser = user.uid;
   const isCheckedMusic = useSelector(isSelectedMusic);
   const Dispatch = useDispatch();
   const conditionUser = useMemo(() => {
@@ -46,7 +47,9 @@ function Chat() {
   // const newUsers = useFireStore("users", conditionUser);
   // const allUser = useSelector(users);
   const allUser = useFireStore("users", conditionUser);
-  // console.log(allUser);
+  user = allUser.find((userChat) => {
+    return userChat.uid === user.uid;
+  });
   const [modalInfo, setModalInfo] = useState(false);
   const [controlChat, setControlChat] = useState(true);
   const [searchUser, setSearchUser] = useState("");
@@ -141,8 +144,10 @@ function Chat() {
   //reponsive style ModalInfoChat
 
   //lấy danh sách người dùng chat
-  const listuserChat = useFireStoreGetFields("userChats", user.uid);
+
+  const listuserChat = useFireStoreGetFields("userChats", idUser);
   //lấy danh sách người dùng chat
+
   const timeNow = Timestamp.now();
   //tìm kiếm người dùng
   useEffect(() => {
@@ -176,7 +181,7 @@ function Chat() {
         [idRoom + ".userInfo"]: {
           uid: idRoom,
           displayName: nameGroup,
-          photoURL: "",
+          photoURL: user.photoURL,
         },
         [idRoom + ".createdAt"]: serverTimestamp(),
         [idRoom + ".listUsers"]: [
@@ -187,6 +192,7 @@ function Chat() {
           },
         ],
         [idRoom + ".type"]: "group",
+        [idRoom + ".position"]: "admin",
       });
     } catch (e) {
       console.log(e);
@@ -304,7 +310,7 @@ function Chat() {
         ) {
           console.log(checkActiveUser(userLoginCheckActive.lastActive));
           console.log("bug");
-          const userUpdate = doc(db, "users", user.uid);
+          const userUpdate = doc(db, "users", idUser);
           updateDoc(userUpdate, {
             lastActive: serverTimestamp(),
           });
@@ -315,7 +321,7 @@ function Chat() {
     return () => {
       activeUser.removeEventListener("mouseover", activeUserChat);
     };
-  }, [user.uid, timeNow, userLoginCheckActive]);
+  }, [idUser, timeNow, userLoginCheckActive]);
   //trạng thái hoạt động
 
   // âm thanh gõ phím
@@ -397,11 +403,13 @@ function Chat() {
         )}
       >
         <div className={cx("wrapperControl")}>
-          <div className={cx("createNew")}>
+          <div
+            onClick={() => {
+              setVisibleModal(true);
+            }}
+            className={cx("createNew")}
+          >
             <div
-              onClick={() => {
-                setVisibleModal(true);
-              }}
               className={cx(
                 "createPlus",
                 "autoCenter",
@@ -412,7 +420,7 @@ function Chat() {
             </div>
 
             {controlChat === false || screenWidth > 739 ? (
-              <h4 className={cx("create__title")}>Create New</h4>
+              <h4 className={cx("create__title")}>Tạo nhóm</h4>
             ) : (
               false
             )}

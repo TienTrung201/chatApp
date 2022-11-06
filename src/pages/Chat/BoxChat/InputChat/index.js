@@ -2,7 +2,7 @@ import styles from "./InputChat.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImages, faPaperPlane } from "@fortawesome/free-regular-svg-icons";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   isSelectedMusic,
@@ -25,13 +25,14 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 import boxChatSlice from "../BoxChatSlice";
 
 const cx = classNames.bind(styles);
-function InputChat({ myNickNameChat }) {
+function InputChat({ myNickNameChat, listUserChat }) {
   const roomChatInfo = useSelector(userChat);
   const user = useSelector(userLogin);
   const [valueInput, setValueInput] = useState("");
   const file = useRef();
   const [imgFile, setImgFile] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
+  const [currentUserRoom, setCurrentUserRoom] = useState([]);
   const isCheckedMusic = useSelector(isSelectedMusic);
   const isSendMessage = useSelector(isSendMessageTogle);
   const Dispatch = useDispatch();
@@ -46,6 +47,16 @@ function InputChat({ myNickNameChat }) {
       }
     };
   };
+  useEffect(() => {
+    const listUserRoom = listUserChat.find((room) => {
+      return room[0] === roomChatInfo.chatId;
+    });
+    if (listUserRoom !== undefined) {
+      if (listUserRoom[0].search("group") === 0) {
+        setCurrentUserRoom(listUserRoom[1].listUsers);
+      }
+    }
+  }, [roomChatInfo.chatId, listUserChat]);
 
   const handleSubmit = async () => {
     setValueInput("");
@@ -101,12 +112,14 @@ function InputChat({ myNickNameChat }) {
 
     try {
       if (roomChatInfo.user.type === "group") {
-        await updateDoc(doc(db, "userChats", user.uid), {
-          [roomChatInfo.chatId + ".lastMessage"]: {
-            text: valueInput,
-            sender: myNickNameChat,
-          },
-          [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
+        currentUserRoom.forEach(async (user) => {
+          await updateDoc(doc(db, "userChats", user.uid), {
+            [roomChatInfo.chatId + ".lastMessage"]: {
+              text: valueInput,
+              sender: myNickNameChat,
+            },
+            [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
+          });
         });
       } else {
         await updateDoc(doc(db, "userChats", roomChatInfo.user.uid), {

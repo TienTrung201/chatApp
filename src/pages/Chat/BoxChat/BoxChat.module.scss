@@ -30,6 +30,10 @@ $active--Color: #31a24c;
       // flex-direction: row-reverse;
       //chinh nó
     }
+    .alignCenter {
+      display: flex;
+      align-items: center;
+    }
     .infoUser {
       .user {
         @include mobile {

@@ -1,5 +1,6 @@
 import styles from "./ModalInfoChat.module.scss";
 import classNames from "classnames/bind";
+import { v4 as uuid } from "uuid";
 import { motion, AnimatePresence } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,12 +9,13 @@ import {
   faChevronDown,
   faGear,
   faImage,
+  faImages,
   faPen,
   faSignature,
   faUserPlus,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   isSelectedMusic,
@@ -26,7 +28,13 @@ import EditUser from "./EditUser";
 import { useFireStore } from "@/hooks/useFirestor";
 import AddUser from "./AddUser";
 import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
-import { db } from "@/firebase/config";
+import { db, storage } from "@/firebase/config";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 
 const cx = classNames.bind(styles);
 
@@ -34,9 +42,14 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
   let user = useSelector(userLogin);
   const [searchUser, setSearchUser] = useState("");
   const [searchResult, setSearchResult] = useState([]);
-
+  const [nameGroup, setNameGroup] = useState("");
   const roomChatInfo = useSelector(userChat);
   const [currentUserRoom, setCurrentUserRoom] = useState([]);
+  const [currentGroup, setCurrentGroup] = useState({
+    displayName: "",
+    photoURL: "",
+  });
+  const file = useRef();
   const conditionUser = useMemo(() => {
     return {
       fieldName: "displayName",
@@ -44,12 +57,34 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
       compareValue: "getAll",
     };
   }, []);
+  //đổi tên nhóm
+  const handleChangeNameGroup = (e) => {
+    setNameGroup(e.target.value);
+  };
+  const handleSubmitNameGroup = () => {
+    try {
+      currentUserRoom.forEach(async (user) => {
+        await updateDoc(doc(db, "userChats", user.uid), {
+          [roomChatInfo.chatId + ".userInfo"]: {
+            uid: roomChatInfo.chatId,
+            displayName: nameGroup,
+            photoURL: currentGroup.photoURL,
+          },
+        });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //đổi tên nhóm
   // const listuserChat = useFireStore("users", conditionUser);
   const allUser = useFireStore("users", conditionUser);
   user = allUser.find((userChat) => {
     return userChat.uid === user.uid;
   });
   const [usersRoomSearch, setUsersRoomSearch] = useState([]);
+  //hành động thêm người dùng vào phòng
   const handleAddusersGroup = async () => {
     const listUserRoomAdd = currentUserRoom;
     usersRoomSearch.forEach((user) => {
@@ -61,16 +96,7 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
         });
       }
     });
-    await updateDoc(doc(db, "userChats", user.uid), {
-      [roomChatInfo.chatId + ".userInfo"]: {
-        uid: roomChatInfo.chatId,
-        displayName: roomChatInfo.user.displayName,
-        photoURL: roomChatInfo.user.photoURL,
-      },
-      [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
-      [roomChatInfo.chatId + ".listUsers"]: listUserRoomAdd,
-      [roomChatInfo.chatId + ".type"]: "group",
-    });
+
     listUserRoomAdd.forEach(async (user) => {
       await updateDoc(doc(db, "userChats", user.uid), {
         [roomChatInfo.chatId + ".userInfo"]: {
@@ -84,6 +110,9 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
       });
     });
   };
+  //hành động thêm người dùng vào phòng
+
+  //checked tạo danh sách người dùng vào phòng
   const addUserCheckedToggle = (id) => {
     setUsersRoomSearch(
       usersRoomSearch.map((user) => {
@@ -114,16 +143,22 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
     });
 
     let userRoom = [];
+
     if (listUserRoom !== undefined) {
-      setCurrentUserRoom(listUserRoom[1].listUsers);
-      userRoom = allUsers.map((users) => {
-        for (let i = 0; i < listUserRoom[1].listUsers.length; i++) {
-          if (users.uid === listUserRoom[1].listUsers[i].uid) {
-            return false;
+      if (listUserRoom[0].search("group") === 0) {
+        setCurrentUserRoom(listUserRoom[1].listUsers);
+        setCurrentGroup({
+          ...listUserRoom[1].userInfo,
+        });
+        userRoom = allUsers.map((users) => {
+          for (let i = 0; i < listUserRoom[1].listUsers.length; i++) {
+            if (users.uid === listUserRoom[1].listUsers[i].uid) {
+              return false;
+            }
           }
-        }
-        return users;
-      });
+          return users;
+        });
+      }
     } else {
       userRoom = [];
     }
@@ -136,7 +171,43 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
     }
     //sửa user room thêm checked
     setUsersRoomSearch(userRoomSearch);
+    //checked tạo danh sách người dùng vào phòng
   }, [allUsers, listUserChats, roomChatInfo.chatId]);
+  //checked tạo danh sách người dùng vào phòng
+  //
+
+  const handleChangeImg = (imgFile) => {
+    const idRandom = uuid();
+    const imgRef = ref(
+      storage,
+      `group/${roomChatInfo.chatId}/${imgFile.name}${idRandom}`
+    );
+    if (currentGroup.fullPath) {
+      const desertRef = ref(storage, currentGroup.fullPath);
+      deleteObject(desertRef)
+        .then(() => {
+          // File deleted successfully
+        })
+        .catch((error) => {
+          // Uh-oh, an error occurred!
+        });
+    }
+    uploadBytes(imgRef, imgFile).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((imgurl) => {
+        currentUserRoom.forEach(async (user) => {
+          await updateDoc(doc(db, "userChats", user.uid), {
+            [roomChatInfo.chatId + ".userInfo"]: {
+              uid: roomChatInfo.chatId,
+              displayName: currentGroup.displayName,
+              photoURL: imgurl,
+              fullPath: snapshot.metadata.fullPath,
+            },
+          });
+        });
+      });
+    });
+  };
+  //tìm kiếm người dùng
   useEffect(() => {
     setSearchResult(
       usersRoomSearch.filter((user) => {
@@ -150,9 +221,11 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
       setSearchResult([]);
     }
   }, [searchUser, usersRoomSearch]);
+
   const handleChangeSearch = (e) => {
     setSearchUser(e.target.value);
   };
+  //tìm kiếm người dùng
 
   const isCheckedMusic = useSelector(isSelectedMusic);
   const [isSetting, setIsSetting] = useState(false);
@@ -166,19 +239,23 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
       : screenWidth > 1023
       ? 250
       : "calc(100% - 1px)";
-
   const findCurrentRoom = listUserChats.find(
     (roomList) => roomChatInfo.chatId === roomList[0]
   );
   let roomChat;
   if (findCurrentRoom) {
-    if (findCurrentRoom[1].allUser !== undefined)
-      roomChat = findCurrentRoom[1].allUser.find((user) => {
+    if (findCurrentRoom[1].listUsers !== undefined)
+      roomChat = findCurrentRoom[1].listUsers.find((user) => {
         return user.uid === roomChatInfo.user.uid;
       });
   }
 
   const nickName = useCallback(() => {
+    if (findCurrentRoom !== undefined) {
+      if (findCurrentRoom[1].type === "group") {
+        return findCurrentRoom[1].userInfo.displayName;
+      }
+    }
     if (roomChat === undefined) {
       return roomChatInfo.user.displayName;
     } else if (roomChat.nickName.trim(" ") === "") {
@@ -186,7 +263,7 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
     } else {
       return roomChat.nickName;
     }
-  }, [roomChat, roomChatInfo.user.displayName]);
+  }, [roomChat, findCurrentRoom, roomChatInfo.user.displayName]);
   return (
     <AnimatePresence>
       {modal && (
@@ -213,21 +290,26 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
               visible={visibleModal}
               seiVisible={setVisibleModal}
               title={"Biệt danh"}
+              group={roomChatInfo.user.type}
             >
-              <div className={cx("editNickName")}>
-                <EditUser
-                  listUserRoom={listUserChats}
-                  remainUser={user}
-                  roomId={roomChatInfo.chatId}
-                  userEdit={roomChatInfo.user}
-                />
-                <EditUser
-                  remainUser={roomChatInfo.user}
-                  roomId={roomChatInfo.chatId}
-                  userEdit={user}
-                  listUserRoom={listUserChats}
-                />
-              </div>
+              {roomChatInfo.user.type === "group" ? (
+                <h1>Đang update...</h1>
+              ) : (
+                <div className={cx("editNickName")}>
+                  <EditUser
+                    listUserRoom={listUserChats}
+                    remainUser={user}
+                    roomId={roomChatInfo.chatId}
+                    userEdit={roomChatInfo.user}
+                  />
+                  <EditUser
+                    remainUser={roomChatInfo.user}
+                    roomId={roomChatInfo.chatId}
+                    userEdit={user}
+                    listUserRoom={listUserChats}
+                  />
+                </div>
+              )}
             </Modal>
           ) : (
             false
@@ -238,6 +320,8 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
               seiVisible={setVisibleModal}
               title={"Đổi tên nhóm"}
               save="Lưu"
+              haldleSendModal={handleSubmitNameGroup}
+              onClick={() => {}}
             >
               <div className={cx("editNameGroup")}>
                 <div className={cx("nameGroup")}>
@@ -247,10 +331,10 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                   <input
                     name="name"
                     id="name"
-                    // value={""}
+                    value={nameGroup}
                     className={cx("inputName")}
                     placeholder="name"
-                    // onChange={handleChangeNameGroup}
+                    onChange={handleChangeNameGroup}
                   />
                 </div>
               </div>
@@ -349,15 +433,27 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
 
           <div className={cx("infoUser")}>
             <div className={cx("avatar")}>
-              <img
-                src={
-                  roomChatInfo.user.photoURL !== null
-                    ? roomChatInfo.user.photoURL
-                    : require("../../../assets/images/photoUser.png")
-                }
-                alt=""
-              />
+              {roomChatInfo.user.type === "group" ? (
+                <img
+                  src={
+                    roomChatInfo.user.photoURL !== null
+                      ? findCurrentRoom[1].userInfo.photoURL
+                      : require("../../../assets/images/photoUser.png")
+                  }
+                  alt=""
+                />
+              ) : (
+                <img
+                  src={
+                    roomChatInfo.user.photoURL !== null
+                      ? roomChatInfo.user.photoURL
+                      : require("../../../assets/images/photoUser.png")
+                  }
+                  alt=""
+                />
+              )}
             </div>
+
             <h1 className={cx("nameUser")}>{nickName()}</h1>
           </div>
           <div className={cx("controlRoom")}>
@@ -427,32 +523,14 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                           </div>
                           <p className={cx("content")}>Sửa biệt danh</p>
                         </div>
-                      </li>
-                    </motion.ul>
-                  )}
-                </AnimatePresence>
-                {roomChatInfo.user.type === "group" ? (
-                  <>
-                    <AnimatePresence>
-                      {isSetting && (
-                        <motion.ul
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{
-                            transition: { stiffness: 300 },
-                            opacity: 1,
-                            height: "auto",
-                          }}
-                          exit={{
-                            opacity: 0,
-                            height: 0,
-                            transition: { duration: 0.2 },
-                          }}
-                          className={cx("navBar")}
-                        >
+                      </li>{" "}
+                      {roomChatInfo.user.type === "group" ? (
+                        <>
                           <li
                             onClick={() => {
                               setTypeModal("editNameGroup");
                               setVisibleModal(true);
+                              setNameGroup("");
                             }}
                             className={cx(
                               "childrentControl",
@@ -472,29 +550,47 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                               <p className={cx("content")}>Đổi tên nhóm</p>
                             </div>
                           </li>
-                        </motion.ul>
-                      )}
-                    </AnimatePresence>
-                    <AnimatePresence>
-                      {isSetting && (
-                        <motion.ul
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{
-                            transition: { stiffness: 300 },
-                            opacity: 1,
-                            height: "auto",
-                          }}
-                          exit={{
-                            opacity: 0,
-                            height: 0,
-                            transition: { duration: 0.2 },
-                          }}
-                          className={cx("navBar")}
-                        >
+                          <li
+                            onClick={() => {}}
+                            className={cx(
+                              "childrentControl",
+                              "replaceImage",
+                              isCheckedMusic === true
+                                ? "backgroundTransparent"
+                                : ""
+                            )}
+                          >
+                            <div
+                              onClick={() => {
+                                file.current.click();
+                              }}
+                              className={cx("boxBug")}
+                            >
+                              <div className={cx("wrappIcon", "autoCenter")}>
+                                <FontAwesomeIcon
+                                  className={cx("icon")}
+                                  icon={faImage}
+                                />
+                              </div>
+                              <input
+                                style={{ display: "none" }}
+                                accept="image/*"
+                                type="file"
+                                name="file"
+                                ref={file}
+                                onChange={(e) => {
+                                  handleChangeImg(e.target.files[0]);
+                                  e.target.value = "";
+                                }}
+                              />
+                              <p className={cx("content")}>Thay đổi ảnh</p>
+                            </div>
+                          </li>
                           <li
                             onClick={() => {
                               setTypeModal("addUser");
                               setVisibleModal(true);
+                              setSearchUser("");
                             }}
                             className={cx(
                               "childrentControl",
@@ -514,97 +610,103 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                               <p className={cx("content")}>Thêm thành viên</p>
                             </div>
                           </li>
-                        </motion.ul>
+                        </>
+                      ) : (
+                        false
                       )}
-                    </AnimatePresence>
-                  </>
-                ) : (
-                  false
-                )}
-              </li>
-
-              <li
-                onClick={() => {
-                  setIsListUserGroup(!isListUserGroup);
-                }}
-                className={cx(
-                  "controlItem",
-                  "usersGroup",
-                  isCheckedMusic === true ? "backgroundTransparent" : ""
-                )}
-              >
-                <div className={cx("boxBug")}>
-                  <div className={cx("wrappIcon", "autoCenter")}>
-                    <FontAwesomeIcon className={cx("icon")} icon={faUsers} />
-                  </div>
-                  <FontAwesomeIcon
-                    className={cx("iconOpen")}
-                    icon={faChevronDown}
-                    style={
-                      isListUserGroup === true
-                        ? { rotate: "-90deg" }
-                        : { rotate: "0deg" }
-                    }
-                  />
-                  <p className={cx("content", "imageHover")}>Xem thành viên</p>
-                </div>
-                <AnimatePresence>
-                  {isListUserGroup && (
-                    <motion.ul
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{
-                        transition: { stiffness: 300 },
-                        opacity: 1,
-                        height: "auto",
-                      }}
-                      exit={{
-                        opacity: 0,
-                        height: 0,
-                        transition: { duration: 0.2 },
-                      }}
-                      className={cx("navBar")}
-                    >
-                      {currentUserRoom.map((user) => {
-                        let avata;
-                        let name;
-                        allUser.forEach((userFind) => {
-                          if (userFind.uid === user.uid) {
-                            avata = userFind.photoURL;
-                            name = userFind.displayName;
-                          }
-                        });
-                        return (
-                          <li
-                            onClick={() => {}}
-                            key={user.uid}
-                            className={cx(
-                              "userItem",
-                              isCheckedMusic === true
-                                ? "backgroundTransparent"
-                                : ""
-                            )}
-                          >
-                            <div className={cx("avata", "autoCenter")}>
-                              <img
-                                src={
-                                  avata !== null
-                                    ? avata
-                                    : require("../../../assets/images/photoUser.png")
-                                }
-                                alt=""
-                              />
-                            </div>
-
-                            <div className={cx("user__display")}>
-                              <h5 className={cx("user__name")}>{name}</h5>
-                            </div>
-                          </li>
-                        );
-                      })}
                     </motion.ul>
                   )}
                 </AnimatePresence>
               </li>
+              {roomChatInfo.user.type === "group" ? (
+                <li
+                  onClick={() => {
+                    setIsListUserGroup(!isListUserGroup);
+                  }}
+                  className={cx(
+                    "controlItem",
+                    "usersGroup",
+                    isCheckedMusic === true ? "backgroundTransparent" : ""
+                  )}
+                >
+                  <div className={cx("boxBug")}>
+                    <div className={cx("wrappIcon", "autoCenter")}>
+                      <FontAwesomeIcon className={cx("icon")} icon={faUsers} />
+                    </div>
+                    <FontAwesomeIcon
+                      className={cx("iconOpen")}
+                      icon={faChevronDown}
+                      style={
+                        isListUserGroup === true
+                          ? { rotate: "-90deg" }
+                          : { rotate: "0deg" }
+                      }
+                    />
+                    <p className={cx("content", "imageHover")}>
+                      Xem thành viên
+                    </p>
+                  </div>
+                  <AnimatePresence>
+                    {isListUserGroup && (
+                      <motion.ul
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{
+                          transition: { stiffness: 300 },
+                          opacity: 1,
+                          height: "auto",
+                        }}
+                        exit={{
+                          opacity: 0,
+                          height: 0,
+                          transition: { duration: 0.2 },
+                        }}
+                        className={cx("navBar")}
+                      >
+                        {currentUserRoom.map((user) => {
+                          let avata;
+                          let name;
+                          allUser.forEach((userFind) => {
+                            if (userFind.uid === user.uid) {
+                              avata = userFind.photoURL;
+                              name = userFind.displayName;
+                            }
+                          });
+                          return (
+                            <li
+                              onClick={() => {}}
+                              key={user.uid}
+                              className={cx(
+                                "userItem",
+                                isCheckedMusic === true
+                                  ? "backgroundTransparent"
+                                  : ""
+                              )}
+                            >
+                              <div className={cx("avata", "autoCenter")}>
+                                <img
+                                  src={
+                                    avata !== null
+                                      ? avata
+                                      : require("../../../assets/images/photoUser.png")
+                                  }
+                                  alt=""
+                                />
+                              </div>
+
+                              <div className={cx("user__display")}>
+                                <h5 className={cx("user__name")}>{name}</h5>
+                              </div>
+                            </li>
+                          );
+                        })}
+                      </motion.ul>
+                    )}
+                  </AnimatePresence>
+                </li>
+              ) : (
+                false
+              )}
+
               <li
                 className={cx(
                   "controlItem",
@@ -614,13 +716,15 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
               >
                 <div className={cx("boxBug")}>
                   <div className={cx("wrappIcon", "autoCenter")}>
-                    <FontAwesomeIcon className={cx("icon")} icon={faImage} />
+                    <FontAwesomeIcon className={cx("icon")} icon={faImages} />
                   </div>
                   <FontAwesomeIcon
                     className={cx("iconOpen")}
                     icon={faChevronDown}
                   />
-                  <p className={cx("content", "imageHover")}>Media</p>
+                  <p className={cx("content", "imageHover")}>
+                    FIle phương tiện
+                  </p>
                 </div>
               </li>
             </ul>

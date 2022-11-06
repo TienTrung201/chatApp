@@ -82,7 +82,6 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
       });
     }
   }
-
   const myNickName = useCallback(() => {
     if (myName === undefined) {
       return user.displayName;
@@ -95,6 +94,12 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
   }, [myName, user]);
 
   const nickName = useCallback(() => {
+    if (findCurrentRoom !== undefined) {
+      if (findCurrentRoom[1].type === "group") {
+        return findCurrentRoom[1].userInfo.displayName;
+      }
+    }
+
     if (roomChat === undefined) {
       return roomChatInfo.user.displayName;
     } else if (roomChat.nickName.trim(" ") === "") {
@@ -102,7 +107,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
     } else {
       return roomChat.nickName;
     }
-  }, [roomChat, roomChatInfo.user.displayName]);
+  }, [roomChat, roomChatInfo.user.displayName, findCurrentRoom]);
   //lấy biệt danh
   //scroll infinite
   const [curentIndexMessage, setCurrentIndexMessage] = useState(20);
@@ -134,14 +139,20 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
               {messages === undefined ? (
                 false
               ) : (
-                <img
-                  src={
-                    roomChatInfo.user.photoURL !== null
-                      ? roomChatInfo.user.photoURL
-                      : require("../../../assets/images/photoUser.png")
-                  }
-                  alt=""
-                />
+                <>
+                  {roomChatInfo.user.type === "group" ? (
+                    <img src={findCurrentRoom[1].userInfo.photoURL} alt="" />
+                  ) : (
+                    <img
+                      src={
+                        roomChatInfo.user.photoURL !== null
+                          ? roomChatInfo.user.photoURL
+                          : require("../../../assets/images/photoUser.png")
+                      }
+                      alt=""
+                    />
+                  )}
+                </>
               )}
               {checkActiveUser(active) === "Đang hoạt động" ? (
                 <span className={cx("active")}></span>
@@ -149,11 +160,17 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
                 false
               )}
             </div>
-            <div className={cx("user__display")}>
+            <div
+              className={cx(
+                "user__display",
+                roomChatInfo.user.type === "group" ? "alignCenter" : ""
+              )}
+            >
               <h5 className={cx("user__name")}>
                 {messages === undefined ? false : nickName()}
               </h5>
 
+              {/* group */}
               <p className={cx("user__active")}>{checkActiveUser(active)}</p>
             </div>
           </div>
@@ -323,7 +340,11 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
             isCheckedMusic === true ? "backgroundTransparentBlackBorder" : ""
           )}
         >
-          <InputChat userSend={user} myNickNameChat={myNickName()} />
+          <InputChat
+            listUserChat={listUserChats}
+            userSend={user}
+            myNickNameChat={myNickName()}
+          />
         </div>
       )}
     </div>

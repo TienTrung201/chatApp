@@ -83,6 +83,8 @@ $widthModal: 250px;
     }
     .nameUser {
       font-size: 2rem;
+      text-align: center;
+      padding: 0 8px;
     }
   }
   .editNickName {
@@ -191,12 +193,12 @@ $widthModal: 250px;
     // width: 100%;
     .controlList {
       .content {
-        transition: 0.3s ease-in-out;
+        transition: 0.1s ease-in-out;
       }
 
       .setting {
         background-color: $bOrgeTransparent;
-        transition: 0.3s ease-in-out;
+        transition: 0.1s ease-in-out;
 
         &:hover .settingHover {
           color: #e5a730;
@@ -207,7 +209,7 @@ $widthModal: 250px;
       }
       .addUser {
         background-color: $bOrgeTransparent;
-        transition: 0.3s ease-in-out;
+        transition: 0.1s ease-in-out;
         &:hover {
           border: 0px;
           color: #f790b8 !important;
@@ -218,7 +220,7 @@ $widthModal: 250px;
       }
       .nameGroup {
         background-color: $bOrgeTransparent;
-        transition: 0.3s ease-in-out;
+        transition: 0.1s ease-in-out;
         &:hover {
           border: 0px;
           color: #328ee4 !important;
@@ -229,7 +231,7 @@ $widthModal: 250px;
       }
       .nickName {
         background-color: $bOrgeTransparent;
-        transition: 0.3s ease-in-out;
+        transition: 0.1s ease-in-out;
         &:hover {
           border: 0px;
           color: #afe530 !important;
@@ -241,6 +243,15 @@ $widthModal: 250px;
       .image {
         background-color: $bPinkTransparent;
         &:hover .imageHover {
+          color: #c383a5;
+        }
+        .icon {
+          color: #c383a5;
+        }
+      }
+      .replaceImage {
+        background-color: $bPinkTransparent;
+        &:hover {
           color: #c383a5;
         }
         .icon {
@@ -300,7 +311,7 @@ $widthModal: 250px;
         // flex-direction: ;
         border-radius: 20px;
         margin-bottom: 16px;
-        padding: 0 10px;
+        padding: 0 8px;
         position: relative;
         cursor: pointer;
         .boxBug {
@@ -310,10 +321,10 @@ $widthModal: 250px;
           .iconOpen {
             color: #848589;
             position: absolute;
-            right: 15px;
+            right: 8px;
             font-size: 1.2rem;
             // rotate: -90deg;
-            transition: 0.3s ease-in-out;
+            transition: 0.2s ease-in-out;
           }
           .wrappIcon {
             width: 30px;

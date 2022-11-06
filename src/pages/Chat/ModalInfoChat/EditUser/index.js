@@ -17,9 +17,7 @@ function EditUser({ userEdit, roomId, remainUser, listUserRoom }) {
   };
 
   const [isEditUserChat, setIsEditUserChat] = useState(false);
-  const editUserChat = () => {
-    setIsEditUserChat(!isEditUserChat);
-  };
+
   useEffect(() => {
     if (input.current) {
       input.current.focus();
@@ -104,7 +102,7 @@ function EditUser({ userEdit, roomId, remainUser, listUserRoom }) {
     <div className={cx("user")}>
       <div
         onClick={() => {
-          editUserChat();
+          setIsEditUserChat(true);
         }}
         className={cx("avata")}
       >
@@ -116,7 +114,7 @@ function EditUser({ userEdit, roomId, remainUser, listUserRoom }) {
         ) : (
           <h5
             onClick={() => {
-              editUserChat();
+              setIsEditUserChat(true);
             }}
             className={cx("user__name")}
           >
@@ -128,30 +126,20 @@ function EditUser({ userEdit, roomId, remainUser, listUserRoom }) {
             {/* Biệt danh  nếu chưa có biệt danh để name*/}
           </h5>
         )}
-        {isEditUserChat === true ? (
-          false
-        ) : (
-          <p
-            onClick={() => {
-              editUserChat();
-            }}
-            className={cx("user__active")}
-          >
-            {/* Nếu có biệt danh để tên */}
-            {nickName()}
-          </p>
-        )}
+
         {isEditUserChat === true ? (
           <input
             onChange={(e) => {
               handleChangName(e);
             }}
             onBlur={() => {
-              editUserChat();
+              setTimeout(() => {
+                setIsEditUserChat(false);
+              }, 100);
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                editUserChat();
+                setIsEditUserChat(false);
                 if (checkName() === true && isEditUserChat === true) {
                   saveChange();
                 }
@@ -166,22 +154,40 @@ function EditUser({ userEdit, roomId, remainUser, listUserRoom }) {
             value={nameValue}
           />
         ) : (
-          false
+          <p
+            onClick={() => {
+              setIsEditUserChat(true);
+            }}
+            className={cx("user__active")}
+          >
+            {/* Nếu có biệt danh để tên */}
+            {nickName()}
+          </p>
         )}
       </div>
-      <button
-        onClick={() => {
-          editUserChat();
-          if (checkName() === true && isEditUserChat === true) {
-            saveChange();
-          }
-        }}
-      >
-        <FontAwesomeIcon
-          className={cx("iconPen")}
-          icon={isEditUserChat === true ? faCheck : faPen}
-        />
-      </button>
+      {isEditUserChat === true ? (
+        <button
+          onClick={(e) => {
+            // e.preventDefault();
+            if (checkName() === true) {
+              console.log(2);
+              setIsEditUserChat(false);
+              saveChange();
+            }
+          }}
+        >
+          <FontAwesomeIcon className={cx("iconPen")} icon={faCheck} />
+        </button>
+      ) : (
+        <button
+          onClick={() => {
+            setIsEditUserChat(true);
+          }}
+        >
+          <FontAwesomeIcon className={cx("iconPen")} icon={faPen} />
+        </button>
+      )}
+
       {isEditUserChat === true ? false : <div className={cx("overlay")}></div>}
     </div>
   );
