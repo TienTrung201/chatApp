@@ -4,10 +4,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 const cx = classNames.bind(styles);
-function AddUser({ user }) {
+function AddUser({ user, deleteUserChecked }) {
   return (
     <div key={user.uid} className={cx("avata")}>
-      <button onClick={() => {}} className={cx("close", "autoCenter")}>
+      <button
+        onClick={() => {
+          deleteUserChecked(user.uid);
+        }}
+        className={cx("close", "autoCenter")}
+      >
         <FontAwesomeIcon icon={faClose} className={cx("iconClose")} />
       </button>
       <img

@@ -365,7 +365,13 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                   <div className={cx("listUserSelected")}>
                     {usersRoomSearch.map((user) => {
                       if (user.checked === true) {
-                        return <AddUser user={user} key={user.uid} />;
+                        return (
+                          <AddUser
+                            deleteUserChecked={addUserCheckedToggle}
+                            user={user}
+                            key={user.uid}
+                          />
+                        );
                       }
                       return false;
                     })}

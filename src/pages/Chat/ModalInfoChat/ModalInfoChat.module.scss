@@ -386,6 +386,9 @@ $widthModal: 250px;
 .addUserGroup {
   height: 450px;
   justify-content: space-between;
+  @include mobile {
+    height: 350px;
+  }
   .selectUser {
     flex: 1;
     .listUserSelected {
@@ -393,6 +396,14 @@ $widthModal: 250px;
       height: 100%;
       overflow-x: scroll;
       display: flex;
+      &::-webkit-scrollbar {
+        // display: none;
+        height: 8px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: rgb(100, 99, 99);
+        border-radius: 10px;
+      }
       .avata {
         // width: 70px;
         height: 60px;
@@ -440,6 +451,9 @@ $widthModal: 250px;
   }
   .listUserSearch {
     height: 240px;
+    @include mobile {
+      height: 180px;
+    }
     overflow-y: scroll;
     .userItem {
       display: flex;

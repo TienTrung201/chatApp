@@ -83,6 +83,10 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
     }
   }
   const myNickName = useCallback(() => {
+    // console.log(user);
+    if (user === undefined) {
+      return "";
+    }
     if (myName === undefined) {
       return user.displayName;
     }
@@ -141,7 +145,12 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
               ) : (
                 <>
                   {roomChatInfo.user.type === "group" ? (
-                    <img src={findCurrentRoom[1].userInfo.photoURL} alt="" />
+                    <img
+                      src={
+                        findCurrentRoom && findCurrentRoom[1].userInfo.photoURL
+                      }
+                      alt=""
+                    />
                   ) : (
                     <img
                       src={
