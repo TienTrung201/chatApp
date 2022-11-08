@@ -250,7 +250,6 @@ $widthModal: 250px;
         }
       }
       .replaceImage {
-        background-color: $bPinkTransparent;
         &:hover {
           color: #c383a5;
         }
@@ -381,6 +380,18 @@ $widthModal: 250px;
       font-size: 1.6rem;
       flex: 1;
     }
+    .successful:focus {
+      border: solid 2px rgb(178, 247, 161);
+    }
+    .error {
+      border: solid 2px rgb(255, 124, 124) !important;
+    }
+  }
+  .successful:focus {
+    border: solid 2px rgb(178, 247, 161);
+  }
+  .error {
+    border: solid 2px rgb(255, 124, 124) !important;
   }
 }
 .addUserGroup {

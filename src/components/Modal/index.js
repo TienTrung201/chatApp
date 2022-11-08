@@ -17,6 +17,7 @@ function Modal({
   visible,
   seiVisible,
   haldleSendModal,
+  checkedSubmit = true,
 }) {
   const isCheckedMusic = useSelector(isSelectedMusic);
   return (
@@ -64,9 +65,15 @@ function Modal({
                 {save && (
                   <button
                     onClick={() => {
-                      haldleSendModal();
-                      seiVisible(false);
+                      if (checkedSubmit) {
+                        haldleSendModal();
+                        seiVisible(false);
+                      }
                     }}
+                    className={cx(
+                      checkedSubmit === false ? "opacity05" : "opacity1",
+                      checkedSubmit === false ? "opacity05" : "poiter"
+                    )}
                   >
                     {save}
                   </button>

@@ -490,5 +490,11 @@ $active--Color: #31a24c;
       font-size: 1.6rem;
       flex: 1;
     }
+    .successful:focus {
+      border: solid 2px rgb(178, 247, 161);
+    }
+    .error {
+      border: solid 2px rgb(255, 124, 124) !important;
+    }
   }
 }

@@ -8,6 +8,7 @@
     @content;
   }
 }
+
 .wrapper {
   position: fixed;
   top: 0;
@@ -64,6 +65,7 @@
           }
         }
       }
+
       .content {
       }
       .footer {
@@ -78,7 +80,7 @@
           transition: all 0.3s ease;
           color: #fff;
           transition: 0.2s ease;
-          cursor: pointer;
+          // cursor: pointer;
           @include mobile {
             height: 35px;
             width: 120px;
@@ -86,10 +88,18 @@
             font-size: 1.4rem;
             right: 50px !important;
           }
+        }
+        .opacity05 {
+          opacity: 0.5;
+        }
+        .opacity1 {
+          opacity: 1;
           &:hover {
-            // color: rgb(63, 62, 62);
             background-color: #8c35fd;
           }
+        }
+        .poiter {
+          cursor: pointer;
         }
       }
     }

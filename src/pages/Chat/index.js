@@ -9,7 +9,7 @@ import {
 import BoxChat, { checkActiveUser } from "@/pages/Chat/BoxChat";
 import { Link } from "react-router-dom";
 import ModalInfoChat from "./ModalInfoChat";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { isSelectedMusic, userLogin } from "@/components/redux/selector";
 import userSlice from "../Login/UserSlice";
@@ -171,6 +171,7 @@ function Chat() {
   const handleChangeNameGroup = (e) => {
     setNameGroup(e.target.value);
   };
+  // tạo group
   const handleCreateGroupChat = async () => {
     const idRoom = "group" + user.uid + uuid();
     try {
@@ -198,6 +199,13 @@ function Chat() {
       console.log(e);
     }
   };
+  const checkName = useCallback(() => {
+    if (nameGroup.length > 20 || nameGroup.length <= 2) {
+      return false;
+    } else {
+      return true;
+    }
+  }, [nameGroup]);
   // tạo phòng với user
   const handleSelect = async (userSelect) => {
     const combinedId =
@@ -337,6 +345,7 @@ function Chat() {
     }
   }, [volumeKeyboard, isCheckedMusic]);
   // âm thanh gõ phím
+
   return (
     <section
       ref={activeUsersChat}
@@ -351,6 +360,7 @@ function Chat() {
         title={"Tạo Group"}
         save="Tạo nhóm"
         haldleSendModal={handleCreateGroupChat}
+        checkedSubmit={checkName()}
       >
         <div className={cx("createGroup")}>
           <div className={cx("nameGroup")}>
@@ -361,7 +371,10 @@ function Chat() {
               name="name"
               id="name"
               value={nameGroup}
-              className={cx("inputName")}
+              className={cx(
+                "inputName",
+                checkName() === false ? "error" : "successful"
+              )}
               placeholder="tên nhóm"
               onChange={handleChangeNameGroup}
             />
@@ -405,6 +418,7 @@ function Chat() {
         <div className={cx("wrapperControl")}>
           <div
             onClick={() => {
+              setNameGroup("");
               setVisibleModal(true);
             }}
             className={cx("createNew")}

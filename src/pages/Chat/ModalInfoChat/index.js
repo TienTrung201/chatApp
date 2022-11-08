@@ -76,7 +76,13 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
       console.log(e);
     }
   };
-
+  const checkName = useCallback(() => {
+    if (nameGroup.length > 20 || nameGroup.length <= 2) {
+      return false;
+    } else {
+      return true;
+    }
+  }, [nameGroup]);
   //đổi tên nhóm
   // const listuserChat = useFireStore("users", conditionUser);
   const allUser = useFireStore("users", conditionUser);
@@ -319,9 +325,10 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
               visible={visibleModal}
               seiVisible={setVisibleModal}
               title={"Đổi tên nhóm"}
-              save="Lưu"
+              save="Thay đổi"
               haldleSendModal={handleSubmitNameGroup}
               onClick={() => {}}
+              checkedSubmit={checkName()}
             >
               <div className={cx("editNameGroup")}>
                 <div className={cx("nameGroup")}>
@@ -332,7 +339,10 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                     name="name"
                     id="name"
                     value={nameGroup}
-                    className={cx("inputName")}
+                    className={cx(
+                      "inputName",
+                      checkName() === false ? "error" : "successful"
+                    )}
                     placeholder="name"
                     onChange={handleChangeNameGroup}
                   />
