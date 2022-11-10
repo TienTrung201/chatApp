@@ -190,10 +190,10 @@ function Chat() {
             displayName: user.displayName,
             nickName: user.displayName,
             uid: user.uid,
+            position: "admin",
           },
         ],
         [idRoom + ".type"]: "group",
-        [idRoom + ".position"]: "admin",
       });
     } catch (e) {
       console.log(e);

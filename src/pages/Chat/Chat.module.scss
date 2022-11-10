@@ -448,7 +448,7 @@ $active--Color: #31a24c;
   .ModalInfoChat {
     // flex: 1;
     display: flex;
-    overflow: hidden;
+    // overflow: hidden;
     border-radius: 30px;
     box-shadow: -10px 0px 20px rgba(0, 0, 0, 0.01);
     @include mobile {

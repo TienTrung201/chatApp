@@ -2,8 +2,14 @@ import styles from "./BoxChat.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   isSelectedMusic,
   isSendMessageTogle,
@@ -18,6 +24,7 @@ import { db } from "@/firebase/config";
 import LoadingListUser from "@/components/Loaddings/LoadingListUser";
 import NoMessage from "@/components/NoMessage";
 import InfiniteScroll from "react-infinite-scroll-component";
+import boxChatSlice from "./BoxChatSlice";
 
 const cx = classNames.bind(styles);
 
@@ -81,7 +88,24 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
         return userchat.uid === user.uid;
       });
     }
+  } else {
+    // setMessage([]);
   }
+  //khi người dùng bị xóa khỏi nhóm
+  const Dispatch = useDispatch();
+  useLayoutEffect(() => {
+    if (findCurrentRoom === undefined) {
+      setMessage(undefined);
+      Dispatch(
+        boxChatSlice.actions.setUserSelect({
+          chatId: "",
+          user: {},
+          isSendMessageTogle: true,
+        })
+      );
+    }
+    //khi người dùng bị xóa khỏi nhóm
+  }, [findCurrentRoom, Dispatch]);
   const myNickName = useCallback(() => {
     // console.log(user);
     if (user === undefined) {
