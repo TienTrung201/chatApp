@@ -11,6 +11,7 @@ import {
   faImage,
   faImages,
   faPen,
+  faRightFromBracket,
   faSignature,
   faUserPlus,
   faUsers,
@@ -26,7 +27,12 @@ import Modal from "@/components/Modal";
 import EditUser from "./EditUser";
 import { useFireStore } from "@/hooks/useFirestor";
 import AddUser from "./AddUser";
-import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import {
+  deleteField,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { db, storage } from "@/firebase/config";
 import {
   deleteObject,
@@ -51,8 +57,6 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
     photoURL: "",
   });
   const admin = currentUserRoom.find((user) => user.uid === userId);
-
-  const file = useRef();
   const conditionUser = useMemo(() => {
     return {
       fieldName: "displayName",
@@ -60,6 +64,13 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
       compareValue: "getAll",
     };
   }, []);
+  const allUser = useFireStore("users", conditionUser);
+  user = allUser.find((userChat) => {
+    return userChat.uid === user.uid;
+  });
+  const [usersRoomSearch, setUsersRoomSearch] = useState([]);
+  const file = useRef();
+
   //đổi tên nhóm
   const handleChangeNameGroup = (e) => {
     setNameGroup(e.target.value);
@@ -87,12 +98,62 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
     }
   }, [nameGroup]);
   //đổi tên nhóm
-  // const listuserChat = useFireStore("users", conditionUser);
-  const allUser = useFireStore("users", conditionUser);
-  user = allUser.find((userChat) => {
-    return userChat.uid === user.uid;
+
+  // chỉ đình làm quản trị viên
+  const handleDesignateAdmin = (userId) => {
+    const newUserGroupAdmin = currentUserRoom.map((user) => {
+      if (userId === user.uid) {
+        return {
+          ...user,
+          position: "admin",
+        };
+      }
+      return user;
+    });
+    try {
+      currentUserRoom.forEach(async (user) => {
+        await updateDoc(doc(db, "userChats", user.uid), {
+          [roomChatInfo.chatId + ".listUsers"]: newUserGroupAdmin,
+        });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  // chỉ đình làm quản trị viên
+
+  let totalAdminGroup = 0;
+  currentUserRoom.forEach((user) => {
+    if (user.position === "admin") {
+      totalAdminGroup++;
+    }
   });
-  const [usersRoomSearch, setUsersRoomSearch] = useState([]);
+  // hành động xóa người dùng khỏi phòng
+  const handleDeleteUserGroup = (userId) => {
+    const newUserRoom = [];
+    currentUserRoom.forEach((user) => {
+      if (user.uid !== userId) {
+        newUserRoom.push(user);
+      }
+    });
+    try {
+      currentUserRoom.forEach(async (user) => {
+        if (user.uid !== userId) {
+          await updateDoc(doc(db, "userChats", user.uid), {
+            [roomChatInfo.chatId + ".listUsers"]: newUserRoom,
+          });
+        } else {
+          await updateDoc(doc(db, "userChats", user.uid), {
+            [roomChatInfo.chatId]: deleteField(),
+          });
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  // hành động xóa người dùng khỏi phòng
+
   //hành động thêm người dùng vào phòng
   const handleAddusersGroup = async () => {
     const listUserRoomAdd = currentUserRoom;
@@ -184,7 +245,7 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
   }, [allUsers, listUserChats, roomChatInfo.chatId]);
   //checked tạo danh sách người dùng vào phòng
   //
-
+  // thay đổi ảnh nhóm
   const handleChangeImg = (imgFile) => {
     const idRandom = uuid();
     const imgRef = ref(
@@ -216,6 +277,8 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
       });
     });
   };
+  // thay đổi ảnh nhóm
+
   //tìm kiếm người dùng
   useEffect(() => {
     setSearchResult(
@@ -450,6 +513,19 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
               ) : (
                 false
               )}
+              {typeModal === "notification" ? (
+                <Modal
+                  visible={visibleModal}
+                  seiVisible={setVisibleModal}
+                  title={"Thông Báo"}
+                >
+                  <div className={cx("wrapperNotification")}>
+                    <h1>Phòng phải có ít nhất 1 quản trị viên</h1>
+                  </div>
+                </Modal>
+              ) : (
+                false
+              )}
 
               <div
                 onClick={() => {
@@ -652,6 +728,39 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                                   </p>
                                 </div>
                               </li>
+                              <li
+                                onClick={() => {
+                                  if (admin.position === "admin") {
+                                    if (totalAdminGroup === 1) {
+                                      setTypeModal("notification");
+                                      setVisibleModal(true);
+                                    } else {
+                                      handleDeleteUserGroup(user.uid);
+                                    }
+                                  } else {
+                                    handleDeleteUserGroup(user.uid);
+                                  }
+                                }}
+                                className={cx(
+                                  "childrentControl",
+                                  "leave",
+                                  isCheckedMusic === true
+                                    ? "backgroundTransparent"
+                                    : ""
+                                )}
+                              >
+                                <div className={cx("boxBug")}>
+                                  <div
+                                    className={cx("wrappIcon", "autoCenter")}
+                                  >
+                                    <FontAwesomeIcon
+                                      className={cx("icon")}
+                                      icon={faRightFromBracket}
+                                    />
+                                  </div>
+                                  <p className={cx("content")}>Rời nhóm</p>
+                                </div>
+                              </li>
                             </>
                           ) : (
                             false
@@ -746,6 +855,9 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                                       idRoom={roomChatInfo.chatId}
                                       currentUsersRoom={currentUserRoom}
                                       userId={user.uid}
+                                      adminGroup={admin}
+                                      designateAdmin={handleDesignateAdmin}
+                                      deleteUserGroup={handleDeleteUserGroup}
                                     />
                                   ) : (
                                     false

@@ -218,6 +218,16 @@ $widthModal: 250px;
           color: #f790b8;
         }
       }
+      .leave {
+        transition: 0.1s ease-in-out;
+        &:hover {
+          border: 0px;
+          color: #ff0000 !important;
+        }
+        .icon {
+          color: #ff0000;
+        }
+      }
       .nameGroup {
         background-color: $bOrgeTransparent;
         transition: 0.1s ease-in-out;
@@ -595,5 +605,15 @@ $widthModal: 250px;
         }
       }
     }
+  }
+}
+.wrapperNotification {
+  display: flex;
+
+  height: 100px;
+  align-items: center;
+  justify-content: center;
+  h1 {
+    font-size: 20px;
   }
 }
