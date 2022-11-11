@@ -110,8 +110,8 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
       await updateDoc(doc(db, "userChats", user.uid), {
         [roomChatInfo.chatId + ".userInfo"]: {
           uid: roomChatInfo.chatId,
-          displayName: roomChatInfo.user.displayName,
-          photoURL: roomChatInfo.user.photoURL,
+          displayName: currentGroup.displayName,
+          photoURL: currentGroup.photoURL,
         },
         [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
         [roomChatInfo.chatId + ".listUsers"]: listUserRoomAdd,

@@ -208,7 +208,7 @@ $widthModal: 250px;
         }
       }
       .addUser {
-        background-color: $bOrgeTransparent;
+        // background-color: $bOrgeTransparent;
         transition: 0.1s ease-in-out;
         &:hover {
           border: 0px;
@@ -290,10 +290,14 @@ $widthModal: 250px;
               white-space: nowrap;
               text-overflow: ellipsis;
               @include mobile {
-                width: 250px;
+                // max-width: 500px;
+                width: 100px;
               }
               @include tablet() {
                 width: 100px;
+              }
+              @media screen and (max-width: 400px) {
+                max-width: 100px;
               }
             }
 
