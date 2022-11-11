@@ -397,8 +397,13 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                           return false;
                         })}
                       </div>
-
-                      {/* <h5 className={cx("autoCenter")}>Chưa chọn người dùng nào</h5> */}
+                      {usersRoomSearch.find((user) => user.checked === true) ? (
+                        false
+                      ) : (
+                        <h5 className={cx("notification")}>
+                          Chưa chọn người dùng nào
+                        </h5>
+                      )}
                     </div>
                     <ul className={cx("listUserSearch")}>
                       {searchResult.map((user, i) => {

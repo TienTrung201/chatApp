@@ -426,7 +426,15 @@ $widthModal: 250px;
     height: 350px;
   }
   .selectUser {
+    position: relative;
     flex: 1;
+    .notification {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 50%;
+      transform: translateX(-50%);
+    }
     .listUserSelected {
       padding: 10px 10px;
       height: 100%;
