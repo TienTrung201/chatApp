@@ -175,9 +175,52 @@ $active--Color: #31a24c;
   }
 
   .controlMessage {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+    // display: flex;
+    // justify-content: space-between;
+    // align-items: flex-end;
+    .WrapperReplyMessage {
+      padding: 0 20px;
+      padding-bottom: 8px;
+      position: relative;
+
+      .replyNameUser {
+        display: flex;
+        font-size: 1.4rem;
+        line-height: 1.5rem;
+        span {
+          padding-right: 5px;
+        }
+        .nameUser {
+          font-weight: 600;
+        }
+      }
+      .textReply {
+        font-size: 1.3rem;
+        color: #8f97a4;
+        width: 200px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        @include mobile {
+          width: 150px;
+        }
+      }
+      .buttonCloseReply {
+        position: absolute;
+        right: 20px;
+        top: 5px;
+        // background-color: #31a24c;
+        height: 25px;
+        width: 25px;
+        display: flex;
+        justify-content: center;
+
+        cursor: pointer;
+        .close-icon {
+          font-size: 18px;
+        }
+      }
+    }
     background-color: var(--backGround--page2--white);
 
     border-radius: 30px;

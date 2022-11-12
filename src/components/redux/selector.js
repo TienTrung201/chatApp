@@ -14,3 +14,7 @@ export const replaceName = (state) => state.editProfile.name;
 export const replaceEmail = (state) => state.editProfile.email;
 export const replaceContact = (state) => state.editProfile.contact;
 export const isSendMessageTogle = (state) => state.userChat.isSendMessageTogle;
+export const isReplyMessage = (state) => state.userChat.isReplyMessage;
+export const userNameAnswered = (state) => state.userChat.userNameAnswered;
+export const messageAnswered = (state) => state.userChat.messageAnswered;
+export const urlImageAnsered = (state) => state.userChat.urlImageAnsered;

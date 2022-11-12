@@ -19,6 +19,7 @@ function Message({
   endSendMessage,
   firstMessage,
   zIndex,
+  currentUsersRoom,
 }) {
   const userLoginChat = useSelector(userLogin);
   const roomChatInfo = useSelector(userChat);
@@ -32,6 +33,7 @@ function Message({
   }, []);
 
   const allUser = useFireStore("users", conditionUser);
+
   let userChatSender = useMemo(() => {
     return allUser.find((userChat) => {
       return userChat.uid === data.senderId;
@@ -97,6 +99,27 @@ function Message({
               : ""
           )}
         >
+          {data.reply !== undefined &&
+          data.reply !== "" &&
+          data.type !== "remove" ? (
+            <div className={cx("WrapperReplyMessage")}>
+              <div className={cx("reply")}></div>
+              {/* <p className={cx("nameUserReply")}>Trung đã trả lời long</p> */}
+              <p className={cx("textReply")}>
+                {data.reply === "Hình ảnh" ? (
+                  <img
+                    className={cx("imageReply")}
+                    alt="Ảnh bị xóa"
+                    src={data.urlReply}
+                  />
+                ) : (
+                  data.reply
+                )}
+              </p>
+            </div>
+          ) : (
+            false
+          )}
           {data.image ? (
             <>
               {data.type === "remove" ? (
@@ -123,6 +146,8 @@ function Message({
                         )}
                       >
                         <ControlMessage
+                          isImage={true}
+                          currentUserRoom={currentUsersRoom}
                           myNickName={myNickNameChat}
                           userLogin={userLoginChat}
                           allMess={allMessage}
@@ -161,6 +186,7 @@ function Message({
                           )}
                         >
                           <ControlMessage
+                            currentUserRoom={currentUsersRoom}
                             myNickName={myNickNameChat}
                             userLogin={userLoginChat}
                             allMess={allMessage}
@@ -209,6 +235,7 @@ function Message({
                     )}
                   >
                     <ControlMessage
+                      currentUserRoom={currentUsersRoom}
                       myNickName={myNickNameChat}
                       userLogin={userLoginChat}
                       allMess={allMessage}
@@ -278,7 +305,32 @@ function Message({
               false
             )}
           </div>
-          <div className={cx("messageChat")}>
+          <div
+            style={{ flexDirection: data.image ? "column-reverse" : "column" }}
+            className={cx("messageChat")}
+          >
+            {data.reply !== undefined &&
+            data.reply !== "" &&
+            data.type !== "remove" ? (
+              <div className={cx("WrapperReplyMessage")}>
+                <div className={cx("reply")}></div>
+                {/* <p className={cx("nameUserReply")}>Trung đã trả lời long</p> */}
+                <p className={cx("textReply")}>
+                  {data.reply === "Hình ảnh" ? (
+                    <img
+                      className={cx("imageReply")}
+                      alt="Ảnh bị xóa"
+                      src={data.urlReply}
+                    />
+                  ) : (
+                    data.reply
+                  )}
+                </p>
+              </div>
+            ) : (
+              false
+            )}
+
             {data.image ? (
               <>
                 {data.type === "remove" ? (
@@ -315,6 +367,7 @@ function Message({
                             )}
                           >
                             <ControlMessage
+                              currentUserRoom={currentUsersRoom}
                               friendChat={true}
                               allMess={allMessage}
                               currentMessage={data}
@@ -343,6 +396,8 @@ function Message({
                           )}
                         >
                           <ControlMessage
+                            isImage={true}
+                            currentUserRoom={currentUsersRoom}
                             friendChat={true}
                             myNickName={myNickNameChat}
                             userLogin={userLoginChat}
@@ -394,6 +449,7 @@ function Message({
                       )}
                     >
                       <ControlMessage
+                        currentUserRoom={currentUsersRoom}
                         friendChat={true}
                         allMess={allMessage}
                         currentMessage={data}

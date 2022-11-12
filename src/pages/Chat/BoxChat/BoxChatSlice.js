@@ -8,7 +8,11 @@ export const boxChatSlice = createSlice({
       chatId: "",
       user: {},
       isSendMessageTogle: true,
+      userNameAnswered: "",
+      messageAnswered: "",
+      urlImageAnsered: "",
     },
+    isReplyMessage: false,
   },
   reducers: {
     setUserSelect: (state, action) => {
@@ -16,6 +20,18 @@ export const boxChatSlice = createSlice({
     },
     setIsSendMessageTogle: (state, action) => {
       state.isSendMessageTogle = action.payload;
+    },
+    setIsReplyMessage: (state, action) => {
+      state.isReplyMessage = action.payload;
+    },
+    setUserNameAnswered: (state, action) => {
+      state.userNameAnswered = action.payload;
+    },
+    setMessageAnswered: (state, action) => {
+      state.messageAnswered = action.payload;
+    },
+    setUrlImageAnsered: (state, action) => {
+      state.urlImageAnsered = action.payload;
     },
   },
 });

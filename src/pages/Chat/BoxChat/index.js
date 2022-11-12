@@ -1,7 +1,7 @@
 import styles from "./BoxChat.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import { faClose, faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import {
   useCallback,
   useEffect,
@@ -11,10 +11,13 @@ import {
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  isReplyMessage,
   isSelectedMusic,
   isSendMessageTogle,
+  messageAnswered,
   userChat,
   userLogin,
+  userNameAnswered,
   // users,
 } from "@/components/redux/selector";
 import Message from "./Message";
@@ -39,6 +42,23 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
   const boxMessage = useRef();
   const [messages, setMessage] = useState(undefined);
   const isSendMessage = useSelector(isSendMessageTogle);
+  const isReplyMessages = useSelector(isReplyMessage);
+  const userNameAnswer = useSelector(userNameAnswered);
+  const messageAnswer = useSelector(messageAnswered);
+  const [currentUserRoom, setCurrentUserRoom] = useState([]);
+  useEffect(() => {
+    const listUserRoom = listUserChats.find((room) => {
+      return room[0] === roomChatInfo.chatId;
+    });
+
+    if (listUserRoom !== undefined) {
+      if (listUserRoom[0].search("group") === 0) {
+        setCurrentUserRoom(listUserRoom[1].listUsers);
+      } else {
+        setCurrentUserRoom([]);
+      }
+    }
+  }, [roomChatInfo.chatId, listUserChats]);
   useEffect(() => {
     boxMessage.current.scrollTop = boxMessage.current.scrollHeight;
   }, [isSendMessage, messages]);
@@ -270,6 +290,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
                   if (messages[i].senderId === messages[i + 1].senderId) {
                     return (
                       <Message
+                        currentUsersRoom={currentUserRoom}
                         zIndex={curentIndexMessage - i}
                         firstMessage={true}
                         myNickNameChat={myNickName()}
@@ -289,6 +310,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
                   if (messages[i].senderId === messages[i - 1].senderId)
                     return (
                       <Message
+                        currentUsersRoom={currentUserRoom}
                         zIndex={curentIndexMessage - i}
                         firstMessageSend={true}
                         myNickNameChat={myNickName()}
@@ -310,6 +332,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
                 ) {
                   return (
                     <Message
+                      currentUsersRoom={currentUserRoom}
                       zIndex={curentIndexMessage - i}
                       firstMessageSend={true}
                       myNickNameChat={myNickName()}
@@ -326,6 +349,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
                   // break;
                   return (
                     <Message
+                      currentUsersRoom={currentUserRoom}
                       zIndex={curentIndexMessage - i}
                       endSendMessage={true}
                       myNickNameChat={myNickName()}
@@ -341,6 +365,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
                 ) {
                   return (
                     <Message
+                      currentUsersRoom={currentUserRoom}
                       zIndex={curentIndexMessage - i}
                       centerMessageSend={true}
                       myNickNameChat={myNickName()}
@@ -353,6 +378,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
               }
               return (
                 <Message
+                  currentUsersRoom={currentUserRoom}
                   zIndex={curentIndexMessage - i}
                   myNickNameChat={myNickName()}
                   allMessage={messages}
@@ -373,6 +399,30 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
             isCheckedMusic === true ? "backgroundTransparentBlackBorder" : ""
           )}
         >
+          {isReplyMessages === true ? (
+            <div className={cx("WrapperReplyMessage")}>
+              <div className={cx("replyNameUser")}>
+                <span>Đang trả lời </span>
+
+                <p className={cx("nameUser")}>{userNameAnswer}</p>
+              </div>
+              <p className={cx("textReply")}>{messageAnswer}</p>
+              <button
+                onClick={() => {
+                  Dispatch(boxChatSlice.actions.setUserNameAnswered(""));
+                  Dispatch(boxChatSlice.actions.setMessageAnswered(""));
+                  Dispatch(boxChatSlice.actions.setIsReplyMessage(false));
+                  Dispatch(boxChatSlice.actions.setUrlImageAnsered(""));
+                }}
+                className={cx("buttonCloseReply")}
+              >
+                <FontAwesomeIcon className={cx("close-icon")} icon={faClose} />
+              </button>
+            </div>
+          ) : (
+            false
+          )}
+
           <InputChat
             listUserChat={listUserChats}
             userSend={user}

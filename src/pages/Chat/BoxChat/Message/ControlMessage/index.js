@@ -6,9 +6,10 @@ import { faFaceSmileBeam } from "@fortawesome/free-regular-svg-icons";
 import { faEllipsisVertical, faShare } from "@fortawesome/free-solid-svg-icons";
 import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db, storage } from "@/firebase/config";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userChat } from "@/components/redux/selector";
 import { deleteObject, ref } from "firebase/storage";
+import boxChatSlice from "../../BoxChatSlice";
 const cx = classNames.bind(styles);
 
 function ControlMessage({
@@ -17,9 +18,11 @@ function ControlMessage({
   currentMessage,
   userLogin,
   myNickName,
+  currentUserRoom,
+  isImage,
 }) {
   const roomChatInfo = useSelector(userChat);
-
+  const Dispatch = useDispatch();
   const handleRemoveMessage = async (message) => {
     const currentMessage = allMess.find((messageData) => {
       return messageData.id === message.id;
@@ -70,6 +73,29 @@ function ControlMessage({
       console.log(e);
     }
   };
+  const nameSenderMessage = () => {
+    if (userLogin) {
+      if (currentMessage.senderId === userLogin.uid) {
+        return "Chính bạn";
+      }
+    }
+
+    if (currentUserRoom.length === 0) {
+      if (currentMessage.senderId === roomChatInfo.user.uid) {
+        return roomChatInfo.user.displayName;
+      } else {
+        return myNickName;
+      }
+    } else {
+      let name = "";
+      currentUserRoom.forEach((user) => {
+        if (currentMessage.senderId === user.uid) {
+          name = user.displayName;
+        }
+      });
+      return name;
+    }
+  };
 
   return (
     <>
@@ -102,7 +128,25 @@ function ControlMessage({
         </div>
       )}
 
-      <button className={cx("buttonControlText", "autoCenter")}>
+      <button
+        onClick={() => {
+          Dispatch(boxChatSlice.actions.setIsReplyMessage(true));
+          Dispatch(
+            boxChatSlice.actions.setUserNameAnswered(nameSenderMessage())
+          );
+          if (isImage) {
+            Dispatch(boxChatSlice.actions.setMessageAnswered("Hình ảnh"));
+            Dispatch(
+              boxChatSlice.actions.setUrlImageAnsered(currentMessage.image.url)
+            );
+          } else {
+            Dispatch(
+              boxChatSlice.actions.setMessageAnswered(currentMessage.text)
+            );
+          }
+        }}
+        className={cx("buttonControlText", "autoCenter")}
+      >
         <FontAwesomeIcon className={cx("icon")} icon={faShare} />
       </button>
       <div className={cx("wrapperTippy")}>

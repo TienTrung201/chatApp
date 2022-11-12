@@ -5,10 +5,14 @@ import { faImages, faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  isReplyMessage,
   isSelectedMusic,
   isSendMessageTogle,
+  messageAnswered,
+  urlImageAnsered,
   userChat,
   userLogin,
+  userNameAnswered,
 } from "@/components/redux/selector";
 
 import { v4 as uuid } from "uuid";
@@ -30,11 +34,16 @@ function InputChat({ myNickNameChat, listUserChat }) {
   const user = useSelector(userLogin);
   const [valueInput, setValueInput] = useState("");
   const file = useRef();
+  const inputMessage = useRef();
   const [imgFile, setImgFile] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
   const [currentUserRoom, setCurrentUserRoom] = useState([]);
   const isCheckedMusic = useSelector(isSelectedMusic);
   const isSendMessage = useSelector(isSendMessageTogle);
+  const isReplyMessages = useSelector(isReplyMessage);
+  const userNameAnswer = useSelector(userNameAnswered);
+  const messageAnswer = useSelector(messageAnswered);
+  const urlImageAnser = useSelector(urlImageAnsered);
   const Dispatch = useDispatch();
   const createGetSize = (imageFile, getSize) => {
     var image;
@@ -47,6 +56,9 @@ function InputChat({ myNickNameChat, listUserChat }) {
       }
     };
   };
+  useEffect(() => {
+    inputMessage.current.focus();
+  }, [isReplyMessages]);
   useEffect(() => {
     const listUserRoom = listUserChat.find((room) => {
       return room[0] === roomChatInfo.chatId;
@@ -62,6 +74,10 @@ function InputChat({ myNickNameChat, listUserChat }) {
     setValueInput("");
     setImgFile(false);
     setImgUrl(null);
+    Dispatch(boxChatSlice.actions.setUserNameAnswered(""));
+    Dispatch(boxChatSlice.actions.setMessageAnswered(""));
+    Dispatch(boxChatSlice.actions.setUrlImageAnsered(""));
+    Dispatch(boxChatSlice.actions.setIsReplyMessage(false));
     Dispatch(boxChatSlice.actions.setIsSendMessageTogle(!isSendMessage));
     if (imgFile) {
       const imgRef = ref(
@@ -72,20 +88,40 @@ function InputChat({ myNickNameChat, listUserChat }) {
         uploadBytes(imgRef, imgFile).then((snapshot) => {
           getDownloadURL(snapshot.ref).then(async (imgUrl) => {
             try {
-              await updateDoc(doc(db, "chats", roomChatInfo.chatId), {
-                messages: arrayUnion({
-                  id: uuid(),
-                  text: valueInput,
-                  senderId: user.uid,
-                  createdAt: Timestamp.now(),
-                  image: {
-                    url: imgUrl,
-                    fullPath: snapshot.metadata.fullPath,
-                    width: w,
-                    height: h,
-                  },
-                }),
-              });
+              if (isReplyMessages) {
+                await updateDoc(doc(db, "chats", roomChatInfo.chatId), {
+                  messages: arrayUnion({
+                    id: uuid(),
+                    text: valueInput,
+                    senderId: user.uid,
+                    createdAt: Timestamp.now(),
+                    image: {
+                      url: imgUrl,
+                      fullPath: snapshot.metadata.fullPath,
+                      width: w,
+                      height: h,
+                    },
+                    reply: messageAnswer,
+                    urlReply: messageAnswer === "Hình ảnh" ? urlImageAnser : "",
+                    userReply: userNameAnswer,
+                  }),
+                });
+              } else {
+                await updateDoc(doc(db, "chats", roomChatInfo.chatId), {
+                  messages: arrayUnion({
+                    id: uuid(),
+                    text: valueInput,
+                    senderId: user.uid,
+                    createdAt: Timestamp.now(),
+                    image: {
+                      url: imgUrl,
+                      fullPath: snapshot.metadata.fullPath,
+                      width: w,
+                      height: h,
+                    },
+                  }),
+                });
+              }
             } catch (e) {
               console.log(e);
             }
@@ -97,14 +133,28 @@ function InputChat({ myNickNameChat, listUserChat }) {
         return;
       }
       try {
-        await updateDoc(doc(db, "chats", roomChatInfo.chatId), {
-          messages: arrayUnion({
-            id: uuid(),
-            text: valueInput,
-            senderId: user.uid,
-            createdAt: Timestamp.now(),
-          }),
-        });
+        if (isReplyMessages) {
+          await updateDoc(doc(db, "chats", roomChatInfo.chatId), {
+            messages: arrayUnion({
+              id: uuid(),
+              text: valueInput,
+              senderId: user.uid,
+              createdAt: Timestamp.now(),
+              reply: messageAnswer,
+              urlReply: messageAnswer === "Hình ảnh" ? urlImageAnser : "",
+              userReply: userNameAnswer,
+            }),
+          });
+        } else {
+          await updateDoc(doc(db, "chats", roomChatInfo.chatId), {
+            messages: arrayUnion({
+              id: uuid(),
+              text: valueInput,
+              senderId: user.uid,
+              createdAt: Timestamp.now(),
+            }),
+          });
+        }
       } catch (e) {
         console.log(e);
       }
@@ -153,7 +203,7 @@ function InputChat({ myNickNameChat, listUserChat }) {
     setImgUrl(URL.createObjectURL(imgFile));
   };
   return (
-    <>
+    <div className={cx("controlMessage2")}>
       <input
         style={{ display: "none" }}
         accept="image/*"
@@ -166,6 +216,7 @@ function InputChat({ myNickNameChat, listUserChat }) {
           e.target.value = "";
         }}
       />
+
       <button
         onClick={() => {
           file.current.click();
@@ -196,6 +247,7 @@ function InputChat({ myNickNameChat, listUserChat }) {
         )}
 
         <input
+          ref={inputMessage}
           className={cx(isCheckedMusic === true ? "textWhite" : "")}
           autoComplete="off"
           type="text"
@@ -226,7 +278,7 @@ function InputChat({ myNickNameChat, listUserChat }) {
       >
         <FontAwesomeIcon className={cx("send--icon")} icon={faPaperPlane} />
       </button>
-    </>
+    </div>
   );
 }
 

@@ -140,9 +140,10 @@
     }
   }
 }
+//bug///////////////////////---------------------------
 .messageChat {
   display: flex;
-  flex-direction: column-reverse;
+  // flex-direction: column; //bug reverse
   flex: 1;
   // background-color: aqua;
   // margin-bottom: 20px;
@@ -237,8 +238,44 @@
     }
   }
 }
+.imageReply {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
 .user {
   flex-direction: column;
+
+  .WrapperReplyMessage {
+    position: relative;
+    padding-top: 5px;
+    text-align: right;
+    margin-top: 2px;
+    max-width: 60%;
+
+    .reply {
+      position: absolute;
+      background-color: rgba($color: #808080, $alpha: 0.5);
+      width: 100%;
+      height: calc(100% + 5px);
+      bottom: -5px;
+      border-radius: 20px;
+      // z-index: 0;
+    }
+
+    .textReply {
+      // padding-top: 20px;
+      padding-left: 15px;
+      font-size: 1.4rem;
+      // padding: ;
+      padding-right: 15px;
+      // width: 60%;
+      // overflow: hidden;
+      word-break: break-word;
+      // white-space: nowrap;
+      // text-overflow: ellipsis;
+    }
+  }
   &:hover .imgMessage .imgMessageOptions {
     display: flex;
   }
@@ -291,7 +328,35 @@
     text-align: right;
   }
 }
+.friend {
+  .WrapperReplyMessage {
+    position: relative;
+    padding-top: 5px;
+    text-align: left;
+    margin-top: 2px;
+    width: fit-content;
+    max-width: 60%;
+    .reply {
+      position: absolute;
+      background-color: rgba($color: #808080, $alpha: 0.5);
+      width: 100%;
+      height: calc(100% + 5px);
+      bottom: -5px;
+      border-radius: 20px;
 
+      // z-index: 0;
+    }
+
+    .textReply {
+      // padding-top: 20px;
+      word-break: break-word;
+      padding-left: 15px;
+      font-size: 1.4rem;
+      // padding: ;
+      padding-right: 15px;
+    }
+  }
+}
 .buttonControlText {
   // background-color: aqua;
   border-radius: 50%;

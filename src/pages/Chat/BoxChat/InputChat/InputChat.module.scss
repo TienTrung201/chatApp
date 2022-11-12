@@ -8,6 +8,11 @@
     @content;
   }
 }
+.controlMessage2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
 .chooseButton {
   // height: 50px;
 
