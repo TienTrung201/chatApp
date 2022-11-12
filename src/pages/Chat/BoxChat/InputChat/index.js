@@ -103,7 +103,7 @@ function InputChat({ myNickNameChat, listUserChat }) {
                     },
                     reply: messageAnswer,
                     urlReply: messageAnswer === "Hình ảnh" ? urlImageAnser : "",
-                    userReply: userNameAnswer,
+                    userIdReply: user.uid,
                   }),
                 });
               } else {
@@ -142,7 +142,7 @@ function InputChat({ myNickNameChat, listUserChat }) {
               createdAt: Timestamp.now(),
               reply: messageAnswer,
               urlReply: messageAnswer === "Hình ảnh" ? urlImageAnser : "",
-              userReply: userNameAnswer,
+              userIdReply: user.uid,
             }),
           });
         } else {
