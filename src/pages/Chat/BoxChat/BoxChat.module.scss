@@ -114,6 +114,7 @@ $active--Color: #31a24c;
     padding-bottom: 20px;
     overflow-y: scroll;
     padding-right: 2px;
+    z-index: 1;
     @include mobile {
       // max-width: 305px;
     }
@@ -131,53 +132,13 @@ $active--Color: #31a24c;
       background: rgb(100, 99, 99);
       border-radius: 10px;
     }
-    // .user {
-    //   flex-direction: row-reverse;
-    //   .textTime {
-    //     // float: left;
-    //     text-align: right;
-    //   }
-    // }
-    // .friend {
-    // }
-    // .message__chat {
-    //   display: flex;
-    //   align-items: flex-end;
-    //   margin-top: auto;
-    //   .boxText {
-    //     background-color: var(--backGround-App);
-    //     padding: 15px;
-    //     padding-bottom: 8px;
-    //     border-radius: 20px;
-    //     max-width: 60%;
-    //     margin-top: 20px;
-    //     .textMessage {
-    //       font-size: 1.4rem;
-    //       color: var(--backGround--page);
-    //     }
-    //     .textTime {
-    //       font-size: 1rem;
-    //       color: #8f97a4;
-    //     }
-    //   }
-    //   .avatar {
-    //     border-radius: 50%;
-    //     overflow: hidden;
-    //     display: flex;
-    //     margin-right: 10px;
-    //     width: 30px;
-    //     img {
-    //       border-radius: 50%;
-    //       width: 100%;
-    //     }
-    //   }
-    // }
   }
 
   .controlMessage {
     // display: flex;
     // justify-content: space-between;
     // align-items: flex-end;
+    z-index: 2;
     .WrapperReplyMessage {
       padding: 0 20px;
       padding-bottom: 8px;
@@ -226,7 +187,7 @@ $active--Color: #31a24c;
     border-radius: 30px;
     padding: 10px 0;
     // padding-bottom: 15px;
-    overflow: hidden;
+    // overflow: hidden;
     box-shadow: 0px 30px 30px rgba(0, 0, 0, 0.05);
     transition: 0.2s ease-in-out;
   }

@@ -1,10 +1,12 @@
 import styles from "./InputChat.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImages, faPaperPlane } from "@fortawesome/free-regular-svg-icons";
+import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
+import images from "@/assets/images";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  isOpenSticker,
   isReplyMessage,
   isSelectedMusic,
   isSendMessageTogle,
@@ -12,7 +14,7 @@ import {
   urlImageAnsered,
   userChat,
   userLogin,
-  userNameAnswered,
+  // userNameAnswered,
 } from "@/components/redux/selector";
 
 import { v4 as uuid } from "uuid";
@@ -27,6 +29,9 @@ import {
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import boxChatSlice from "../BoxChatSlice";
+import Sticker from "./Sticker";
+import StickerSlice from "./StickerSlice";
+import Tippy from "@tippyjs/react";
 
 const cx = classNames.bind(styles);
 function InputChat({ myNickNameChat, listUserChat }) {
@@ -41,9 +46,10 @@ function InputChat({ myNickNameChat, listUserChat }) {
   const isCheckedMusic = useSelector(isSelectedMusic);
   const isSendMessage = useSelector(isSendMessageTogle);
   const isReplyMessages = useSelector(isReplyMessage);
-  const userNameAnswer = useSelector(userNameAnswered);
+  // const userNameAnswer = useSelector(userNameAnswered);
   const messageAnswer = useSelector(messageAnswered);
   const urlImageAnser = useSelector(urlImageAnsered);
+  const isOpenStickerApp = useSelector(isOpenSticker);
   const Dispatch = useDispatch();
   const createGetSize = (imageFile, getSize) => {
     var image;
@@ -221,9 +227,35 @@ function InputChat({ myNickNameChat, listUserChat }) {
         onClick={() => {
           file.current.click();
         }}
-        className={cx("chooseButton")}
+        className={cx("openImage")}
       >
-        <FontAwesomeIcon className={cx("addFile-icon")} icon={faImages} />
+        <img src={images.imgIcon} alt="" />
+        {/* <FontAwesomeIcon className={cx("addFile-icon")} icon={faImages} /> */}
+      </button>
+      <div>
+        <Tippy
+          trigger="click"
+          placement="top"
+          interactive="true" // cho phep hanh dong tren ket qua
+          content={
+            isOpenStickerApp && (
+              <Sticker idRoom={roomChatInfo.chatId} userId={user.uid} />
+            )
+          }
+        >
+          <div
+            onClick={() => {
+              Dispatch(StickerSlice.actions.setIsOpenSticker(true));
+            }}
+            className={cx("openStickers", "autoCenter")}
+          >
+            <img src={images.sticker} alt="" />
+          </div>
+        </Tippy>
+      </div>
+
+      <button onClick={() => {}} className={cx("openStickers", "autoCenter")}>
+        <img src={images.gif} alt="" />
       </button>
       <div className={cx("wrapperTextMessage", "autoCenter")}>
         {imgUrl !== null ? (

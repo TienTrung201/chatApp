@@ -30,14 +30,17 @@ function ControlMessage({
     const allmessageRoom = allMess.map((message) => {
       if (message.id === currentMessage.id) {
         if (message.image) {
-          const desertRef = ref(storage, message.image.fullPath);
-          deleteObject(desertRef)
-            .then(() => {
-              // File deleted successfully
-            })
-            .catch((error) => {
-              // Uh-oh, an error occurred!
-            });
+          if (message.image.fullPath) {
+            console.log(1);
+            const desertRef = ref(storage, message.image.fullPath);
+            deleteObject(desertRef)
+              .then(() => {
+                // File deleted successfully
+              })
+              .catch((error) => {
+                // Uh-oh, an error occurred!
+              });
+          }
         }
         return {
           ...currentMessage,

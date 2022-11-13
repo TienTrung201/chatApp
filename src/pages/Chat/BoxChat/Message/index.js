@@ -58,7 +58,7 @@ function Message({
   const heightImageScroll = window.innerWidth > 739 ? "200px" : "100px";
 
   //image scroll top bug
-  const styleImage = {
+  let styleImage = {
     minHeight:
       data.image !== undefined
         ? window.innerHeight < 420
@@ -69,6 +69,13 @@ function Message({
         : heightImageScroll,
     maxHeight: window.innerHeight < 420 ? "80px" : heightImageScroll,
   };
+
+  if (data.type === "sticker") {
+    styleImage = {
+      height: "100px !important",
+      width: "100px",
+    };
+  }
   //image scroll top bug
 
   // //last send message
@@ -158,7 +165,12 @@ function Message({
                       false
                     )}
 
-                    <img style={styleImage} src={data.image.url} alt="" />
+                    <img
+                      className={data.type === "sticker" ? "styleSticker" : ""}
+                      style={styleImage}
+                      src={data.image.url}
+                      alt=""
+                    />
                   </div>
                   {data.text.trim(" ") === "" ? (
                     false
@@ -307,7 +319,10 @@ function Message({
           </div>
           <div
             style={{ flexDirection: data.image ? "column-reverse" : "column" }}
-            className={cx("messageChat")}
+            className={cx(
+              "messageChat",
+              data.type === "sticker" ? "flexColumn" : ""
+            )}
           >
             {data.reply !== undefined &&
             data.reply !== "" &&
@@ -409,7 +424,10 @@ function Message({
                         false
                       )}
                       <img
-                        className={cx("imgMessageSending")}
+                        className={cx(
+                          "imgMessageSending",
+                          data.type === "sticker" ? "stickerMes" : ""
+                        )}
                         style={styleImage}
                         src={data.image.url}
                         alt=""

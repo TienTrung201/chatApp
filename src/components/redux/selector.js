@@ -18,3 +18,6 @@ export const isReplyMessage = (state) => state.userChat.isReplyMessage;
 export const userNameAnswered = (state) => state.userChat.userNameAnswered;
 export const messageAnswered = (state) => state.userChat.messageAnswered;
 export const urlImageAnsered = (state) => state.userChat.urlImageAnsered;
+export const typeSticker = (state) => state.sticker.typeSticker;
+export const listSticker = (state) => state.sticker.stickers;
+export const isOpenSticker = (state) => state.sticker.isOpenSticker;

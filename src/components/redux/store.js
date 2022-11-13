@@ -1,4 +1,5 @@
 import boxChatSlice from "@/pages/Chat/BoxChat/BoxChatSlice";
+import StickerSlice from "@/pages/Chat/BoxChat/InputChat/StickerSlice";
 import chatSlice from "@/pages/Chat/ChatSlice";
 import userSlice from "@/pages/Login/UserSlice";
 import editProfileSlice from "@/pages/Profile/EditProfile/EditProfileSlice";
@@ -14,6 +15,7 @@ const store = configureStore({
     allMessage: chatSlice.reducer,
     sideBar: SidebarSlide.reducer,
     editProfile: editProfileSlice.reducer,
+    sticker: StickerSlice.reducer,
   },
 });
 

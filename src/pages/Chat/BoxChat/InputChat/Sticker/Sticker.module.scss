@@ -1,0 +1,101 @@
+@mixin mobile {
+  @media screen and (max-width: 739px) {
+    @content;
+  }
+}
+@mixin tablet {
+  @media screen and (min-width: 740px) and (max-width: 1023px) {
+    @content;
+  }
+}
+.WrapperStickerComponent {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  width: 250px;
+  left: -20px;
+  height: 300px;
+  padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  background-color: var(--backGround--page2--white);
+  box-shadow: 0px 0px 20px rgba($color: #000000, $alpha: 0.1);
+  // overflow: hidden;
+  // background-color: aqua;
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -25px;
+    // background-color: aqua;
+    left: 10px;
+    border: 15px solid;
+    border-color: var(--backGround--page2--white) transparent transparent
+      transparent;
+    // box-shadow: 0px 0px 20px rgba($color: #000000, $alpha: 0.1);
+  }
+  .headerStiker {
+    height: 50px;
+    // background-color: aqua;
+    border-bottom: solid 1px #ccc;
+    margin-bottom: 4px;
+    overflow: hidden;
+    .listTypeSticker {
+      display: flex;
+      overflow: hidden;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+
+      .typeSticker {
+        cursor: pointer;
+        width: 50px;
+        height: 40px;
+        img {
+          width: 80%;
+          height: 80%;
+          object-fit: contain;
+        }
+      }
+      .checkedType {
+        background-color: rgb(236, 234, 234);
+      }
+    }
+  }
+  .continerStiker {
+    overflow-y: scroll;
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .WrapperSticker {
+      width: 25%;
+      padding-top: 25%;
+      position: relative;
+      // margin: 0 5px;
+      // margin-bottom: 4px;
+      // padding: 2px;
+      margin-bottom: 4px;
+      .choseSticker {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        padding: 2px;
+        cursor: pointer;
+        // position: relative;
+
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 5px;
+          border: 1px solid rgb(241, 231, 231);
+        }
+      }
+    }
+
+    // width: 280 ;
+    // background-color: aqua;
+
+    // height: 380px;
+  }
+}

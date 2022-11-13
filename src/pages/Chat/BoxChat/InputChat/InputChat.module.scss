@@ -12,16 +12,34 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  padding-left: 20px;
 }
-.chooseButton {
-  // height: 50px;
-
+.openImage {
+  height: 22px;
+  width: 26px;
   cursor: pointer;
-  .addFile-icon {
-    margin-left: 20px;
-    margin-right: 15px;
-    color: var(--backGround-App);
-    font-size: 22px;
+
+  img {
+    width: 20px;
+    // margin-left: 20px;
+    height: 20px;
+    // background-color: aqua;
+    opacity: 0.9;
+    margin-right: 5px;
+  }
+}
+
+.openStickers {
+  height: 22px;
+  width: 22px;
+  // cursor: pointer;
+  margin-right: 5px;
+  position: relative;
+  img {
+    width: 20px;
+    height: 20px;
+    opacity: 0.9;
+    cursor: pointer;
   }
 }
 .wrapperTextMessage {
