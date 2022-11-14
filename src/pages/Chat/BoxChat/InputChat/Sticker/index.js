@@ -72,13 +72,13 @@ function Sticker({ idRoom, userId }) {
       {" "}
       <div className={cx("headerStiker")}>
         <ul className={cx("listTypeSticker")}>
-          {typeStickerApp.map((type) => {
+          {typeStickerApp.map((type, i) => {
             return (
               <li
                 onClick={() => {
                   setTypeStickers(type.type);
                 }}
-                key={type.id}
+                key={type.type + i}
                 className={cx(
                   "typeSticker",
                   "autoCenter",
@@ -101,7 +101,7 @@ function Sticker({ idRoom, userId }) {
                     // console.log("hello");
                     handleSendSticker(img.url);
                   }}
-                  key={i}
+                  key={i + img.url + img.type}
                   className={cx("WrapperSticker")}
                 >
                   <button className={cx("choseSticker", "autoCenter")}>
