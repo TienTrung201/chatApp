@@ -90,12 +90,13 @@ function ControlMessage({
         return myNickName;
       }
     } else {
-      let name = "";
+      let name = "Không xác định";
       currentUserRoom.forEach((user) => {
         if (currentMessage.senderId === user.uid) {
-          name = user.displayName;
+          name = user.nickName;
         }
       });
+
       return name;
     }
   };

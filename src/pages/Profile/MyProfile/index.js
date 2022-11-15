@@ -68,7 +68,7 @@ function MyProfile() {
                 src={
                   user.photoURL !== null
                     ? user.photoURL
-                    : require("../../../assets/images/photoUser.png")
+                    : require("../../../assets/images/avataDefalt.png")
                 }
                 alt=""
               />

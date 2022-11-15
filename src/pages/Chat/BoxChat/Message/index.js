@@ -287,8 +287,8 @@ function Message({
                   {userChatSender !== undefined
                     ? userChatSender.nickName
                       ? userChatSender.nickName
-                      : userChatSender.userDisplayName
-                    : "Người dùng"}{" "}
+                      : "Không xác định"
+                    : "Không xác định"}{" "}
                 </span>
               )}
               {firstMessageSend === undefined &&
@@ -299,8 +299,8 @@ function Message({
                     {userChatSender !== undefined
                       ? userChatSender.nickName
                         ? userChatSender.nickName
-                        : userChatSender.userDisplayName
-                      : "Người dùng"}{" "}
+                        : "Không xác định"
+                      : "Không xác định"}{" "}
                   </span>
                 )}
             </>
@@ -313,8 +313,10 @@ function Message({
               <img
                 src={
                   userChatSender !== undefined
-                    ? userChatSender.photoURL
-                    : require("../../../../assets/images/photoUser.png")
+                    ? userChatSender.nickName
+                      ? userChatSender.photoURL
+                      : require("../../../../assets/images/avataDefalt.png")
+                    : require("../../../../assets/images/avataDefalt.png")
                 }
                 alt=""
               />

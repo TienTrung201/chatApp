@@ -502,7 +502,7 @@ function Chat() {
                           src={
                             user.photoURL !== null
                               ? user.photoURL
-                              : require("../../assets/images/photoUser.png")
+                              : require("../../assets/images/avataDefalt.png")
                           }
                           alt=""
                         />
@@ -582,7 +582,7 @@ function Chat() {
                             src={
                               user[1].userInfo.photoURL !== ""
                                 ? user[1].userInfo.photoURL
-                                : require("../../assets/images/photoUser.png")
+                                : require("../../assets/images/avataDefalt.png")
                             }
                             alt=""
                           />
@@ -591,7 +591,7 @@ function Chat() {
                             src={
                               userChat !== undefined
                                 ? userChat.photoURL
-                                : require("../../assets/images/photoUser.png")
+                                : require("../../assets/images/avataDefalt.png")
                             }
                             alt=""
                           />

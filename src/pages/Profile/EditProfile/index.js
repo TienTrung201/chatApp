@@ -217,7 +217,7 @@ function EditProfile() {
                   src={
                     user.photoURL !== null
                       ? imgUrl
-                      : require("../../../assets/images/photoUser.png")
+                      : require("../../../assets/images/avataDefalt.png")
                   }
                   alt=""
                 />

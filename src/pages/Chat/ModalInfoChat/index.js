@@ -497,7 +497,7 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                                 src={
                                   user.photoURL !== null
                                     ? user.photoURL
-                                    : require("../../../assets/images/photoUser.png")
+                                    : require("../../../assets/images/avataDefalt.png")
                                 }
                                 alt=""
                               />
@@ -560,7 +560,7 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                       src={
                         roomChatInfo.user.photoURL !== null && findCurrentRoom
                           ? findCurrentRoom[1].userInfo.photoURL
-                          : require("../../../assets/images/photoUser.png")
+                          : require("../../../assets/images/avataDefalt.png")
                       }
                       alt=""
                     />
@@ -569,7 +569,7 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                       src={
                         roomChatInfo.user.photoURL !== null
                           ? roomChatInfo.user.photoURL
-                          : require("../../../assets/images/photoUser.png")
+                          : require("../../../assets/images/avataDefalt.png")
                       }
                       alt=""
                     />
@@ -861,7 +861,7 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                                       src={
                                         avata !== null
                                           ? avata
-                                          : require("../../../assets/images/photoUser.png")
+                                          : require("../../../assets/images/avataDefalt.png")
                                       }
                                       alt=""
                                     />

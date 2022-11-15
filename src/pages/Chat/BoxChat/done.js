@@ -131,7 +131,7 @@ function BoxChat({ modal, setModal, listUserChats }) {
                   src={
                     roomChatInfo.user.photoURL !== null
                       ? roomChatInfo.user.photoURL
-                      : require("../../../assets/images/photoUser.png")
+                      : require("../../../assets/images/avataDefalt.png")
                   }
                   alt=""
                 />
