@@ -1,5 +1,4 @@
 import { userChat, userLogin } from "@/components/redux/selector";
-import { useFireStore } from "@/hooks/useFirestor";
 
 import classNames from "classnames/bind";
 import { useMemo, useState } from "react";
@@ -11,6 +10,7 @@ import styles from "./Message.module.scss";
 const cx = classNames.bind(styles);
 
 function Message({
+  allUser,
   data,
   allMessage,
   myNickNameChat,
@@ -24,21 +24,22 @@ function Message({
   const userLoginChat = useSelector(userLogin);
   const roomChatInfo = useSelector(userChat);
 
-  const conditionUser = useMemo(() => {
-    return {
-      fieldName: "displayName",
-      operator: "!=",
-      compareValue: "getAll",
-    };
-  }, []);
-
-  const allUser = useFireStore("users", conditionUser);
-
+  // const allUser = useFireStore("users", conditionUser);
   let userChatSender = useMemo(() => {
-    return allUser.find((userChat) => {
+    let userSend;
+    let userSend2;
+    userSend = allUser.find((userChat) => {
       return userChat.uid === data.senderId;
     });
-  }, [allUser, data.senderId]);
+    userSend2 = currentUsersRoom.find((userChat) => {
+      return userChat.uid === data.senderId;
+    });
+    return {
+      ...userSend2,
+      userDisplayName: userSend.displayName,
+      photoURL: userSend.photoURL,
+    };
+  }, [currentUsersRoom, data.senderId, allUser]);
 
   let displayAvata = true;
   if (centerMessageSend === true) {
@@ -284,8 +285,10 @@ function Message({
               {firstMessageSend && (
                 <span className={cx("nameUserSend")}>
                   {userChatSender !== undefined
-                    ? userChatSender.displayName
-                    : ""}{" "}
+                    ? userChatSender.nickName
+                      ? userChatSender.nickName
+                      : userChatSender.userDisplayName
+                    : "Người dùng"}{" "}
                 </span>
               )}
               {firstMessageSend === undefined &&
@@ -294,8 +297,10 @@ function Message({
                 endSendMessage === undefined && (
                   <span className={cx("nameUserSend")}>
                     {userChatSender !== undefined
-                      ? userChatSender.displayName
-                      : ""}{" "}
+                      ? userChatSender.nickName
+                        ? userChatSender.nickName
+                        : userChatSender.userDisplayName
+                      : "Người dùng"}{" "}
                   </span>
                 )}
             </>

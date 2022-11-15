@@ -373,7 +373,21 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                   group={roomChatInfo.user.type}
                 >
                   {roomChatInfo.user.type === "group" ? (
-                    <h1>Đang update...</h1>
+                    <div className={cx("editNickName")}>
+                      {currentUserRoom.map((user) => {
+                        return (
+                          <EditUser
+                            key={user.uid}
+                            listUserRoom={currentUserRoom}
+                            // remainUser={user}
+                            allUserApp={allUser}
+                            roomId={roomChatInfo.chatId}
+                            group={true}
+                            userEdit={user}
+                          />
+                        );
+                      })}
+                    </div>
                   ) : (
                     <div className={cx("editNickName")}>
                       <EditUser
@@ -824,7 +838,11 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                               allUser.forEach((userFind) => {
                                 if (userFind.uid === user.uid) {
                                   avata = userFind.photoURL;
-                                  name = userFind.displayName;
+                                }
+                              });
+                              currentUserRoom.forEach((userFind) => {
+                                if (userFind.uid === user.uid) {
+                                  name = userFind.nickName;
                                 }
                               });
                               return (

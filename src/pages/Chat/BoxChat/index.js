@@ -290,6 +290,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
                   if (messages[i].senderId === messages[i + 1].senderId) {
                     return (
                       <Message
+                        allUser={allUsers}
                         currentUsersRoom={currentUserRoom}
                         zIndex={curentIndexMessage - i}
                         firstMessage={true}
@@ -310,6 +311,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
                   if (messages[i].senderId === messages[i - 1].senderId)
                     return (
                       <Message
+                        allUser={allUsers}
                         currentUsersRoom={currentUserRoom}
                         zIndex={curentIndexMessage - i}
                         firstMessageSend={true}
@@ -332,6 +334,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
                 ) {
                   return (
                     <Message
+                      allUser={allUsers}
                       currentUsersRoom={currentUserRoom}
                       zIndex={curentIndexMessage - i}
                       firstMessageSend={true}
@@ -349,6 +352,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
                   // break;
                   return (
                     <Message
+                      allUser={allUsers}
                       currentUsersRoom={currentUserRoom}
                       zIndex={curentIndexMessage - i}
                       endSendMessage={true}
@@ -365,6 +369,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
                 ) {
                   return (
                     <Message
+                      allUser={allUsers}
                       currentUsersRoom={currentUserRoom}
                       zIndex={curentIndexMessage - i}
                       centerMessageSend={true}
@@ -378,6 +383,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
               }
               return (
                 <Message
+                  allUser={allUsers}
                   currentUsersRoom={currentUserRoom}
                   zIndex={curentIndexMessage - i}
                   myNickNameChat={myNickName()}

@@ -9,12 +9,24 @@ import { isSelectedMusic } from "@/components/redux/selector";
 import { useSelector } from "react-redux";
 
 const cx = classNames.bind(styles);
-function EditUser({ userEdit, roomId, remainUser, listUserRoom }) {
+function EditUser({
+  group,
+  allUserApp,
+  userEdit,
+  roomId,
+  remainUser,
+  listUserRoom,
+}) {
   const input = useRef();
   const isCheckedMusic = useSelector(isSelectedMusic);
   const handleChangName = (e) => {
     setNameValue(e.target.value);
   };
+
+  let userForEdit;
+  if (group) {
+    userForEdit = allUserApp.find((user) => user.uid === userEdit.uid);
+  }
 
   const [isEditUserChat, setIsEditUserChat] = useState(false);
 
@@ -30,18 +42,23 @@ function EditUser({ userEdit, roomId, remainUser, listUserRoom }) {
   );
   let substituteUserEdit;
   let substituteUserRemain;
-  if (findCurrentRoom[1].listUsers) {
-    substituteUserEdit = findCurrentRoom[1].listUsers.find((user) => {
-      return user.uid === userEdit.uid;
-    });
-    substituteUserRemain = findCurrentRoom[1].listUsers.find((user) => {
-      return user.uid === remainUser.uid;
-    });
+  if (!group) {
+    if (findCurrentRoom[1].listUsers) {
+      substituteUserEdit = findCurrentRoom[1].listUsers.find((user) => {
+        return user.uid === userEdit.uid;
+      });
+      substituteUserRemain = findCurrentRoom[1].listUsers.find((user) => {
+        return user.uid === remainUser.uid;
+      });
+    }
   }
+
   const [nameValue, setNameValue] = useState(
     substituteUserEdit !== undefined
       ? substituteUserEdit.nickName
-      : userEdit.displayName
+      : userEdit.displayName === userEdit.nickName
+      ? userEdit.displayName
+      : userEdit.nickName
   );
   const checkName = useCallback(() => {
     if (nameValue.length > 20) {
@@ -52,51 +69,82 @@ function EditUser({ userEdit, roomId, remainUser, listUserRoom }) {
   }, [nameValue]);
 
   const nickName = useCallback(() => {
-    if (substituteUserEdit === undefined) {
-      return "Đặt biệt danh";
-    } else if (substituteUserEdit.nickName.trim(" ") === "") {
-      return "Đặt biệt danh";
+    if (!group) {
+      if (substituteUserEdit === undefined) {
+        return "Đặt biệt danh";
+      } else if (substituteUserEdit.nickName.trim(" ") === "") {
+        return "Đặt biệt danh";
+      } else {
+        return substituteUserEdit.displayName;
+      }
     } else {
-      return substituteUserEdit.displayName;
+      if (userEdit.nickName !== userEdit.displayName) {
+        return userEdit.displayName;
+      }
+      if (userEdit.nickName === "") {
+        return userEdit.displayName;
+      } else {
+        return "Đặt biệt danh";
+      }
     }
-  }, [substituteUserEdit]);
+  }, [substituteUserEdit, group, userEdit]);
   //  lưu biệt danh
-  const saveChange = async () => {
-    await updateDoc(doc(db, "userChats", userEdit.uid), {
-      [roomId + ".listUsers"]: [
-        {
-          uid: userEdit.uid,
-          displayName: userEdit.displayName,
-          nickName: nameValue,
-        },
-        {
-          uid: remainUser.uid,
-          displayName: remainUser.displayName,
-          nickName:
-            substituteUserRemain !== undefined
-              ? substituteUserRemain.nickName
-              : remainUser.displayName,
-        },
-      ],
-    });
-    await updateDoc(doc(db, "userChats", remainUser.uid), {
-      [roomId + ".listUsers"]: [
-        {
-          uid: userEdit.uid,
-          displayName: userEdit.displayName,
-          nickName: nameValue,
-        },
-        {
-          uid: remainUser.uid,
-          displayName: remainUser.displayName,
-          nickName:
-            substituteUserRemain !== undefined
-              ? substituteUserRemain.nickName
-              : remainUser.displayName,
-        },
-      ],
-    });
+  const handleEditNickName = async () => {
+    if (!group) {
+      await updateDoc(doc(db, "userChats", userEdit.uid), {
+        [roomId + ".listUsers"]: [
+          {
+            uid: userEdit.uid,
+            displayName: userEdit.displayName,
+            nickName: nameValue,
+          },
+          {
+            uid: remainUser.uid,
+            displayName: remainUser.displayName,
+            nickName:
+              substituteUserRemain !== undefined
+                ? substituteUserRemain.nickName
+                : remainUser.displayName,
+          },
+        ],
+      });
+      await updateDoc(doc(db, "userChats", remainUser.uid), {
+        [roomId + ".listUsers"]: [
+          {
+            uid: userEdit.uid,
+            displayName: userEdit.displayName,
+            nickName: nameValue,
+          },
+          {
+            uid: remainUser.uid,
+            displayName: remainUser.displayName,
+            nickName:
+              substituteUserRemain !== undefined
+                ? substituteUserRemain.nickName
+                : remainUser.displayName,
+          },
+        ],
+      });
+    } else {
+      let listUserRoomAdd = [];
+      listUserRoom.forEach((user) => {
+        if (user.uid === userEdit.uid) {
+          listUserRoomAdd.push({
+            ...user,
+            nickName: nameValue.trim(" ") === "" ? user.displayName : nameValue,
+          });
+        } else {
+          listUserRoomAdd.push(user);
+        }
+      });
+      listUserRoom.forEach(async (user) => {
+        await updateDoc(doc(db, "userChats", user.uid), {
+          [roomId + ".listUsers"]: listUserRoomAdd,
+        });
+      });
+    }
   };
+
   //  lưu biệt danh
   return (
     <div className={cx("user")}>
@@ -106,7 +154,11 @@ function EditUser({ userEdit, roomId, remainUser, listUserRoom }) {
         }}
         className={cx("avata")}
       >
-        <img width={40} src={userEdit.photoURL} alt="" />
+        <img
+          width={40}
+          src={group === true ? userForEdit.photoURL : userEdit.photoURL}
+          alt=""
+        />
       </div>
       <div className={cx("user__display")}>
         {isEditUserChat === true ? (
@@ -118,12 +170,25 @@ function EditUser({ userEdit, roomId, remainUser, listUserRoom }) {
             }}
             className={cx("user__name")}
           >
-            {substituteUserEdit !== undefined
-              ? substituteUserEdit.nickName !== ""
-                ? substituteUserEdit.nickName
-                : userEdit.displayName
-              : userEdit.displayName}
-            {/* Biệt danh  nếu chưa có biệt danh để name*/}
+            {
+              group === true ? (
+                <>
+                  {" "}
+                  {userEdit.nickName === userEdit.displayName
+                    ? userEdit.displayName
+                    : userEdit.nickName}
+                </>
+              ) : (
+                <>
+                  {substituteUserEdit !== undefined
+                    ? substituteUserEdit.nickName !== ""
+                      ? substituteUserEdit.nickName
+                      : userEdit.displayName
+                    : userEdit.displayName}
+                </>
+              )
+              // {/* Biệt danh  nếu chưa có biệt danh để name*/}
+            }
           </h5>
         )}
 
@@ -141,7 +206,7 @@ function EditUser({ userEdit, roomId, remainUser, listUserRoom }) {
               if (e.key === "Enter") {
                 setIsEditUserChat(false);
                 if (checkName() === true && isEditUserChat === true) {
-                  saveChange();
+                  handleEditNickName();
                 }
               }
             }}
@@ -172,7 +237,7 @@ function EditUser({ userEdit, roomId, remainUser, listUserRoom }) {
             if (checkName() === true) {
               console.log(2);
               setIsEditUserChat(false);
-              saveChange();
+              handleEditNickName();
             }
           }}
         >
