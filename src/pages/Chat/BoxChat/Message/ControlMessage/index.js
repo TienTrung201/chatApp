@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userChat } from "@/components/redux/selector";
 import { deleteObject, ref } from "firebase/storage";
 import boxChatSlice from "../../BoxChatSlice";
+import { useMemo } from "react";
 const cx = classNames.bind(styles);
 
 function ControlMessage({
@@ -20,15 +21,13 @@ function ControlMessage({
   myNickName,
   currentUserRoom,
   isImage,
+  group,
 }) {
   const roomChatInfo = useSelector(userChat);
   const Dispatch = useDispatch();
-  const handleRemoveMessage = async (message) => {
-    const currentMessage = allMess.find((messageData) => {
-      return messageData.id === message.id;
-    });
+  const handleRemoveMessage = async (messageCurrent) => {
     const allmessageRoom = allMess.map((message) => {
-      if (message.id === currentMessage.id) {
+      if (message.id === messageCurrent.id) {
         if (message.image) {
           if (message.image.fullPath) {
             console.log(1);
@@ -43,7 +42,7 @@ function ControlMessage({
           }
         }
         return {
-          ...currentMessage,
+          ...message,
           text: "",
           type: "remove",
         };
@@ -58,20 +57,32 @@ function ControlMessage({
       console.log(e);
     }
     try {
-      await updateDoc(doc(db, "userChats", roomChatInfo.user.uid), {
-        [roomChatInfo.chatId + ".lastMessage"]: {
-          text: "Đã thu hồi tin nhắn",
-          sender: myNickName,
-        },
-        [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
-      });
-      await updateDoc(doc(db, "userChats", userLogin.uid), {
-        [roomChatInfo.chatId + ".lastMessage"]: {
-          text: "Đã thu hồi tin nhắn",
-          sender: myNickName,
-        },
-        [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
-      });
+      if (group) {
+        currentUserRoom.forEach((user) => {
+          updateDoc(doc(db, "userChats", user.uid), {
+            [roomChatInfo.chatId + ".lastMessage"]: {
+              text: "Đã thu hồi tin nhắn",
+              sender: myNickName,
+            },
+            [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
+          });
+        });
+      } else {
+        await updateDoc(doc(db, "userChats", roomChatInfo.user.uid), {
+          [roomChatInfo.chatId + ".lastMessage"]: {
+            text: "Đã thu hồi tin nhắn",
+            sender: myNickName,
+          },
+          [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
+        });
+        await updateDoc(doc(db, "userChats", userLogin.uid), {
+          [roomChatInfo.chatId + ".lastMessage"]: {
+            text: "Đã thu hồi tin nhắn",
+            sender: myNickName,
+          },
+          [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
+        });
+      }
     } catch (e) {
       console.log(e);
     }
@@ -101,6 +112,83 @@ function ControlMessage({
     }
   };
 
+  const currentEmoji = useMemo(() => {
+    if (currentMessage.emoji) {
+      return currentMessage.emoji;
+    }
+    return { tym: [], haha: [], wow: [], sad: [], like: [], angry: [] };
+  }, [currentMessage]);
+
+  const handleSendEmoji = (typeEmojy) => {
+    let searchIdInEmoji = false;
+    let typeEmojiCurrentByUserLogin = "";
+    currentEmoji.tym.forEach((emojiId, i) => {
+      if (emojiId === userLogin.uid) {
+        searchIdInEmoji = true;
+        typeEmojiCurrentByUserLogin = "tym";
+        currentEmoji.tym.splice(i, 1);
+      }
+    });
+    currentEmoji.haha.forEach((emojiId, i) => {
+      if (emojiId === userLogin.uid) {
+        searchIdInEmoji = true;
+        typeEmojiCurrentByUserLogin = "haha";
+        currentEmoji.haha.splice(i, 1);
+      }
+    });
+    currentEmoji.wow.forEach((emojiId, i) => {
+      if (emojiId === userLogin.uid) {
+        searchIdInEmoji = true;
+        typeEmojiCurrentByUserLogin = "wow";
+        currentEmoji.wow.splice(i, 1);
+      }
+    });
+    currentEmoji.like.forEach((emojiId, i) => {
+      if (emojiId === userLogin.uid) {
+        searchIdInEmoji = true;
+        typeEmojiCurrentByUserLogin = "like";
+        currentEmoji.like.splice(i, 1);
+      }
+    });
+    currentEmoji.angry.forEach((emojiId, i) => {
+      if (emojiId === userLogin.uid) {
+        searchIdInEmoji = true;
+        typeEmojiCurrentByUserLogin = "angry";
+        currentEmoji.angry.splice(i, 1);
+      }
+    });
+    currentEmoji.sad.forEach((emojiId, i) => {
+      if (emojiId === userLogin.uid) {
+        searchIdInEmoji = true;
+        typeEmojiCurrentByUserLogin = "sad";
+        currentEmoji.sad.splice(i, 1);
+      }
+    });
+
+    if (
+      searchIdInEmoji === false ||
+      typeEmojy !== typeEmojiCurrentByUserLogin
+    ) {
+      currentEmoji[typeEmojy].push(userLogin.uid);
+    }
+    const allmessageRoom = allMess.map((message) => {
+      if (message.id === currentMessage.id) {
+        return {
+          ...message,
+          emoji: currentEmoji,
+        };
+      }
+      return message;
+    });
+
+    try {
+      updateDoc(doc(db, "chats", roomChatInfo.chatId), {
+        messages: allmessageRoom.reverse(),
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <>
       {!friendChat && (
@@ -161,22 +249,52 @@ function ControlMessage({
           content={
             <div className={cx("boxListIcon")}>
               <div className={cx("listIcon")}>
-                <button className={cx("icon")}>
+                <button
+                  onClick={() => {
+                    handleSendEmoji("tym");
+                  }}
+                  className={cx("icon")}
+                >
                   <img src={require("@/assets/images/tym.png")} alt="" />
                 </button>
-                <button className={cx("icon")}>
+                <button
+                  onClick={() => {
+                    handleSendEmoji("haha");
+                  }}
+                  className={cx("icon")}
+                >
                   <img src={require("@/assets/images/haha.png")} alt="" />
                 </button>
-                <button className={cx("icon")}>
+                <button
+                  onClick={() => {
+                    handleSendEmoji("wow");
+                  }}
+                  className={cx("icon")}
+                >
                   <img src={require("@/assets/images/wow.png")} alt="" />
                 </button>
-                <button className={cx("icon")}>
+                <button
+                  onClick={() => {
+                    handleSendEmoji("sad");
+                  }}
+                  className={cx("icon")}
+                >
                   <img src={require("@/assets/images/sad.png")} alt="" />
                 </button>
-                <button className={cx("icon")}>
+                <button
+                  onClick={() => {
+                    handleSendEmoji("angry");
+                  }}
+                  className={cx("icon")}
+                >
                   <img src={require("@/assets/images/angry.png")} alt="" />
                 </button>
-                <button className={cx("icon")}>
+                <button
+                  onClick={() => {
+                    handleSendEmoji("like");
+                  }}
+                  className={cx("icon")}
+                >
                   <img src={require("@/assets/images/like.png")} alt="" />
                 </button>
               </div>

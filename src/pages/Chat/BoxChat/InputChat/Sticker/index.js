@@ -47,25 +47,6 @@ function Sticker({ idRoom, userId }) {
       });
     } catch {}
   };
-  // const [listSticker, setListSticker] = useState([]);
-  // const imgListSticker = ref(storage, `Sticker/${typeSticker}`);
-  // console.log(listStickerApp);
-  // let listStickers = useMemo(() => [], []);
-  // useEffect(() => {
-
-  // useEffect(() => {
-  //   listAll(imgListSticker).then((response) => {
-  //     response.items.forEach((item) => {
-  //       getDownloadURL(item).then((url) => {
-  //         listStickers.push(url);
-  //         // setListSticker((prev) => [...prev, url]);
-  //       });
-  //     });
-  //   });
-  //   setListSticker(listStickers);
-  // }, [listStickers, imgListSticker]);
-  // }, [imgListSticker, listSticker]);
-  // console.log(listSticker);
 
   return (
     <div className={cx("WrapperStickerComponent")}>

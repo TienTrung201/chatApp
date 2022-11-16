@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 
 import { useSelector } from "react-redux";
 import ControlMessage from "./ControlMessage";
+import Emoji from "./Emoji";
 import styles from "./Message.module.scss";
 
 const cx = classNames.bind(styles);
@@ -89,6 +90,24 @@ function Message({
   //     ? `0${data.createdAt.toDate().getMinutes()}`
   //     : data.createdAt.toDate().getMinutes();
   // //last send message
+  const messageWithEmoji = useMemo(() => {
+    if (data.emoji) {
+      if (
+        data.emoji.tym.length === 0 &&
+        data.emoji.angry.length === 0 &&
+        data.emoji.haha.length === 0 &&
+        data.emoji.like.length === 0 &&
+        data.emoji.sad.length === 0 &&
+        data.emoji.wow.length === 0
+      ) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }, [data.emoji]);
   const [isFocusMessage, setIsFocusMessage] = useState();
   return (
     <>
@@ -98,6 +117,7 @@ function Message({
           className={cx(
             "message__chat",
             "user",
+            messageWithEmoji ? "mgBtEmoji" : "",
             firstMessageSend === true ? "mgtop_20px" : "",
             firstMessageSend === undefined &&
               firstMessage === undefined &&
@@ -134,6 +154,7 @@ function Message({
                 <div className={cx("boxTextDeletedMessage")}>
                   <div className={cx("deletedMessage")}>
                     <span>tin nhắn đã bị thu hồi</span>
+                    {messageWithEmoji ? <Emoji emoji={data.emoji} /> : false}
                   </div>
                 </div>
               ) : (
@@ -154,6 +175,7 @@ function Message({
                         )}
                       >
                         <ControlMessage
+                          group={roomChatInfo.user.type === "group"}
                           isImage={true}
                           currentUserRoom={currentUsersRoom}
                           myNickName={myNickNameChat}
@@ -167,12 +189,31 @@ function Message({
                     )}
 
                     <img
-                      className={data.type === "sticker" ? "styleSticker" : ""}
+                      className={cx(
+                        data.type === "sticker" ? "styleSticker" : ""
+                      )}
                       style={styleImage}
                       src={data.image.url}
                       alt=""
                     />
+
+                    <div className={cx("emojiImage")}>
+                      {data.text.trim(" ") !== "" ? (
+                        false
+                      ) : (
+                        <>
+                          {" "}
+                          {messageWithEmoji ? (
+                            <Emoji emoji={data.emoji} />
+                          ) : (
+                            false
+                          )}
+                        </>
+                      )}
+                    </div>
                   </div>
+
+                  {/* cả ảnh cả chữ */}
                   {data.text.trim(" ") === "" ? (
                     false
                   ) : (
@@ -180,6 +221,7 @@ function Message({
                       <div
                         className={cx(
                           "boxText",
+
                           centerMessageSend ? "borderRadiusRight-8" : "",
                           firstMessageSend ? "borderRadius_rightBt-8" : "",
                           endSendMessage ? "borderRadius_rightTop-8" : "",
@@ -199,6 +241,7 @@ function Message({
                           )}
                         >
                           <ControlMessage
+                            group={roomChatInfo.user.type === "group"}
                             currentUserRoom={currentUsersRoom}
                             myNickName={myNickNameChat}
                             userLogin={userLoginChat}
@@ -208,12 +251,19 @@ function Message({
                         </div>
 
                         <p className={cx("textMessage")}>{data.text}</p>
+                        {messageWithEmoji ? (
+                          <Emoji emoji={data.emoji} userLogin={true} />
+                        ) : (
+                          false
+                        )}
+
                         {/* <p
                           className={cx("textTime")}
                         >{`${getHours}:${getMinutes}`}</p> */}
                       </div>
                     </>
                   )}
+                  {/* cả ảnh cả chữ */}
                 </>
               )}
             </>
@@ -223,12 +273,14 @@ function Message({
                 <div className={cx("boxTextDeletedMessage")}>
                   <div className={cx("deletedMessage")}>
                     <span>tin nhắn đã bị thu hồi</span>
+                    {messageWithEmoji ? <Emoji emoji={data.emoji} /> : false}
                   </div>
                 </div>
               ) : (
                 <div
                   className={cx(
                     "boxText",
+
                     centerMessageSend ? "borderRadiusRight-8" : "",
                     firstMessageSend ? "borderRadius_rightBt-8" : "",
                     endSendMessage ? "borderRadius_rightTop-8" : "",
@@ -248,6 +300,7 @@ function Message({
                     )}
                   >
                     <ControlMessage
+                      group={roomChatInfo.user.type === "group"}
                       currentUserRoom={currentUsersRoom}
                       myNickName={myNickNameChat}
                       userLogin={userLoginChat}
@@ -257,6 +310,12 @@ function Message({
                   </div>
 
                   <p className={cx("textMessage")}>{data.text}</p>
+                  {messageWithEmoji ? (
+                    <Emoji emoji={data.emoji} userLogin={true} />
+                  ) : (
+                    false
+                  )}
+
                   {/* <p
                     className={cx("textTime")}
                   >{`${getHours}:${getMinutes}`}</p> */}
@@ -271,6 +330,7 @@ function Message({
           className={cx(
             "message__chat",
             "friend",
+            messageWithEmoji ? "mgBtEmoji" : "",
             firstMessageSend === true ? "mgtop_20px" : "",
             firstMessageSend === undefined &&
               firstMessage === undefined &&
@@ -315,7 +375,7 @@ function Message({
                   userChatSender !== undefined
                     ? userChatSender.nickName
                       ? userChatSender.photoURL
-                      : require("../../../../assets/images/avataDefalt.png")
+                      : userChatSender.photoURL
                     : require("../../../../assets/images/avataDefalt.png")
                 }
                 alt=""
@@ -336,6 +396,7 @@ function Message({
             data.type !== "remove" ? (
               <div className={cx("WrapperReplyMessage")}>
                 <div className={cx("reply")}></div>
+
                 {/* <p className={cx("nameUserReply")}>Trung đã trả lời long</p> */}
                 <p className={cx("textReply")}>
                   {data.reply === "Hình ảnh" ? (
@@ -359,6 +420,11 @@ function Message({
                   <div className={cx("boxTextDeletedMessage")}>
                     <div className={cx("deletedMessage")}>
                       <span>tin nhắn đã bị thu hồi</span>
+                      {messageWithEmoji ? (
+                        <Emoji emoji={data.emoji} friend={true} />
+                      ) : (
+                        false
+                      )}
                     </div>
                   </div>
                 ) : (
@@ -370,6 +436,7 @@ function Message({
                         <div
                           className={cx(
                             "boxText",
+
                             centerMessageSend ? "borderRadiusLeft-8" : "",
                             firstMessageSend ? "borderRadius_leftBt-8" : "",
                             endSendMessage ? "borderRadius_leftTop-8" : "",
@@ -389,19 +456,28 @@ function Message({
                             )}
                           >
                             <ControlMessage
+                              group={roomChatInfo.user.type === "group"}
                               currentUserRoom={currentUsersRoom}
                               friendChat={true}
                               allMess={allMessage}
                               currentMessage={data}
+                              userLogin={userLoginChat}
                             />
                           </div>
                           <p className={cx("textMessage")}>{data.text}</p>
+                          {messageWithEmoji ? (
+                            <Emoji emoji={data.emoji} friend={true} />
+                          ) : (
+                            false
+                          )}
+
                           {/* <p
                             className={cx("textTime")}
                           >{`${getHours}:${getMinutes}`}</p> */}
                         </div>
                       </>
                     )}
+
                     <div className={cx("imgMessage")}>
                       {data.text.trim(" ") === "" ? (
                         <div
@@ -418,6 +494,7 @@ function Message({
                           )}
                         >
                           <ControlMessage
+                            group={roomChatInfo.user.type === "group"}
                             isImage={true}
                             currentUserRoom={currentUsersRoom}
                             friendChat={true}
@@ -439,6 +516,20 @@ function Message({
                         src={data.image.url}
                         alt=""
                       />
+                      <div className={cx("emojiImage")}>
+                        {data.text.trim(" ") !== "" ? (
+                          false
+                        ) : (
+                          <>
+                            {" "}
+                            {messageWithEmoji ? (
+                              <Emoji emoji={data.emoji} friend={true} />
+                            ) : (
+                              false
+                            )}
+                          </>
+                        )}
+                      </div>
                     </div>
                   </>
                 )}
@@ -449,12 +540,18 @@ function Message({
                   <div className={cx("boxTextDeletedMessage")}>
                     <div className={cx("deletedMessage")}>
                       <span>tin nhắn đã bị thu hồi</span>
+                      {messageWithEmoji ? (
+                        <Emoji emoji={data.emoji} friend={true} />
+                      ) : (
+                        false
+                      )}
                     </div>
                   </div>
                 ) : (
                   <div
                     className={cx(
                       "boxText",
+
                       centerMessageSend ? "borderRadiusLeft-8" : "",
                       firstMessageSend ? "borderRadius_leftBt-8" : "",
                       endSendMessage ? "borderRadius_leftTop-8" : "",
@@ -474,13 +571,22 @@ function Message({
                       )}
                     >
                       <ControlMessage
+                        group={roomChatInfo.user.type === "group"}
                         currentUserRoom={currentUsersRoom}
                         friendChat={true}
                         allMess={allMessage}
                         currentMessage={data}
+                        userLogin={userLoginChat}
                       />
                     </div>
+
                     <p className={cx("textMessage")}>{data.text}</p>
+                    {messageWithEmoji ? (
+                      <Emoji emoji={data.emoji} friend={true} />
+                    ) : (
+                      false
+                    )}
+
                     {/* <p
                       className={cx("textTime")}
                     >{`${getHours}:${getMinutes}`}</p> */}
