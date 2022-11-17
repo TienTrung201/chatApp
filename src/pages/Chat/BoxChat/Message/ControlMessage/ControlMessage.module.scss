@@ -55,8 +55,8 @@
   }
 }
 .boxListIcon {
-  width: 250px;
-  height: 48px;
+  width: 230px;
+  height: 36px;
   padding: 8px 15px;
   display: flex;
   align-items: center;
@@ -69,8 +69,8 @@
     // background-color: aqua;
     justify-content: space-between;
     .icon {
-      width: 28px !important;
-      height: 28px !important;
+      width: 24px !important;
+      height: 24px !important;
 
       cursor: pointer;
       &:hover img {
@@ -79,8 +79,8 @@
       }
 
       img {
-        width: 28px !important;
-        height: 28px !important;
+        width: 24px !important;
+        height: 24px !important;
         max-width: 100%;
         transition: 0.2s ease-in-out;
         border: none;

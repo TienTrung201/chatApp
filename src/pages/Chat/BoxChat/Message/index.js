@@ -21,6 +21,7 @@ function Message({
   firstMessage,
   zIndex,
   currentUsersRoom,
+  setVisibleModalEmoji,
 }) {
   const userLoginChat = useSelector(userLogin);
   const roomChatInfo = useSelector(userChat);
@@ -154,7 +155,14 @@ function Message({
                 <div className={cx("boxTextDeletedMessage")}>
                   <div className={cx("deletedMessage")}>
                     <span>tin nhắn đã bị thu hồi</span>
-                    {messageWithEmoji ? <Emoji emoji={data.emoji} /> : false}
+                    {messageWithEmoji ? (
+                      <Emoji
+                        setVisibleModalEmoji={setVisibleModalEmoji}
+                        emoji={data.emoji}
+                      />
+                    ) : (
+                      false
+                    )}
                   </div>
                 </div>
               ) : (
@@ -204,7 +212,10 @@ function Message({
                         <>
                           {" "}
                           {messageWithEmoji ? (
-                            <Emoji emoji={data.emoji} />
+                            <Emoji
+                              setVisibleModalEmoji={setVisibleModalEmoji}
+                              emoji={data.emoji}
+                            />
                           ) : (
                             false
                           )}
@@ -252,7 +263,11 @@ function Message({
 
                         <p className={cx("textMessage")}>{data.text}</p>
                         {messageWithEmoji ? (
-                          <Emoji emoji={data.emoji} userLogin={true} />
+                          <Emoji
+                            setVisibleModalEmoji={setVisibleModalEmoji}
+                            emoji={data.emoji}
+                            userLogin={true}
+                          />
                         ) : (
                           false
                         )}
@@ -273,7 +288,14 @@ function Message({
                 <div className={cx("boxTextDeletedMessage")}>
                   <div className={cx("deletedMessage")}>
                     <span>tin nhắn đã bị thu hồi</span>
-                    {messageWithEmoji ? <Emoji emoji={data.emoji} /> : false}
+                    {messageWithEmoji ? (
+                      <Emoji
+                        setVisibleModalEmoji={setVisibleModalEmoji}
+                        emoji={data.emoji}
+                      />
+                    ) : (
+                      false
+                    )}
                   </div>
                 </div>
               ) : (
@@ -311,7 +333,11 @@ function Message({
 
                   <p className={cx("textMessage")}>{data.text}</p>
                   {messageWithEmoji ? (
-                    <Emoji emoji={data.emoji} userLogin={true} />
+                    <Emoji
+                      setVisibleModalEmoji={setVisibleModalEmoji}
+                      emoji={data.emoji}
+                      userLogin={true}
+                    />
                   ) : (
                     false
                   )}
@@ -347,7 +373,7 @@ function Message({
                   {userChatSender !== undefined
                     ? userChatSender.nickName
                       ? userChatSender.nickName
-                      : "Không xác định"
+                      : userChatSender.userDisplayName
                     : "Không xác định"}{" "}
                 </span>
               )}
@@ -359,7 +385,7 @@ function Message({
                     {userChatSender !== undefined
                       ? userChatSender.nickName
                         ? userChatSender.nickName
-                        : "Không xác định"
+                        : userChatSender.userDisplayName
                       : "Không xác định"}{" "}
                   </span>
                 )}
@@ -421,7 +447,11 @@ function Message({
                     <div className={cx("deletedMessage")}>
                       <span>tin nhắn đã bị thu hồi</span>
                       {messageWithEmoji ? (
-                        <Emoji emoji={data.emoji} friend={true} />
+                        <Emoji
+                          setVisibleModalEmoji={setVisibleModalEmoji}
+                          emoji={data.emoji}
+                          friend={true}
+                        />
                       ) : (
                         false
                       )}
@@ -466,7 +496,11 @@ function Message({
                           </div>
                           <p className={cx("textMessage")}>{data.text}</p>
                           {messageWithEmoji ? (
-                            <Emoji emoji={data.emoji} friend={true} />
+                            <Emoji
+                              setVisibleModalEmoji={setVisibleModalEmoji}
+                              emoji={data.emoji}
+                              friend={true}
+                            />
                           ) : (
                             false
                           )}
@@ -523,7 +557,11 @@ function Message({
                           <>
                             {" "}
                             {messageWithEmoji ? (
-                              <Emoji emoji={data.emoji} friend={true} />
+                              <Emoji
+                                setVisibleModalEmoji={setVisibleModalEmoji}
+                                emoji={data.emoji}
+                                friend={true}
+                              />
                             ) : (
                               false
                             )}
@@ -541,7 +579,11 @@ function Message({
                     <div className={cx("deletedMessage")}>
                       <span>tin nhắn đã bị thu hồi</span>
                       {messageWithEmoji ? (
-                        <Emoji emoji={data.emoji} friend={true} />
+                        <Emoji
+                          setVisibleModalEmoji={setVisibleModalEmoji}
+                          emoji={data.emoji}
+                          friend={true}
+                        />
                       ) : (
                         false
                       )}
@@ -582,7 +624,11 @@ function Message({
 
                     <p className={cx("textMessage")}>{data.text}</p>
                     {messageWithEmoji ? (
-                      <Emoji emoji={data.emoji} friend={true} />
+                      <Emoji
+                        setVisibleModalEmoji={setVisibleModalEmoji}
+                        emoji={data.emoji}
+                        friend={true}
+                      />
                     ) : (
                       false
                     )}

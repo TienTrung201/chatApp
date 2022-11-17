@@ -31,7 +31,13 @@ import boxChatSlice from "./BoxChatSlice";
 
 const cx = classNames.bind(styles);
 
-function BoxChat({ modal, setModal, listUserChats, allUsers }) {
+function BoxChat({
+  modal,
+  setModal,
+  listUserChats,
+  allUsers,
+  setVisibleModalEmoji,
+}) {
   const roomChatInfo = useSelector(userChat);
   // const allUser = useSelector(users);
   let user = useSelector(userLogin);
@@ -290,6 +296,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
                   if (messages[i].senderId === messages[i + 1].senderId) {
                     return (
                       <Message
+                        setVisibleModalEmoji={setVisibleModalEmoji}
                         allUser={allUsers}
                         currentUsersRoom={currentUserRoom}
                         zIndex={curentIndexMessage - i}
@@ -311,6 +318,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
                   if (messages[i].senderId === messages[i - 1].senderId)
                     return (
                       <Message
+                        setVisibleModalEmoji={setVisibleModalEmoji}
                         allUser={allUsers}
                         currentUsersRoom={currentUserRoom}
                         zIndex={curentIndexMessage - i}
@@ -334,6 +342,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
                 ) {
                   return (
                     <Message
+                      setVisibleModalEmoji={setVisibleModalEmoji}
                       allUser={allUsers}
                       currentUsersRoom={currentUserRoom}
                       zIndex={curentIndexMessage - i}
@@ -352,6 +361,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
                   // break;
                   return (
                     <Message
+                      setVisibleModalEmoji={setVisibleModalEmoji}
                       allUser={allUsers}
                       currentUsersRoom={currentUserRoom}
                       zIndex={curentIndexMessage - i}
@@ -369,6 +379,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
                 ) {
                   return (
                     <Message
+                      setVisibleModalEmoji={setVisibleModalEmoji}
                       allUser={allUsers}
                       currentUsersRoom={currentUserRoom}
                       zIndex={curentIndexMessage - i}
@@ -383,6 +394,7 @@ function BoxChat({ modal, setModal, listUserChats, allUsers }) {
               }
               return (
                 <Message
+                  setVisibleModalEmoji={setVisibleModalEmoji}
                   allUser={allUsers}
                   currentUsersRoom={currentUserRoom}
                   zIndex={curentIndexMessage - i}

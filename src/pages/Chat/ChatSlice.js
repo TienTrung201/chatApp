@@ -5,14 +5,21 @@ export const chatSlice = createSlice({
   initialState: {
     status: "idle",
     allMessage: [],
+    typeModalGroupAndEmoji: "",
+    emojiMessage: { haha: [], tym: [], wow: [], like: [], sad: [], angry: [] },
   },
   reducers: {
     setAllMessage: (state, action) => {
       state.allMessage = action.payload;
     },
     addMessage: (state, action) => {
-      console.log(action.payload);
       state.allMessage.push(action.payload);
+    },
+    setTypeModal: (state, action) => {
+      state.typeModalGroupAndEmoji = action.payload;
+    },
+    setEmojiMessage: (state, action) => {
+      state.emojiMessage = action.payload;
     },
   },
 });

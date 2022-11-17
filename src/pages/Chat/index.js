@@ -11,7 +11,11 @@ import { Link } from "react-router-dom";
 import ModalInfoChat from "./ModalInfoChat";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { isSelectedMusic, userLogin } from "@/components/redux/selector";
+import {
+  isSelectedMusic,
+  typeModalGroupAndEmoji,
+  userLogin,
+} from "@/components/redux/selector";
 import userSlice from "../Login/UserSlice";
 import {
   doc,
@@ -28,6 +32,8 @@ import boxChatSlice from "./BoxChat/BoxChatSlice";
 import keyboard from "@/assets/audio/keyboard.mp3";
 import Modal from "@/components/Modal";
 import { v4 as uuid } from "uuid";
+import chatSlice from "./ChatSlice";
+import EmojiMessageModal from "./EmojiMessage";
 const cx = classNames.bind(styles);
 
 function Chat() {
@@ -35,6 +41,7 @@ function Chat() {
   let user = useSelector(userLogin);
   const idUser = user.uid;
   const isCheckedMusic = useSelector(isSelectedMusic);
+
   const Dispatch = useDispatch();
   const conditionUser = useMemo(() => {
     return {
@@ -56,6 +63,8 @@ function Chat() {
   const [searchResult, setSearchResult] = useState([]);
   const [isloadingUser, setIsLoadingUser] = useState(false);
   const [visibleModal, setVisibleModal] = useState(false);
+
+  const typeModal = useSelector(typeModalGroupAndEmoji);
 
   const open = useRef();
   const screenWidth = window.innerWidth;
@@ -355,7 +364,7 @@ function Chat() {
       )}
     >
       <Modal
-        visible={visibleModal}
+        visible={visibleModal && typeModal === "group"}
         seiVisible={setVisibleModal}
         title={"Tạo Group"}
         save="Tạo nhóm"
@@ -380,6 +389,13 @@ function Chat() {
             />
           </div>
         </div>
+      </Modal>
+      <Modal
+        seiVisible={setVisibleModal}
+        title={"Cảm xúc về tin nhắn"}
+        visible={visibleModal && typeModal === "emoji"}
+      >
+        <EmojiMessageModal />
       </Modal>
       {isCheckedMusic === true ? (
         <div className={cx("wrapperKeyboard")}>
@@ -419,6 +435,7 @@ function Chat() {
           <div
             onClick={() => {
               setNameGroup("");
+              Dispatch(chatSlice.actions.setTypeModal("group"));
               setVisibleModal(true);
             }}
             className={cx("createNew")}
@@ -667,6 +684,7 @@ function Chat() {
 
       <article className={cx("rooms")}>
         <BoxChat
+          setVisibleModalEmoji={setVisibleModal}
           allUsers={allUser}
           listUserChats={listuserChat}
           controlChatToBox={controlChat}

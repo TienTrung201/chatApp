@@ -4,6 +4,9 @@ export const users = (state) => state.user.users;
 export const userSelect = (state) => state.user.userSelect;
 export const userChat = (state) => state.userChat.userChat;
 export const allMessage = (state) => state.allMessage.allMessage;
+export const typeModalGroupAndEmoji = (state) =>
+  state.allMessage.typeModalGroupAndEmoji;
+export const emojiMessage = (state) => state.allMessage.emojiMessage;
 export const isSelectedMusic = (state) => state.sideBar.isSelectedMusic;
 export const isRainy = (state) => state.sideBar.isRainy;
 export const isNight = (state) => state.sideBar.isNight;

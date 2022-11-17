@@ -1,10 +1,14 @@
 import styles from "./Emoji.module.scss";
 import classNames from "classnames/bind";
 import { useMemo } from "react";
+import { useDispatch } from "react-redux";
+import chatSlice from "@/pages/Chat/ChatSlice";
 
 const cx = classNames.bind(styles);
 
-function Emoji({ emoji, friend }) {
+function Emoji({ emoji, friend, setVisibleModalEmoji }) {
+  const Dispatch = useDispatch();
+
   const countEmoji = useMemo(() => {
     return (
       emoji.haha.length +
@@ -17,7 +21,14 @@ function Emoji({ emoji, friend }) {
   }, [emoji]);
 
   return (
-    <div className={cx("wrapperEmoji")}>
+    <div
+      onClick={() => {
+        setVisibleModalEmoji(true);
+        Dispatch(chatSlice.actions.setTypeModal("emoji"));
+        Dispatch(chatSlice.actions.setEmojiMessage(emoji));
+      }}
+      className={cx("wrapperEmoji")}
+    >
       <ul className={cx("listEmoji", friend ? "friend" : "userLogin")}>
         {friend && countEmoji > 1 ? (
           <span className={cx("countEmoji")}>{countEmoji}</span>
