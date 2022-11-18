@@ -22,8 +22,10 @@ function Message({
   zIndex,
   currentUsersRoom,
   setVisibleModalEmoji,
+  nickNameFriend,
 }) {
   const userLoginChat = useSelector(userLogin);
+  const userId = userLoginChat.uid;
   const roomChatInfo = useSelector(userChat);
 
   // const allUser = useFireStore("users", conditionUser);
@@ -82,14 +84,25 @@ function Message({
   //image scroll top bug
 
   // //last send message
-  // const getHours =
-  //   data.createdAt.toDate().getHours() < 10
-  //     ? `0${data.createdAt.toDate().getHours()}`
-  //     : data.createdAt.toDate().getHours();
-  // const getMinutes =
-  //   data.createdAt.toDate().getMinutes() < 10
-  //     ? `0${data.createdAt.toDate().getMinutes()}`
-  //     : data.createdAt.toDate().getMinutes();
+  const getHours =
+    data.createdAt.toDate().getHours() < 10
+      ? `0${data.createdAt.toDate().getHours()}`
+      : data.createdAt.toDate().getHours();
+  const getMinutes =
+    data.createdAt.toDate().getMinutes() < 10
+      ? `0${data.createdAt.toDate().getMinutes()}`
+      : data.createdAt.toDate().getMinutes();
+
+  const getDay =
+    data.createdAt.toDate().getDate() < 10
+      ? `0${data.createdAt.toDate().getDate()}`
+      : data.createdAt.toDate().getDate();
+  const getMonth =
+    data.createdAt.toDate().getMonth() + 1 < 10
+      ? `0${data.createdAt.toDate().getMonth() + 1}`
+      : data.createdAt.toDate().getMonth() + 1;
+  const getYear = data.createdAt.toDate().getFullYear();
+
   // //last send message
   const messageWithEmoji = useMemo(() => {
     if (data.emoji) {
@@ -110,369 +123,92 @@ function Message({
     }
   }, [data.emoji]);
   const [isFocusMessage, setIsFocusMessage] = useState();
+  const nameUserNotification = useMemo(() => {
+    if (roomChatInfo.user.type === "group") {
+      const user = currentUsersRoom.find((user) => data.senderId === user.uid);
+      if (!user) {
+        return "";
+      }
+      if (user.uid === userId) {
+        return "Bạn";
+      }
+      return user.nickName;
+    } else {
+      if (userId === data.senderId) {
+        return "Bạn";
+      } else {
+        return nickNameFriend;
+      }
+    }
+  }, [currentUsersRoom, data.senderId, roomChatInfo, nickNameFriend, userId]);
+
   return (
     <>
-      {userLoginChat.uid === data.senderId ? (
-        <div
-          style={{ zIndex: zIndex }}
-          className={cx(
-            "message__chat",
-            "user",
-            messageWithEmoji ? "mgBtEmoji" : "",
-            firstMessageSend === true ? "mgtop_20px" : "",
-            firstMessageSend === undefined &&
-              firstMessage === undefined &&
-              centerMessageSend === undefined &&
-              endSendMessage === undefined
-              ? "mgtop_20px"
-              : ""
-          )}
-        >
-          {data.reply !== undefined &&
-          data.reply !== "" &&
-          data.type !== "remove" ? (
-            <div className={cx("WrapperReplyMessage")}>
-              <div className={cx("reply")}></div>
-              {/* <p className={cx("nameUserReply")}>Trung đã trả lời long</p> */}
-              <p className={cx("textReply")}>
-                {data.reply === "Hình ảnh" ? (
-                  <img
-                    className={cx("imageReply")}
-                    alt="Ảnh bị xóa"
-                    src={data.urlReply}
-                  />
-                ) : (
-                  data.reply
-                )}
-              </p>
-            </div>
-          ) : (
-            false
-          )}
-          {data.image ? (
-            <>
-              {data.type === "remove" ? (
-                <div className={cx("boxTextDeletedMessage")}>
-                  <div className={cx("deletedMessage")}>
-                    <span>tin nhắn đã bị thu hồi</span>
-                    {messageWithEmoji ? (
-                      <Emoji
-                        setVisibleModalEmoji={setVisibleModalEmoji}
-                        emoji={data.emoji}
+      {data.type === "notification" ? (
+        <div className={cx("notification")}>
+          <span className={cx("textNotification")}>
+            {nameUserNotification + " " + data.text}
+          </span>
+        </div>
+      ) : (
+        <>
+          {userLoginChat.uid === data.senderId ? (
+            <div
+              style={{ zIndex: zIndex }}
+              className={cx(
+                "message__chat",
+                "user",
+                messageWithEmoji ? "mgBtEmoji" : "",
+                firstMessageSend === true ? "mgtop_20px" : "",
+                firstMessageSend === undefined &&
+                  firstMessage === undefined &&
+                  centerMessageSend === undefined &&
+                  endSendMessage === undefined
+                  ? "mgtop_20px"
+                  : ""
+              )}
+            >
+              {data.reply !== undefined &&
+              data.reply !== "" &&
+              data.type !== "remove" ? (
+                <div className={cx("WrapperReplyMessage")}>
+                  <div className={cx("reply")}></div>
+                  {/* <p className={cx("nameUserReply")}>Trung đã trả lời long</p> */}
+                  <p className={cx("textReply")}>
+                    {data.reply === "Hình ảnh" ? (
+                      <img
+                        className={cx("imageReply")}
+                        alt="Ảnh bị xóa"
+                        src={data.urlReply}
                       />
                     ) : (
-                      false
+                      data.reply
                     )}
-                  </div>
+                  </p>
                 </div>
               ) : (
+                false
+              )}
+              {data.image ? (
                 <>
-                  <div className={cx("imgMessage")}>
-                    {data.text.trim(" ") === "" ? (
-                      <div
-                        onClick={() => {
-                          setIsFocusMessage(!isFocusMessage);
-                        }}
-                        onBlur={() => {
-                          setIsFocusMessage(false);
-                        }}
-                        className={cx(
-                          "optionTextMessage",
-                          "imgMessageOptions",
-                          isFocusMessage === true ? "focus" : ""
-                        )}
-                      >
-                        <ControlMessage
-                          group={roomChatInfo.user.type === "group"}
-                          isImage={true}
-                          currentUserRoom={currentUsersRoom}
-                          myNickName={myNickNameChat}
-                          userLogin={userLoginChat}
-                          allMess={allMessage}
-                          currentMessage={data}
-                        />
-                      </div>
-                    ) : (
-                      false
-                    )}
-
-                    <img
-                      className={cx(
-                        data.type === "sticker" ? "styleSticker" : ""
-                      )}
-                      style={styleImage}
-                      src={data.image.url}
-                      alt=""
-                    />
-
-                    <div className={cx("emojiImage")}>
-                      {data.text.trim(" ") !== "" ? (
-                        false
-                      ) : (
-                        <>
-                          {" "}
-                          {messageWithEmoji ? (
-                            <Emoji
-                              setVisibleModalEmoji={setVisibleModalEmoji}
-                              emoji={data.emoji}
-                            />
-                          ) : (
-                            false
-                          )}
-                        </>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* cả ảnh cả chữ */}
-                  {data.text.trim(" ") === "" ? (
-                    false
-                  ) : (
-                    <>
-                      <div
-                        className={cx(
-                          "boxText",
-
-                          centerMessageSend ? "borderRadiusRight-8" : "",
-                          firstMessageSend ? "borderRadius_rightBt-8" : "",
-                          endSendMessage ? "borderRadius_rightTop-8" : "",
-                          firstMessage ? "borderRadius_rightTop-8" : ""
-                        )}
-                      >
-                        <div
-                          onClick={() => {
-                            setIsFocusMessage(!isFocusMessage);
-                          }}
-                          onBlur={() => {
-                            setIsFocusMessage(false);
-                          }}
-                          className={cx(
-                            "optionTextMessage",
-                            isFocusMessage === true ? "focus" : ""
-                          )}
-                        >
-                          <ControlMessage
-                            group={roomChatInfo.user.type === "group"}
-                            currentUserRoom={currentUsersRoom}
-                            myNickName={myNickNameChat}
-                            userLogin={userLoginChat}
-                            allMess={allMessage}
-                            currentMessage={data}
-                          />
-                        </div>
-
-                        <p className={cx("textMessage")}>{data.text}</p>
+                  {data.type === "remove" ? (
+                    <div className={cx("boxTextDeletedMessage")}>
+                      <div className={cx("deletedMessage")}>
+                        <span>tin nhắn đã bị thu hồi</span>
                         {messageWithEmoji ? (
                           <Emoji
                             setVisibleModalEmoji={setVisibleModalEmoji}
                             emoji={data.emoji}
-                            userLogin={true}
                           />
                         ) : (
                           false
                         )}
-
-                        {/* <p
-                          className={cx("textTime")}
-                        >{`${getHours}:${getMinutes}`}</p> */}
                       </div>
-                    </>
-                  )}
-                  {/* cả ảnh cả chữ */}
-                </>
-              )}
-            </>
-          ) : (
-            <>
-              {data.type === "remove" ? (
-                <div className={cx("boxTextDeletedMessage")}>
-                  <div className={cx("deletedMessage")}>
-                    <span>tin nhắn đã bị thu hồi</span>
-                    {messageWithEmoji ? (
-                      <Emoji
-                        setVisibleModalEmoji={setVisibleModalEmoji}
-                        emoji={data.emoji}
-                      />
-                    ) : (
-                      false
-                    )}
-                  </div>
-                </div>
-              ) : (
-                <div
-                  className={cx(
-                    "boxText",
-
-                    centerMessageSend ? "borderRadiusRight-8" : "",
-                    firstMessageSend ? "borderRadius_rightBt-8" : "",
-                    endSendMessage ? "borderRadius_rightTop-8" : "",
-                    firstMessage ? "borderRadius_rightTop-8" : ""
-                  )}
-                >
-                  <div
-                    onClick={() => {
-                      setIsFocusMessage(!isFocusMessage);
-                    }}
-                    onBlur={() => {
-                      setIsFocusMessage(false);
-                    }}
-                    className={cx(
-                      "optionTextMessage",
-                      isFocusMessage === true ? "focus" : ""
-                    )}
-                  >
-                    <ControlMessage
-                      group={roomChatInfo.user.type === "group"}
-                      currentUserRoom={currentUsersRoom}
-                      myNickName={myNickNameChat}
-                      userLogin={userLoginChat}
-                      allMess={allMessage}
-                      currentMessage={data}
-                    />
-                  </div>
-
-                  <p className={cx("textMessage")}>{data.text}</p>
-                  {messageWithEmoji ? (
-                    <Emoji
-                      setVisibleModalEmoji={setVisibleModalEmoji}
-                      emoji={data.emoji}
-                      userLogin={true}
-                    />
-                  ) : (
-                    false
-                  )}
-
-                  {/* <p
-                    className={cx("textTime")}
-                  >{`${getHours}:${getMinutes}`}</p> */}
-                </div>
-              )}
-            </>
-          )}
-        </div>
-      ) : (
-        <div
-          style={{ zIndex: zIndex }}
-          className={cx(
-            "message__chat",
-            "friend",
-            messageWithEmoji ? "mgBtEmoji" : "",
-            firstMessageSend === true ? "mgtop_20px" : "",
-            firstMessageSend === undefined &&
-              firstMessage === undefined &&
-              centerMessageSend === undefined &&
-              endSendMessage === undefined
-              ? "mgtop_20px"
-              : ""
-          )}
-        >
-          {roomChatInfo.user.type === "group" ? (
-            <>
-              {firstMessageSend && (
-                <span className={cx("nameUserSend")}>
-                  {userChatSender !== undefined
-                    ? userChatSender.nickName
-                      ? userChatSender.nickName
-                      : userChatSender.userDisplayName
-                    : "Không xác định"}{" "}
-                </span>
-              )}
-              {firstMessageSend === undefined &&
-                firstMessage === undefined &&
-                centerMessageSend === undefined &&
-                endSendMessage === undefined && (
-                  <span className={cx("nameUserSend")}>
-                    {userChatSender !== undefined
-                      ? userChatSender.nickName
-                        ? userChatSender.nickName
-                        : userChatSender.userDisplayName
-                      : "Không xác định"}{" "}
-                  </span>
-                )}
-            </>
-          ) : (
-            false
-          )}
-
-          <div className={cx("avatar")}>
-            {displayAvata === true ? (
-              <img
-                src={
-                  userChatSender !== undefined
-                    ? userChatSender.nickName
-                      ? userChatSender.photoURL
-                      : userChatSender.photoURL
-                    : require("../../../../assets/images/avataDefalt.png")
-                }
-                alt=""
-              />
-            ) : (
-              false
-            )}
-          </div>
-          <div
-            style={{ flexDirection: data.image ? "column-reverse" : "column" }}
-            className={cx(
-              "messageChat",
-              data.type === "sticker" ? "flexColumn" : ""
-            )}
-          >
-            {data.reply !== undefined &&
-            data.reply !== "" &&
-            data.type !== "remove" ? (
-              <div className={cx("WrapperReplyMessage")}>
-                <div className={cx("reply")}></div>
-
-                {/* <p className={cx("nameUserReply")}>Trung đã trả lời long</p> */}
-                <p className={cx("textReply")}>
-                  {data.reply === "Hình ảnh" ? (
-                    <img
-                      className={cx("imageReply")}
-                      alt="Ảnh bị xóa"
-                      src={data.urlReply}
-                    />
-                  ) : (
-                    data.reply
-                  )}
-                </p>
-              </div>
-            ) : (
-              false
-            )}
-
-            {data.image ? (
-              <>
-                {data.type === "remove" ? (
-                  <div className={cx("boxTextDeletedMessage")}>
-                    <div className={cx("deletedMessage")}>
-                      <span>tin nhắn đã bị thu hồi</span>
-                      {messageWithEmoji ? (
-                        <Emoji
-                          setVisibleModalEmoji={setVisibleModalEmoji}
-                          emoji={data.emoji}
-                          friend={true}
-                        />
-                      ) : (
-                        false
-                      )}
                     </div>
-                  </div>
-                ) : (
-                  <>
-                    {data.text.trim(" ") === "" ? (
-                      false
-                    ) : (
-                      <>
-                        <div
-                          className={cx(
-                            "boxText",
-
-                            centerMessageSend ? "borderRadiusLeft-8" : "",
-                            firstMessageSend ? "borderRadius_leftBt-8" : "",
-                            endSendMessage ? "borderRadius_leftTop-8" : "",
-                            firstMessage ? "borderRadius_leftTop-8" : ""
-                          )}
-                        >
+                  ) : (
+                    <>
+                      <div className={cx("imgMessage")}>
+                        {data.text.trim(" ") === "" ? (
                           <div
                             onClick={() => {
                               setIsFocusMessage(!isFocusMessage);
@@ -482,19 +218,276 @@ function Message({
                             }}
                             className={cx(
                               "optionTextMessage",
+                              "imgMessageOptions",
                               isFocusMessage === true ? "focus" : ""
                             )}
                           >
                             <ControlMessage
                               group={roomChatInfo.user.type === "group"}
+                              isImage={true}
                               currentUserRoom={currentUsersRoom}
-                              friendChat={true}
+                              myNickName={myNickNameChat}
+                              userLogin={userLoginChat}
                               allMess={allMessage}
                               currentMessage={data}
-                              userLogin={userLoginChat}
                             />
                           </div>
-                          <p className={cx("textMessage")}>{data.text}</p>
+                        ) : (
+                          false
+                        )}
+
+                        <img
+                          className={cx(
+                            data.type === "sticker" ? "styleSticker" : ""
+                          )}
+                          style={styleImage}
+                          src={data.image.url}
+                          alt=""
+                        />
+
+                        <div className={cx("emojiImage")}>
+                          {data.text.trim(" ") !== "" ? (
+                            false
+                          ) : (
+                            <>
+                              {" "}
+                              {messageWithEmoji ? (
+                                <Emoji
+                                  setVisibleModalEmoji={setVisibleModalEmoji}
+                                  emoji={data.emoji}
+                                />
+                              ) : (
+                                false
+                              )}
+                            </>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* cả ảnh cả chữ */}
+                      {data.text.trim(" ") === "" ? (
+                        false
+                      ) : (
+                        <>
+                          <div
+                            className={cx(
+                              "boxText",
+
+                              centerMessageSend ? "borderRadiusRight-8" : "",
+                              firstMessageSend ? "borderRadius_rightBt-8" : "",
+                              endSendMessage ? "borderRadius_rightTop-8" : "",
+                              firstMessage ? "borderRadius_rightTop-8" : ""
+                            )}
+                          >
+                            <div
+                              onClick={() => {
+                                setIsFocusMessage(!isFocusMessage);
+                              }}
+                              onBlur={() => {
+                                setIsFocusMessage(false);
+                              }}
+                              className={cx(
+                                "optionTextMessage",
+                                isFocusMessage === true ? "focus" : ""
+                              )}
+                            >
+                              <ControlMessage
+                                group={roomChatInfo.user.type === "group"}
+                                currentUserRoom={currentUsersRoom}
+                                myNickName={myNickNameChat}
+                                userLogin={userLoginChat}
+                                allMess={allMessage}
+                                currentMessage={data}
+                              />
+                            </div>
+
+                            <p className={cx("textMessage")}>{data.text}</p>
+                            {messageWithEmoji ? (
+                              <Emoji
+                                setVisibleModalEmoji={setVisibleModalEmoji}
+                                emoji={data.emoji}
+                                userLogin={true}
+                              />
+                            ) : (
+                              false
+                            )}
+
+                            <p
+                              className={cx("textTime")}
+                            >{`${getDay}/${getMonth}/${getYear} ${getHours}:${getMinutes}`}</p>
+                          </div>
+                        </>
+                      )}
+                      {/* cả ảnh cả chữ */}
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  {data.type === "remove" ? (
+                    <div className={cx("boxTextDeletedMessage")}>
+                      <div className={cx("deletedMessage")}>
+                        <span>tin nhắn đã bị thu hồi</span>
+                        {messageWithEmoji ? (
+                          <Emoji
+                            setVisibleModalEmoji={setVisibleModalEmoji}
+                            emoji={data.emoji}
+                          />
+                        ) : (
+                          false
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      className={cx(
+                        "boxText",
+
+                        centerMessageSend ? "borderRadiusRight-8" : "",
+                        firstMessageSend ? "borderRadius_rightBt-8" : "",
+                        endSendMessage ? "borderRadius_rightTop-8" : "",
+                        firstMessage ? "borderRadius_rightTop-8" : ""
+                      )}
+                    >
+                      <div
+                        onClick={() => {
+                          setIsFocusMessage(!isFocusMessage);
+                        }}
+                        onBlur={() => {
+                          setIsFocusMessage(false);
+                        }}
+                        className={cx(
+                          "optionTextMessage",
+                          isFocusMessage === true ? "focus" : ""
+                        )}
+                      >
+                        <ControlMessage
+                          group={roomChatInfo.user.type === "group"}
+                          currentUserRoom={currentUsersRoom}
+                          myNickName={myNickNameChat}
+                          userLogin={userLoginChat}
+                          allMess={allMessage}
+                          currentMessage={data}
+                        />
+                      </div>
+
+                      <p className={cx("textMessage")}>{data.text}</p>
+                      {messageWithEmoji ? (
+                        <Emoji
+                          setVisibleModalEmoji={setVisibleModalEmoji}
+                          emoji={data.emoji}
+                          userLogin={true}
+                        />
+                      ) : (
+                        false
+                      )}
+
+                      <p
+                        className={cx("textTime")}
+                      >{`${getDay}/${getMonth}/${getYear} ${getHours}:${getMinutes}`}</p>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          ) : (
+            <div
+              style={{ zIndex: zIndex }}
+              className={cx(
+                "message__chat",
+                "friend",
+                messageWithEmoji ? "mgBtEmoji" : "",
+                firstMessageSend === true ? "mgtop_20px" : "",
+                firstMessageSend === undefined &&
+                  firstMessage === undefined &&
+                  centerMessageSend === undefined &&
+                  endSendMessage === undefined
+                  ? "mgtop_20px"
+                  : ""
+              )}
+            >
+              {roomChatInfo.user.type === "group" ? (
+                <>
+                  {firstMessageSend && (
+                    <span className={cx("nameUserSend")}>
+                      {userChatSender !== undefined
+                        ? userChatSender.nickName
+                          ? userChatSender.nickName
+                          : userChatSender.userDisplayName
+                        : "Không xác định"}{" "}
+                    </span>
+                  )}
+                  {firstMessageSend === undefined &&
+                    firstMessage === undefined &&
+                    centerMessageSend === undefined &&
+                    endSendMessage === undefined && (
+                      <span className={cx("nameUserSend")}>
+                        {userChatSender !== undefined
+                          ? userChatSender.nickName
+                            ? userChatSender.nickName
+                            : userChatSender.userDisplayName
+                          : "Không xác định"}{" "}
+                      </span>
+                    )}
+                </>
+              ) : (
+                false
+              )}
+
+              <div className={cx("avatar")}>
+                {displayAvata === true ? (
+                  <img
+                    src={
+                      userChatSender !== undefined
+                        ? userChatSender.nickName
+                          ? userChatSender.photoURL
+                          : userChatSender.photoURL
+                        : require("../../../../assets/images/avataDefalt.png")
+                    }
+                    alt=""
+                  />
+                ) : (
+                  false
+                )}
+              </div>
+              <div
+                style={{
+                  flexDirection: data.image ? "column-reverse" : "column",
+                }}
+                className={cx(
+                  "messageChat",
+                  data.type === "sticker" ? "flexColumn" : ""
+                )}
+              >
+                {data.reply !== undefined &&
+                data.reply !== "" &&
+                data.type !== "remove" ? (
+                  <div className={cx("WrapperReplyMessage")}>
+                    <div className={cx("reply")}></div>
+
+                    {/* <p className={cx("nameUserReply")}>Trung đã trả lời long</p> */}
+                    <p className={cx("textReply")}>
+                      {data.reply === "Hình ảnh" ? (
+                        <img
+                          className={cx("imageReply")}
+                          alt="Ảnh bị xóa"
+                          src={data.urlReply}
+                        />
+                      ) : (
+                        data.reply
+                      )}
+                    </p>
+                  </div>
+                ) : (
+                  false
+                )}
+
+                {data.image ? (
+                  <>
+                    {data.type === "remove" ? (
+                      <div className={cx("boxTextDeletedMessage")}>
+                        <div className={cx("deletedMessage")}>
+                          <span>tin nhắn đã bị thu hồi</span>
                           {messageWithEmoji ? (
                             <Emoji
                               setVisibleModalEmoji={setVisibleModalEmoji}
@@ -504,16 +497,151 @@ function Message({
                           ) : (
                             false
                           )}
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        {data.text.trim(" ") === "" ? (
+                          false
+                        ) : (
+                          <>
+                            <div
+                              className={cx(
+                                "boxText",
 
-                          {/* <p
-                            className={cx("textTime")}
-                          >{`${getHours}:${getMinutes}`}</p> */}
+                                centerMessageSend ? "borderRadiusLeft-8" : "",
+                                firstMessageSend ? "borderRadius_leftBt-8" : "",
+                                endSendMessage ? "borderRadius_leftTop-8" : "",
+                                firstMessage ? "borderRadius_leftTop-8" : ""
+                              )}
+                            >
+                              <div
+                                onClick={() => {
+                                  setIsFocusMessage(!isFocusMessage);
+                                }}
+                                onBlur={() => {
+                                  setIsFocusMessage(false);
+                                }}
+                                className={cx(
+                                  "optionTextMessage",
+                                  isFocusMessage === true ? "focus" : ""
+                                )}
+                              >
+                                <ControlMessage
+                                  group={roomChatInfo.user.type === "group"}
+                                  currentUserRoom={currentUsersRoom}
+                                  friendChat={true}
+                                  allMess={allMessage}
+                                  currentMessage={data}
+                                  userLogin={userLoginChat}
+                                />
+                              </div>
+                              <p className={cx("textMessage")}>{data.text}</p>
+                              {messageWithEmoji ? (
+                                <Emoji
+                                  setVisibleModalEmoji={setVisibleModalEmoji}
+                                  emoji={data.emoji}
+                                  friend={true}
+                                />
+                              ) : (
+                                false
+                              )}
+
+                              <p
+                                className={cx("textTime")}
+                              >{`${getDay}/${getMonth}/${getYear} ${getHours}:${getMinutes}`}</p>
+                            </div>
+                          </>
+                        )}
+
+                        <div className={cx("imgMessage")}>
+                          {data.text.trim(" ") === "" ? (
+                            <div
+                              onClick={() => {
+                                setIsFocusMessage(!isFocusMessage);
+                              }}
+                              onBlur={() => {
+                                setIsFocusMessage(false);
+                              }}
+                              className={cx(
+                                "optionTextMessage",
+                                "imgMessageOptions",
+                                isFocusMessage === true ? "focus" : ""
+                              )}
+                            >
+                              <ControlMessage
+                                group={roomChatInfo.user.type === "group"}
+                                isImage={true}
+                                currentUserRoom={currentUsersRoom}
+                                friendChat={true}
+                                myNickName={myNickNameChat}
+                                userLogin={userLoginChat}
+                                allMess={allMessage}
+                                currentMessage={data}
+                              />
+                            </div>
+                          ) : (
+                            false
+                          )}
+                          <img
+                            className={cx(
+                              "imgMessageSending",
+                              data.type === "sticker" ? "stickerMes" : ""
+                            )}
+                            style={styleImage}
+                            src={data.image.url}
+                            alt=""
+                          />
+                          <div className={cx("emojiImage")}>
+                            {data.text.trim(" ") !== "" ? (
+                              false
+                            ) : (
+                              <>
+                                {" "}
+                                {messageWithEmoji ? (
+                                  <Emoji
+                                    setVisibleModalEmoji={setVisibleModalEmoji}
+                                    emoji={data.emoji}
+                                    friend={true}
+                                  />
+                                ) : (
+                                  false
+                                )}
+                              </>
+                            )}
+                          </div>
                         </div>
                       </>
                     )}
+                  </>
+                ) : (
+                  <>
+                    {data.type === "remove" ? (
+                      <div className={cx("boxTextDeletedMessage")}>
+                        <div className={cx("deletedMessage")}>
+                          <span>tin nhắn đã bị thu hồi</span>
+                          {messageWithEmoji ? (
+                            <Emoji
+                              setVisibleModalEmoji={setVisibleModalEmoji}
+                              emoji={data.emoji}
+                              friend={true}
+                            />
+                          ) : (
+                            false
+                          )}
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        className={cx(
+                          "boxText",
 
-                    <div className={cx("imgMessage")}>
-                      {data.text.trim(" ") === "" ? (
+                          centerMessageSend ? "borderRadiusLeft-8" : "",
+                          firstMessageSend ? "borderRadius_leftBt-8" : "",
+                          endSendMessage ? "borderRadius_leftTop-8" : "",
+                          firstMessage ? "borderRadius_leftTop-8" : ""
+                        )}
+                      >
                         <div
                           onClick={() => {
                             setIsFocusMessage(!isFocusMessage);
@@ -523,125 +651,41 @@ function Message({
                           }}
                           className={cx(
                             "optionTextMessage",
-                            "imgMessageOptions",
                             isFocusMessage === true ? "focus" : ""
                           )}
                         >
                           <ControlMessage
                             group={roomChatInfo.user.type === "group"}
-                            isImage={true}
                             currentUserRoom={currentUsersRoom}
                             friendChat={true}
-                            myNickName={myNickNameChat}
-                            userLogin={userLoginChat}
                             allMess={allMessage}
                             currentMessage={data}
+                            userLogin={userLoginChat}
                           />
                         </div>
-                      ) : (
-                        false
-                      )}
-                      <img
-                        className={cx(
-                          "imgMessageSending",
-                          data.type === "sticker" ? "stickerMes" : ""
-                        )}
-                        style={styleImage}
-                        src={data.image.url}
-                        alt=""
-                      />
-                      <div className={cx("emojiImage")}>
-                        {data.text.trim(" ") !== "" ? (
-                          false
+
+                        <p className={cx("textMessage")}>{data.text}</p>
+                        {messageWithEmoji ? (
+                          <Emoji
+                            setVisibleModalEmoji={setVisibleModalEmoji}
+                            emoji={data.emoji}
+                            friend={true}
+                          />
                         ) : (
-                          <>
-                            {" "}
-                            {messageWithEmoji ? (
-                              <Emoji
-                                setVisibleModalEmoji={setVisibleModalEmoji}
-                                emoji={data.emoji}
-                                friend={true}
-                              />
-                            ) : (
-                              false
-                            )}
-                          </>
+                          false
                         )}
+
+                        <p
+                          className={cx("textTime")}
+                        >{`${getDay}/${getMonth}/${getYear} ${getHours}:${getMinutes}`}</p>
                       </div>
-                    </div>
+                    )}
                   </>
                 )}
-              </>
-            ) : (
-              <>
-                {data.type === "remove" ? (
-                  <div className={cx("boxTextDeletedMessage")}>
-                    <div className={cx("deletedMessage")}>
-                      <span>tin nhắn đã bị thu hồi</span>
-                      {messageWithEmoji ? (
-                        <Emoji
-                          setVisibleModalEmoji={setVisibleModalEmoji}
-                          emoji={data.emoji}
-                          friend={true}
-                        />
-                      ) : (
-                        false
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  <div
-                    className={cx(
-                      "boxText",
-
-                      centerMessageSend ? "borderRadiusLeft-8" : "",
-                      firstMessageSend ? "borderRadius_leftBt-8" : "",
-                      endSendMessage ? "borderRadius_leftTop-8" : "",
-                      firstMessage ? "borderRadius_leftTop-8" : ""
-                    )}
-                  >
-                    <div
-                      onClick={() => {
-                        setIsFocusMessage(!isFocusMessage);
-                      }}
-                      onBlur={() => {
-                        setIsFocusMessage(false);
-                      }}
-                      className={cx(
-                        "optionTextMessage",
-                        isFocusMessage === true ? "focus" : ""
-                      )}
-                    >
-                      <ControlMessage
-                        group={roomChatInfo.user.type === "group"}
-                        currentUserRoom={currentUsersRoom}
-                        friendChat={true}
-                        allMess={allMessage}
-                        currentMessage={data}
-                        userLogin={userLoginChat}
-                      />
-                    </div>
-
-                    <p className={cx("textMessage")}>{data.text}</p>
-                    {messageWithEmoji ? (
-                      <Emoji
-                        setVisibleModalEmoji={setVisibleModalEmoji}
-                        emoji={data.emoji}
-                        friend={true}
-                      />
-                    ) : (
-                      false
-                    )}
-
-                    {/* <p
-                      className={cx("textTime")}
-                    >{`${getHours}:${getMinutes}`}</p> */}
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        </div>
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       {/*  */}

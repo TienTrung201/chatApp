@@ -132,6 +132,7 @@ function ControlMessage({
       like: [],
       angry: [],
     };
+    //nếu trùng thì bỏ emoji
     for (let i = 0; i < typeEmoji.length; i++) {
       for (let j = 0; j < currentEmoji[typeEmoji[i]].length; j++) {
         if (userLogin.uid !== currentEmoji[typeEmoji[i]][j]) {
@@ -142,13 +143,18 @@ function ControlMessage({
         }
       }
     }
+    //nếu trùng thì bỏ emoji
 
+    //nếu chưa có thì thêm
     if (
       searchIdInEmoji === false ||
       typeEmojy !== typeEmojiCurrentByUserLogin
     ) {
       newEmojis[typeEmojy].push(userLogin.uid);
     }
+    //nếu chưa có thì thêm
+
+    //thay đổi tin nhắn được thả cảm xúc
     const allmessageRoom = allMess.map((message) => {
       if (message.id === currentMessage.id) {
         return {
@@ -158,7 +164,9 @@ function ControlMessage({
       }
       return message;
     });
+    //thay đổi tin nhắn được thả cảm xúc
 
+    //gửi lên server
     try {
       updateDoc(doc(db, "chats", roomChatInfo.chatId), {
         messages: allmessageRoom.reverse(),
@@ -166,6 +174,7 @@ function ControlMessage({
     } catch (e) {
       console.log(e);
     }
+    //gửi lên server
   };
   return (
     <>

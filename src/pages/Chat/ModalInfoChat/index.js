@@ -28,9 +28,11 @@ import EditUser from "./EditUser";
 import { useFireStore } from "@/hooks/useFirestor";
 import AddUser from "./AddUser";
 import {
+  arrayUnion,
   deleteField,
   doc,
   serverTimestamp,
+  Timestamp,
   updateDoc,
 } from "firebase/firestore";
 import { db, storage } from "@/firebase/config";
@@ -57,6 +59,7 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
     photoURL: "",
   });
   const admin = currentUserRoom.find((user) => user.uid === userId);
+  const userLoginGroup = currentUserRoom.find((user) => user.uid === userId);
   const conditionUser = useMemo(() => {
     return {
       fieldName: "displayName",
@@ -68,6 +71,7 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
   user = allUser.find((userChat) => {
     return userChat.uid === user.uid;
   });
+
   const [usersRoomSearch, setUsersRoomSearch] = useState([]);
   const file = useRef();
 
@@ -75,7 +79,7 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
   const handleChangeNameGroup = (e) => {
     setNameGroup(e.target.value);
   };
-  const handleSubmitNameGroup = () => {
+  const handleSubmitNameGroup = async () => {
     try {
       currentUserRoom.forEach(async (user) => {
         await updateDoc(doc(db, "userChats", user.uid), {
@@ -85,6 +89,15 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
             photoURL: currentGroup.photoURL,
           },
         });
+      });
+      await updateDoc(doc(db, "chats", roomChatInfo.chatId), {
+        messages: arrayUnion({
+          id: uuid(),
+          text: `${userLoginGroup.nickName} đã thay đổi tên nhóm thành ${nameGroup}`,
+          senderId: user.uid,
+          createdAt: Timestamp.now(),
+          type: "notification",
+        }),
       });
     } catch (e) {
       console.log(e);
@@ -156,7 +169,11 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
 
   //hành động thêm người dùng vào phòng
   const handleAddusersGroup = async () => {
-    const listUserRoomAdd = currentUserRoom;
+    const listUserRoomAdd = [];
+    let listNewUser = "";
+    currentUserRoom.forEach((user) => {
+      listUserRoomAdd.push(user);
+    });
     usersRoomSearch.forEach((user) => {
       if (user.checked === true) {
         listUserRoomAdd.push({
@@ -164,21 +181,37 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
           nickName: user.displayName,
           uid: user.uid,
         });
+        listNewUser += `, ${user.displayName}`;
       }
     });
 
-    listUserRoomAdd.forEach(async (user) => {
-      await updateDoc(doc(db, "userChats", user.uid), {
-        [roomChatInfo.chatId + ".userInfo"]: {
-          uid: roomChatInfo.chatId,
-          displayName: currentGroup.displayName,
-          photoURL: currentGroup.photoURL,
-        },
-        [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
-        [roomChatInfo.chatId + ".listUsers"]: listUserRoomAdd,
-        [roomChatInfo.chatId + ".type"]: "group",
+    try {
+      listUserRoomAdd.forEach(async (user) => {
+        await updateDoc(doc(db, "userChats", user.uid), {
+          [roomChatInfo.chatId + ".userInfo"]: {
+            uid: roomChatInfo.chatId,
+            displayName: currentGroup.displayName,
+            photoURL: currentGroup.photoURL,
+          },
+          [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
+          [roomChatInfo.chatId + ".listUsers"]: listUserRoomAdd,
+          [roomChatInfo.chatId + ".type"]: "group",
+        });
       });
-    });
+
+      await updateDoc(doc(db, "chats", roomChatInfo.chatId), {
+        messages: arrayUnion({
+          id: uuid(),
+          // ${userLoginGroup.nickName}
+          text: `đã thêm ${listNewUser.slice(1, listNewUser.length)} vào nhóm`,
+          senderId: user.uid,
+          createdAt: Timestamp.now(),
+          type: "notification",
+        }),
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
   //hành động thêm người dùng vào phòng
 
@@ -220,6 +253,7 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
         setCurrentGroup({
           ...listUserRoom[1].userInfo,
         });
+
         userRoom = allUsers.map((users) => {
           for (let i = 0; i < listUserRoom[1].listUsers.length; i++) {
             if (users.uid === listUserRoom[1].listUsers[i].uid) {
@@ -246,7 +280,7 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
   //checked tạo danh sách người dùng vào phòng
   //
   // thay đổi ảnh nhóm
-  const handleChangeImg = (imgFile) => {
+  const handleChangeImg = async (imgFile) => {
     const idRandom = uuid();
     const imgRef = ref(
       storage,
@@ -275,6 +309,16 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
           });
         });
       });
+    });
+    await updateDoc(doc(db, "chats", roomChatInfo.chatId), {
+      messages: arrayUnion({
+        id: uuid(),
+        // ${userLoginGroup.nickName}
+        text: `đã thay đổi ảnh nhóm`,
+        senderId: user.uid,
+        createdAt: Timestamp.now(),
+        type: "notification",
+      }),
     });
   };
   // thay đổi ảnh nhóm
@@ -377,6 +421,8 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                       {currentUserRoom.map((user) => {
                         return (
                           <EditUser
+                            userLoginGroup={userLoginGroup}
+                            uidSender={userId}
                             key={user.uid}
                             listUserRoom={currentUserRoom}
                             // remainUser={user}
@@ -391,12 +437,14 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                   ) : (
                     <div className={cx("editNickName")}>
                       <EditUser
+                        userLoginGroup={userLoginGroup}
                         listUserRoom={listUserChats}
                         remainUser={user}
                         roomId={roomChatInfo.chatId}
                         userEdit={roomChatInfo.user}
                       />
                       <EditUser
+                        userLoginGroup={userLoginGroup}
                         remainUser={roomChatInfo.user}
                         roomId={roomChatInfo.chatId}
                         userEdit={user}
@@ -749,9 +797,42 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                                       setTypeModal("notification");
                                       setVisibleModal(true);
                                     } else {
+                                      try {
+                                        updateDoc(
+                                          doc(db, "chats", roomChatInfo.chatId),
+                                          {
+                                            messages: arrayUnion({
+                                              id: uuid(),
+                                              text: `${userLoginGroup.nickName} đã rời khỏi nhóm`,
+                                              senderId: user.uid,
+                                              createdAt: Timestamp.now(),
+                                              type: "notification",
+                                            }),
+                                          }
+                                        );
+                                      } catch (e) {
+                                        console.log(e);
+                                      }
+
                                       handleDeleteUserGroup(user.uid);
                                     }
                                   } else {
+                                    try {
+                                      updateDoc(
+                                        doc(db, "chats", roomChatInfo.chatId),
+                                        {
+                                          messages: arrayUnion({
+                                            id: uuid(),
+                                            text: `${userLoginGroup.nickName} đã rời khỏi nhóm`,
+                                            senderId: user.uid,
+                                            createdAt: Timestamp.now(),
+                                            type: "notification",
+                                          }),
+                                        }
+                                      );
+                                    } catch (e) {
+                                      console.log(e);
+                                    }
                                     handleDeleteUserGroup(user.uid);
                                   }
                                 }}
@@ -872,8 +953,10 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                                     <ControlUsers
                                       idRoom={roomChatInfo.chatId}
                                       currentUsersRoom={currentUserRoom}
-                                      userId={user.uid}
+                                      idUser={userId}
+                                      controlledUser={user}
                                       adminGroup={admin}
+                                      userLoginGroup={userLoginGroup}
                                       designateAdmin={handleDesignateAdmin}
                                       deleteUserGroup={handleDeleteUserGroup}
                                     />

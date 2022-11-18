@@ -3,10 +3,11 @@ import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faPen } from "@fortawesome/free-solid-svg-icons";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { doc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, Timestamp, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { isSelectedMusic } from "@/components/redux/selector";
 import { useSelector } from "react-redux";
+import { v4 as uuid } from "uuid";
 
 const cx = classNames.bind(styles);
 function EditUser({
@@ -16,6 +17,8 @@ function EditUser({
   roomId,
   remainUser,
   listUserRoom,
+  uidSender,
+  userLoginGroup,
 }) {
   const input = useRef();
   const isCheckedMusic = useSelector(isSelectedMusic);
@@ -61,11 +64,14 @@ function EditUser({
       : userEdit.nickName
   );
   const checkName = useCallback(() => {
-    if (nameValue.length > 20) {
-      return false;
-    } else {
-      return true;
+    if (nameValue) {
+      if (nameValue.length > 20) {
+        return false;
+      } else {
+        return true;
+      }
     }
+    return true;
   }, [nameValue]);
 
   const nickName = useCallback(() => {
@@ -125,6 +131,16 @@ function EditUser({
           },
         ],
       });
+      await updateDoc(doc(db, "chats", roomId), {
+        messages: arrayUnion({
+          id: uuid(),
+          // ${remainUser.displayName}
+          text: `đã đặt biệt danh cho ${userEdit.displayName} là ${nameValue}`,
+          senderId: remainUser.uid,
+          createdAt: Timestamp.now(),
+          type: "notification",
+        }),
+      });
     } else {
       let listUserRoomAdd = [];
       listUserRoom.forEach((user) => {
@@ -142,10 +158,21 @@ function EditUser({
           [roomId + ".listUsers"]: listUserRoomAdd,
         });
       });
+      await updateDoc(doc(db, "chats", roomId), {
+        messages: arrayUnion({
+          id: uuid(),
+          // ${userLoginGroup.nickName}
+          text: `đã đặt biệt danh cho ${userEdit.displayName} là ${nameValue}`,
+          senderId: uidSender,
+          createdAt: Timestamp.now(),
+          type: "notification",
+        }),
+      });
     }
   };
 
   //  lưu biệt danh
+
   return (
     <div className={cx("user")}>
       <div

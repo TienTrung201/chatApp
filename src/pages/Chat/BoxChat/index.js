@@ -70,9 +70,15 @@ function BoxChat({
       }
     }
   }, [roomChatInfo.chatId, listUserChats, Dispatch]);
+  //scroll
+
   useEffect(() => {
-    boxMessage.current.scrollTop = boxMessage.current.scrollHeight;
+    if (boxMessage.current.scrollTop > -70) {
+      boxMessage.current.scrollTop = boxMessage.current.clientHeight;
+    }
   }, [isSendMessage, messages]);
+  //scroll
+
   //get message
   useEffect(() => {
     if (roomChatInfo.chatId === "") {
@@ -300,6 +306,7 @@ function BoxChat({
                   if (messages[i].senderId === messages[i + 1].senderId) {
                     return (
                       <Message
+                        nickNameFriend={nickName()}
                         setVisibleModalEmoji={setVisibleModalEmoji}
                         allUser={allUsers}
                         currentUsersRoom={currentUserRoom}
@@ -322,6 +329,7 @@ function BoxChat({
                   if (messages[i].senderId === messages[i - 1].senderId)
                     return (
                       <Message
+                        nickNameFriend={nickName()}
                         setVisibleModalEmoji={setVisibleModalEmoji}
                         allUser={allUsers}
                         currentUsersRoom={currentUserRoom}
@@ -346,6 +354,7 @@ function BoxChat({
                 ) {
                   return (
                     <Message
+                      nickNameFriend={nickName()}
                       setVisibleModalEmoji={setVisibleModalEmoji}
                       allUser={allUsers}
                       currentUsersRoom={currentUserRoom}
@@ -365,6 +374,7 @@ function BoxChat({
                   // break;
                   return (
                     <Message
+                      nickNameFriend={nickName()}
                       setVisibleModalEmoji={setVisibleModalEmoji}
                       allUser={allUsers}
                       currentUsersRoom={currentUserRoom}
@@ -383,6 +393,7 @@ function BoxChat({
                 ) {
                   return (
                     <Message
+                      nickNameFriend={nickName()}
                       setVisibleModalEmoji={setVisibleModalEmoji}
                       allUser={allUsers}
                       currentUsersRoom={currentUserRoom}
@@ -398,6 +409,7 @@ function BoxChat({
               }
               return (
                 <Message
+                  nickNameFriend={nickName()}
                   setVisibleModalEmoji={setVisibleModalEmoji}
                   allUser={allUsers}
                   currentUsersRoom={currentUserRoom}

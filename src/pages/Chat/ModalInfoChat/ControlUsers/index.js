@@ -1,5 +1,7 @@
 import styles from "./ControlUsers.module.scss";
 import classNames from "classnames/bind";
+import { v4 as uuid } from "uuid";
+
 import Tippy from "@tippyjs/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,10 +9,20 @@ import {
   faUserShield,
   faUserXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import { arrayUnion, doc, Timestamp, updateDoc } from "firebase/firestore";
+import { db } from "@/firebase/config";
 
 const cx = classNames.bind(styles);
 
-function ControlUsers({ deleteUserGroup, designateAdmin, userId }) {
+function ControlUsers({
+  deleteUserGroup,
+  userLoginGroup,
+  designateAdmin,
+  controlledUser,
+  idRoom,
+  currentUsersRoom,
+  idUser,
+}) {
   return (
     <div className={cx("wrapperTippy")}>
       <Tippy
@@ -22,7 +34,17 @@ function ControlUsers({ deleteUserGroup, designateAdmin, userId }) {
           <ul onClick={() => {}} className={cx("controlList")}>
             <li
               onClick={() => {
-                deleteUserGroup(userId);
+                updateDoc(doc(db, "chats", idRoom), {
+                  messages: arrayUnion({
+                    id: uuid(),
+                    // text: `${userLoginGroup.nickName} đã xóa ${controlledUser.nickName} khỏi nhóm`,
+                    text: `đã xóa ${controlledUser.nickName} khỏi nhóm`,
+                    senderId: userLoginGroup.uid,
+                    createdAt: Timestamp.now(),
+                    type: "notification",
+                  }),
+                });
+                deleteUserGroup(controlledUser.uid);
               }}
               className={cx("control")}
             >
@@ -31,7 +53,18 @@ function ControlUsers({ deleteUserGroup, designateAdmin, userId }) {
             </li>
             <li
               onClick={() => {
-                designateAdmin(userId);
+                updateDoc(doc(db, "chats", idRoom), {
+                  messages: arrayUnion({
+                    id: uuid(),
+                    // text: `${userLoginGroup.nickName} đã thêm ${controlledUser.nickName} làm quản trị viên`,
+                    text: `đã thêm ${controlledUser.nickName} làm quản trị viên`,
+                    senderId: userLoginGroup.uid,
+                    createdAt: Timestamp.now(),
+                    type: "notification",
+                  }),
+                });
+                //user control
+                designateAdmin(controlledUser.uid);
               }}
               className={cx("control")}
             >
