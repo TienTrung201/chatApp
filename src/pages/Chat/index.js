@@ -395,7 +395,7 @@ function Chat() {
         title={"Cảm xúc về tin nhắn"}
         visible={visibleModal && typeModal === "emoji"}
       >
-        <EmojiMessageModal />
+        <EmojiMessageModal listUserServer={allUser} />
       </Modal>
       {isCheckedMusic === true ? (
         <div className={cx("wrapperKeyboard")}>

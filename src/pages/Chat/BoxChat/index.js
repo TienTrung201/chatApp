@@ -28,6 +28,7 @@ import LoadingListUser from "@/components/Loaddings/LoadingListUser";
 import NoMessage from "@/components/NoMessage";
 import InfiniteScroll from "react-infinite-scroll-component";
 import boxChatSlice from "./BoxChatSlice";
+import userSlice from "@/pages/Login/UserSlice";
 
 const cx = classNames.bind(styles);
 
@@ -38,6 +39,7 @@ function BoxChat({
   allUsers,
   setVisibleModalEmoji,
 }) {
+  const Dispatch = useDispatch();
   const roomChatInfo = useSelector(userChat);
   // const allUser = useSelector(users);
   let user = useSelector(userLogin);
@@ -59,12 +61,15 @@ function BoxChat({
 
     if (listUserRoom !== undefined) {
       if (listUserRoom[0].search("group") === 0) {
+        Dispatch(
+          userSlice.actions.setCurrentUserGroup(listUserRoom[1].listUsers)
+        );
         setCurrentUserRoom(listUserRoom[1].listUsers);
       } else {
         setCurrentUserRoom([]);
       }
     }
-  }, [roomChatInfo.chatId, listUserChats]);
+  }, [roomChatInfo.chatId, listUserChats, Dispatch]);
   useEffect(() => {
     boxMessage.current.scrollTop = boxMessage.current.scrollHeight;
   }, [isSendMessage, messages]);
@@ -118,7 +123,7 @@ function BoxChat({
     // setMessage([]);
   }
   //khi người dùng bị xóa khỏi nhóm
-  const Dispatch = useDispatch();
+
   useLayoutEffect(() => {
     if (findCurrentRoom === undefined) {
       setMessage(undefined);

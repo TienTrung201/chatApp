@@ -1,0 +1,68 @@
+$bOrgeTransparent: #fff4e6;
+$bPinkTransparent: #fff0f7;
+$widthModal: 250px;
+$widthModal: 250px;
+@mixin mobile {
+  @media screen and (max-width: 739px) {
+    @content;
+  }
+}
+@mixin tablet {
+  @media screen and (min-width: 740px) and (max-width: 1023px) {
+    @content;
+  }
+}
+.listEmoji__emoji {
+  .infoEmoji {
+    display: flex;
+    height: 60px;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.1s ease-in;
+    padding: 0 10px;
+    border-radius: 10px;
+    position: relative;
+    &:hover {
+      background-color: rgba(204, 204, 204, 1);
+    }
+    // background-color: #8f97a4;
+    .avata {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      .avataUserImg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .nameUser {
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+
+      p {
+        @include mobile {
+          width: 130px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+      span {
+        font-size: 1.2rem;
+        color: #8f97a4;
+      }
+    }
+    .emojiByUser {
+      position: absolute;
+      right: 20px;
+      width: 28px;
+      height: 28px;
+      .emojiImg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}

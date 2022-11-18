@@ -1,15 +1,25 @@
 import styles from "./EmojiMessage.module.scss";
 import classNames from "classnames/bind";
-import { emojiMessage } from "@/components/redux/selector";
-import { useMemo } from "react";
+import {
+  currentUserGroup,
+  emojiMessage,
+  userChat,
+} from "@/components/redux/selector";
+import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+import Emoji from "./Emoji";
 
 const cx = classNames.bind(styles);
 
-function EmojiMessageModal() {
+function EmojiMessageModal({ listUserServer }) {
   //modal emoji
   const typeEmoji = ["haha", "tym", "wow", "sad", "angry", "like"];
   const listEmoji = useSelector(emojiMessage);
+  const roomChatInfo = useSelector(userChat);
+  const [typeListEmoji, setTypeListEmoji] = useState("all");
+  const currentUserGroupApp = useSelector(currentUserGroup);
+  const isGroup = roomChatInfo.chatId.search("group") === 0;
+
   const countEmoji = useMemo(() => {
     return (
       listEmoji.haha.length +
@@ -20,14 +30,28 @@ function EmojiMessageModal() {
       listEmoji.wow.length
     );
   }, [listEmoji]);
+
   return (
     <div className={cx("wrapperEmojiMessage")}>
       <ul className={cx("listTypeEmoji")}>
-        <li className={cx("emoji")}>Tất cả {countEmoji}</li>
+        <li
+          onClick={() => {
+            setTypeListEmoji("all");
+          }}
+          className={cx("emoji")}
+        >
+          Tất cả {countEmoji}
+        </li>
         {typeEmoji.map((emoji) => {
           if (listEmoji[emoji].length > 0) {
             return (
-              <li key={emoji} className={cx("emoji")}>
+              <li
+                key={emoji}
+                onClick={() => {
+                  setTypeListEmoji(emoji);
+                }}
+                className={cx("emoji")}
+              >
                 {emoji === "haha" ? (
                   <img
                     width={25}
@@ -93,29 +117,192 @@ function EmojiMessageModal() {
         })}
       </ul>
       <ul className={cx("listEmoji")}>
-        <li className={cx("listEmoji__emoji")}>
-          <div className={cx("infoEmoji")}>
-            <div className={cx("avata")}>
-              <img
-                width={40}
-                className={cx("avataUserImg")}
-                src={require("@/assets/images/avata.jpg")}
-                alt=""
-              />
-            </div>
-            <div className={cx("nameUser")}>
-              <p>trung test thôi chưa update :))</p> <span>Nhấp để gỡ</span>
-            </div>
-            <div className={cx("emojiByUser")}>
-              <img
-                width={40}
-                className={cx("emojiImg")}
-                src={require("@/assets/images/haha.png")}
-                alt=""
-              />
-            </div>
-          </div>
-        </li>
+        {isGroup && typeListEmoji === "all" ? (
+          <>
+            {listEmoji.haha.map((emoji) => {
+              const user1 = currentUserGroupApp.find(
+                (user) => user.uid === emoji
+              );
+              const user2 = listUserServer.find((user) => user.uid === emoji);
+              const user = {
+                uid: user1.uid,
+                nickName: user1.nickName,
+                photoURL: user2.photoURL,
+              };
+              return <Emoji key={emoji} type={"haha"} user={user} />;
+            })}
+            {listEmoji.tym.map((emoji) => {
+              const user1 = currentUserGroupApp.find(
+                (user) => user.uid === emoji
+              );
+              const user2 = listUserServer.find((user) => user.uid === emoji);
+              const user = {
+                uid: user1.uid,
+                nickName: user1.nickName,
+                photoURL: user2.photoURL,
+              };
+              return <Emoji key={emoji} type={"tym"} user={user} />;
+            })}
+            {listEmoji.wow.map((emoji) => {
+              const user1 = currentUserGroupApp.find(
+                (user) => user.uid === emoji
+              );
+              const user2 = listUserServer.find((user) => user.uid === emoji);
+              const user = {
+                uid: user1.uid,
+                nickName: user1.nickName,
+                photoURL: user2.photoURL,
+              };
+              return <Emoji key={emoji} type={"wow"} user={user} />;
+            })}
+            {listEmoji.sad.map((emoji) => {
+              const user1 = currentUserGroupApp.find(
+                (user) => user.uid === emoji
+              );
+              const user2 = listUserServer.find((user) => user.uid === emoji);
+              const user = {
+                uid: user1.uid,
+                nickName: user1.nickName,
+                photoURL: user2.photoURL,
+              };
+              return <Emoji key={emoji} type={"sad"} user={user} />;
+            })}
+            {listEmoji.angry.map((emoji) => {
+              const user1 = currentUserGroupApp.find(
+                (user) => user.uid === emoji
+              );
+              const user2 = listUserServer.find((user) => user.uid === emoji);
+              const user = {
+                uid: user1.uid,
+                nickName: user1.nickName,
+                photoURL: user2.photoURL,
+              };
+              return <Emoji key={emoji} type={"angry"} user={user} />;
+            })}
+            {listEmoji.like.map((emoji) => {
+              const user1 = currentUserGroupApp.find(
+                (user) => user.uid === emoji
+              );
+              const user2 = listUserServer.find((user) => user.uid === emoji);
+              const user = {
+                uid: user1.uid,
+                nickName: user1.nickName,
+                photoURL: user2.photoURL,
+              };
+              return <Emoji key={emoji} type={"like"} user={user} />;
+            })}
+          </>
+        ) : (
+          false
+        )}
+        {isGroup && typeListEmoji === "haha" ? (
+          <>
+            {listEmoji.haha.map((emoji) => {
+              const user1 = currentUserGroupApp.find(
+                (user) => user.uid === emoji
+              );
+              const user2 = listUserServer.find((user) => user.uid === emoji);
+              const user = {
+                uid: user1.uid,
+                nickName: user1.nickName,
+                photoURL: user2.photoURL,
+              };
+              return <Emoji key={emoji} type={"haha"} user={user} />;
+            })}
+          </>
+        ) : (
+          false
+        )}
+        {isGroup && typeListEmoji === "tym" ? (
+          <>
+            {listEmoji.tym.map((emoji) => {
+              const user1 = currentUserGroupApp.find(
+                (user) => user.uid === emoji
+              );
+              const user2 = listUserServer.find((user) => user.uid === emoji);
+              const user = {
+                uid: user1.uid,
+                nickName: user1.nickName,
+                photoURL: user2.photoURL,
+              };
+              return <Emoji key={emoji} type={"tym"} user={user} />;
+            })}
+          </>
+        ) : (
+          false
+        )}
+        {isGroup && typeListEmoji === "wow" ? (
+          <>
+            {listEmoji.wow.map((emoji) => {
+              const user1 = currentUserGroupApp.find(
+                (user) => user.uid === emoji
+              );
+              const user2 = listUserServer.find((user) => user.uid === emoji);
+              const user = {
+                uid: user1.uid,
+                nickName: user1.nickName,
+                photoURL: user2.photoURL,
+              };
+              return <Emoji key={emoji} type={"wow"} user={user} />;
+            })}
+          </>
+        ) : (
+          false
+        )}
+        {isGroup && typeListEmoji === "sad" ? (
+          <>
+            {listEmoji.sad.map((emoji) => {
+              const user1 = currentUserGroupApp.find(
+                (user) => user.uid === emoji
+              );
+              const user2 = listUserServer.find((user) => user.uid === emoji);
+              const user = {
+                uid: user1.uid,
+                nickName: user1.nickName,
+                photoURL: user2.photoURL,
+              };
+              return <Emoji key={emoji} type={"sad"} user={user} />;
+            })}
+          </>
+        ) : (
+          false
+        )}
+        {isGroup && typeListEmoji === "angry" ? (
+          <>
+            {listEmoji.angry.map((emoji) => {
+              const user1 = currentUserGroupApp.find(
+                (user) => user.uid === emoji
+              );
+              const user2 = listUserServer.find((user) => user.uid === emoji);
+              const user = {
+                uid: user1.uid,
+                nickName: user1.nickName,
+                photoURL: user2.photoURL,
+              };
+              return <Emoji key={emoji} type={"angry"} user={user} />;
+            })}
+          </>
+        ) : (
+          false
+        )}
+        {isGroup && typeListEmoji === "like" ? (
+          <>
+            {listEmoji.like.map((emoji) => {
+              const user1 = currentUserGroupApp.find(
+                (user) => user.uid === emoji
+              );
+              const user2 = listUserServer.find((user) => user.uid === emoji);
+              const user = {
+                uid: user1.uid,
+                nickName: user1.nickName,
+                photoURL: user2.photoURL,
+              };
+              return <Emoji key={emoji} type={"like"} user={user} />;
+            })}
+          </>
+        ) : (
+          false
+        )}
       </ul>
     </div>
   );

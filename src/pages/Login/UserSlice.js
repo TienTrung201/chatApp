@@ -7,6 +7,7 @@ export const userSlice = createSlice({
     user: {},
     users: [],
     userSelect: {},
+    currentUserGroup: [],
   },
   reducers: {
     setUser: (state, action) => {
@@ -23,6 +24,9 @@ export const userSlice = createSlice({
     },
     addUsers: (state, action) => {
       state.users.push(action.payload);
+    },
+    setCurrentUserGroup: (state, action) => {
+      state.currentUserGroup = action.payload;
     },
   },
 });
