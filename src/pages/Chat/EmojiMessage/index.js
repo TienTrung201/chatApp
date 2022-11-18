@@ -11,7 +11,11 @@ import Emoji from "./Emoji";
 
 const cx = classNames.bind(styles);
 
-function EmojiMessageModal({ listUserServer }) {
+function EmojiMessageModal({
+  listUserServer,
+  listUserChatRoomFriend,
+  idUserLogin,
+}) {
   //modal emoji
   const typeEmoji = ["haha", "tym", "wow", "sad", "angry", "like"];
   const listEmoji = useSelector(emojiMessage);
@@ -19,7 +23,9 @@ function EmojiMessageModal({ listUserServer }) {
   const [typeListEmoji, setTypeListEmoji] = useState("all");
   const currentUserGroupApp = useSelector(currentUserGroup);
   const isGroup = roomChatInfo.chatId.search("group") === 0;
-
+  const styleModalEmojiFriend = {
+    height: !isGroup ? "120px" : "",
+  };
   const countEmoji = useMemo(() => {
     return (
       listEmoji.haha.length +
@@ -30,12 +36,25 @@ function EmojiMessageModal({ listUserServer }) {
       listEmoji.wow.length
     );
   }, [listEmoji]);
+  const [styleLine, setStyleLine] = useState({ left: 0 });
+
+  const handleActiveLine = (e) => {
+    if (e.target.tagName === "LI") {
+      setStyleLine({ left: e.target.offsetLeft + "px" });
+    } else {
+      setStyleLine({
+        left: e.target.parentElement.offsetLeft + "px",
+      });
+    }
+  };
 
   return (
     <div className={cx("wrapperEmojiMessage")}>
       <ul className={cx("listTypeEmoji")}>
+        <div style={styleLine} className={cx("line")}></div>
         <li
-          onClick={() => {
+          onClick={(e) => {
+            handleActiveLine(e);
             setTypeListEmoji("all");
           }}
           className={cx("emoji")}
@@ -47,7 +66,8 @@ function EmojiMessageModal({ listUserServer }) {
             return (
               <li
                 key={emoji}
-                onClick={() => {
+                onClick={(e) => {
+                  handleActiveLine(e);
                   setTypeListEmoji(emoji);
                 }}
                 className={cx("emoji")}
@@ -116,7 +136,7 @@ function EmojiMessageModal({ listUserServer }) {
           return false;
         })}
       </ul>
-      <ul className={cx("listEmoji")}>
+      <ul style={styleModalEmojiFriend} className={cx("listEmoji")}>
         {isGroup && typeListEmoji === "all" ? (
           <>
             {listEmoji.haha.map((emoji) => {
@@ -126,10 +146,18 @@ function EmojiMessageModal({ listUserServer }) {
               const user2 = listUserServer.find((user) => user.uid === emoji);
               const user = {
                 uid: user1.uid,
+                displayName: user2.displayName,
                 nickName: user1.nickName,
                 photoURL: user2.photoURL,
               };
-              return <Emoji key={emoji} type={"haha"} user={user} />;
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"haha"}
+                  user={user}
+                />
+              );
             })}
             {listEmoji.tym.map((emoji) => {
               const user1 = currentUserGroupApp.find(
@@ -139,9 +167,17 @@ function EmojiMessageModal({ listUserServer }) {
               const user = {
                 uid: user1.uid,
                 nickName: user1.nickName,
+                displayName: user2.displayName,
                 photoURL: user2.photoURL,
               };
-              return <Emoji key={emoji} type={"tym"} user={user} />;
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"tym"}
+                  user={user}
+                />
+              );
             })}
             {listEmoji.wow.map((emoji) => {
               const user1 = currentUserGroupApp.find(
@@ -151,9 +187,17 @@ function EmojiMessageModal({ listUserServer }) {
               const user = {
                 uid: user1.uid,
                 nickName: user1.nickName,
+                displayName: user2.displayName,
                 photoURL: user2.photoURL,
               };
-              return <Emoji key={emoji} type={"wow"} user={user} />;
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"wow"}
+                  user={user}
+                />
+              );
             })}
             {listEmoji.sad.map((emoji) => {
               const user1 = currentUserGroupApp.find(
@@ -163,9 +207,17 @@ function EmojiMessageModal({ listUserServer }) {
               const user = {
                 uid: user1.uid,
                 nickName: user1.nickName,
+                displayName: user2.displayName,
                 photoURL: user2.photoURL,
               };
-              return <Emoji key={emoji} type={"sad"} user={user} />;
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"sad"}
+                  user={user}
+                />
+              );
             })}
             {listEmoji.angry.map((emoji) => {
               const user1 = currentUserGroupApp.find(
@@ -175,9 +227,17 @@ function EmojiMessageModal({ listUserServer }) {
               const user = {
                 uid: user1.uid,
                 nickName: user1.nickName,
+                displayName: user2.displayName,
                 photoURL: user2.photoURL,
               };
-              return <Emoji key={emoji} type={"angry"} user={user} />;
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"angry"}
+                  user={user}
+                />
+              );
             })}
             {listEmoji.like.map((emoji) => {
               const user1 = currentUserGroupApp.find(
@@ -187,9 +247,17 @@ function EmojiMessageModal({ listUserServer }) {
               const user = {
                 uid: user1.uid,
                 nickName: user1.nickName,
+                displayName: user2.displayName,
                 photoURL: user2.photoURL,
               };
-              return <Emoji key={emoji} type={"like"} user={user} />;
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"like"}
+                  user={user}
+                />
+              );
             })}
           </>
         ) : (
@@ -205,9 +273,17 @@ function EmojiMessageModal({ listUserServer }) {
               const user = {
                 uid: user1.uid,
                 nickName: user1.nickName,
+                displayName: user2.displayName,
                 photoURL: user2.photoURL,
               };
-              return <Emoji key={emoji} type={"haha"} user={user} />;
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"haha"}
+                  user={user}
+                />
+              );
             })}
           </>
         ) : (
@@ -223,9 +299,17 @@ function EmojiMessageModal({ listUserServer }) {
               const user = {
                 uid: user1.uid,
                 nickName: user1.nickName,
+                displayName: user2.displayName,
                 photoURL: user2.photoURL,
               };
-              return <Emoji key={emoji} type={"tym"} user={user} />;
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"tym"}
+                  user={user}
+                />
+              );
             })}
           </>
         ) : (
@@ -241,9 +325,17 @@ function EmojiMessageModal({ listUserServer }) {
               const user = {
                 uid: user1.uid,
                 nickName: user1.nickName,
+                displayName: user2.displayName,
                 photoURL: user2.photoURL,
               };
-              return <Emoji key={emoji} type={"wow"} user={user} />;
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"wow"}
+                  user={user}
+                />
+              );
             })}
           </>
         ) : (
@@ -259,9 +351,17 @@ function EmojiMessageModal({ listUserServer }) {
               const user = {
                 uid: user1.uid,
                 nickName: user1.nickName,
+                displayName: user2.displayName,
                 photoURL: user2.photoURL,
               };
-              return <Emoji key={emoji} type={"sad"} user={user} />;
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"sad"}
+                  user={user}
+                />
+              );
             })}
           </>
         ) : (
@@ -277,9 +377,17 @@ function EmojiMessageModal({ listUserServer }) {
               const user = {
                 uid: user1.uid,
                 nickName: user1.nickName,
+                displayName: user2.displayName,
                 photoURL: user2.photoURL,
               };
-              return <Emoji key={emoji} type={"angry"} user={user} />;
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"angry"}
+                  user={user}
+                />
+              );
             })}
           </>
         ) : (
@@ -295,9 +403,217 @@ function EmojiMessageModal({ listUserServer }) {
               const user = {
                 uid: user1.uid,
                 nickName: user1.nickName,
+                displayName: user2.displayName,
                 photoURL: user2.photoURL,
               };
-              return <Emoji key={emoji} type={"like"} user={user} />;
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"like"}
+                  user={user}
+                />
+              );
+            })}
+          </>
+        ) : (
+          false
+        )}
+        {/* is chat with friend emoji */}
+        {isGroup === false && typeListEmoji === "all" ? (
+          <>
+            {listEmoji.haha.map((emoji) => {
+              const user = listUserChatRoomFriend.find(
+                (user) => user.uid === emoji
+              );
+
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"haha"}
+                  user={user}
+                />
+              );
+            })}
+            {listEmoji.tym.map((emoji) => {
+              const user = listUserChatRoomFriend.find(
+                (user) => user.uid === emoji
+              );
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"tym"}
+                  user={user}
+                />
+              );
+            })}
+            {listEmoji.wow.map((emoji) => {
+              const user = listUserChatRoomFriend.find(
+                (user) => user.uid === emoji
+              );
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"wow"}
+                  user={user}
+                />
+              );
+            })}
+            {listEmoji.sad.map((emoji) => {
+              const user = listUserChatRoomFriend.find(
+                (user) => user.uid === emoji
+              );
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"sad"}
+                  user={user}
+                />
+              );
+            })}
+            {listEmoji.angry.map((emoji) => {
+              const user = listUserChatRoomFriend.find(
+                (user) => user.uid === emoji
+              );
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"angry"}
+                  user={user}
+                />
+              );
+            })}
+            {listEmoji.like.map((emoji) => {
+              const user = listUserChatRoomFriend.find(
+                (user) => user.uid === emoji
+              );
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"like"}
+                  user={user}
+                />
+              );
+            })}
+          </>
+        ) : (
+          false
+        )}
+        {isGroup === false && typeListEmoji === "haha" ? (
+          <>
+            {listEmoji.haha.map((emoji) => {
+              const user = listUserChatRoomFriend.find(
+                (user) => user.uid === emoji
+              );
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"haha"}
+                  user={user}
+                />
+              );
+            })}
+          </>
+        ) : (
+          false
+        )}
+        {isGroup === false && typeListEmoji === "tym" ? (
+          <>
+            {listEmoji.tym.map((emoji) => {
+              const user = listUserChatRoomFriend.find(
+                (user) => user.uid === emoji
+              );
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"tym"}
+                  user={user}
+                />
+              );
+            })}
+          </>
+        ) : (
+          false
+        )}
+        {isGroup === false && typeListEmoji === "wow" ? (
+          <>
+            {listEmoji.wow.map((emoji) => {
+              const user = listUserChatRoomFriend.find(
+                (user) => user.uid === emoji
+              );
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"wow"}
+                  user={user}
+                />
+              );
+            })}
+          </>
+        ) : (
+          false
+        )}
+        {isGroup === false && typeListEmoji === "sad" ? (
+          <>
+            {listEmoji.sad.map((emoji) => {
+              const user = listUserChatRoomFriend.find(
+                (user) => user.uid === emoji
+              );
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"sad"}
+                  user={user}
+                />
+              );
+            })}
+          </>
+        ) : (
+          false
+        )}
+        {isGroup === false && typeListEmoji === "angry" ? (
+          <>
+            {listEmoji.angry.map((emoji) => {
+              const user = listUserChatRoomFriend.find(
+                (user) => user.uid === emoji
+              );
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"angry"}
+                  user={user}
+                />
+              );
+            })}
+          </>
+        ) : (
+          false
+        )}
+        {isGroup === false && typeListEmoji === "like" ? (
+          <>
+            {listEmoji.like.map((emoji) => {
+              const user = listUserChatRoomFriend.find(
+                (user) => user.uid === emoji
+              );
+              return (
+                <Emoji
+                  key={emoji}
+                  isUserLogin={idUserLogin === emoji}
+                  type={"like"}
+                  user={user}
+                />
+              );
             })}
           </>
         ) : (

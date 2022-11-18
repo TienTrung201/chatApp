@@ -92,7 +92,6 @@ function BoxChat({
   const userActive = allUsers.find((userChat) => {
     return userChat.uid === roomChatInfo.user.uid;
   });
-  //get message
 
   // trạng thái hoạt động
   let active;

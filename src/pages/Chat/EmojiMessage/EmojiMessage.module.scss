@@ -10,13 +10,25 @@
 }
 .wrapperEmojiMessage {
   padding: 16px;
+  padding-top: 10px;
   .listTypeEmoji {
     display: flex;
-    height: 60px;
+    height: 50px;
+    position: relative;
+
     @include mobile {
       height: 30px;
     }
     align-items: center;
+    .line {
+      position: absolute;
+      width: 14.28%;
+      height: 5px;
+      background-color: var(--backGround-App);
+      border-radius: 5px;
+      bottom: 0;
+      transition: 0.15s linear;
+    }
     .emoji {
       width: 14.28%;
       height: 100%;

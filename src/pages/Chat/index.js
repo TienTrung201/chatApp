@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   isSelectedMusic,
   typeModalGroupAndEmoji,
+  userChat,
   userLogin,
 } from "@/components/redux/selector";
 import userSlice from "../Login/UserSlice";
@@ -41,6 +42,7 @@ function Chat() {
   let user = useSelector(userLogin);
   const idUser = user.uid;
   const isCheckedMusic = useSelector(isSelectedMusic);
+  const roomChatInfo = useSelector(userChat);
 
   const Dispatch = useDispatch();
   const conditionUser = useMemo(() => {
@@ -395,7 +397,24 @@ function Chat() {
         title={"Cảm xúc về tin nhắn"}
         visible={visibleModal && typeModal === "emoji"}
       >
-        <EmojiMessageModal listUserServer={allUser} />
+        <EmojiMessageModal
+          idUserLogin={idUser}
+          listUserChatRoomFriend={[
+            {
+              uid: roomChatInfo.user.uid,
+              displayName: roomChatInfo.user.displayName,
+              nickName: roomChatInfo.user.displayName,
+              photoURL: roomChatInfo.user.photoURL,
+            },
+            {
+              uid: idUser,
+              displayName: user ? user.displayName : "",
+              nickName: user ? user.displayName : "",
+              photoURL: user ? user.photoURL : "",
+            },
+          ]}
+          listUserServer={allUser}
+        />
       </Modal>
       {isCheckedMusic === true ? (
         <div className={cx("wrapperKeyboard")}>

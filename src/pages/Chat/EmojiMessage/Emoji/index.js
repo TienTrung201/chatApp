@@ -2,10 +2,15 @@ import styles from "./Emoji.module.scss";
 import classNames from "classnames/bind";
 
 const cx = classNames.bind(styles);
-function Emoji({ user, type }) {
+function Emoji({ user, type, isUserLogin }) {
   return (
     <li className={cx("listEmoji__emoji")}>
-      <div className={cx("infoEmoji")}>
+      <div
+        className={cx(
+          "infoEmoji",
+          isUserLogin ? "isUserLoginCaiNayDeGoEmoji" : ""
+        )}
+      >
         <div className={cx("avata")}>
           <img
             width={40}
@@ -15,7 +20,8 @@ function Emoji({ user, type }) {
           />
         </div>
         <div className={cx("nameUser")}>
-          <p>{user.nickName}</p> <span>Nhấp để gỡ</span>
+          <p>{user.nickName}</p>
+          {/* {isUserLogin && <span>Nhấp để gỡ</span>} */}
         </div>
         <div className={cx("emojiByUser")}>
           {type === "haha" ? (

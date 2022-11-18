@@ -12,19 +12,23 @@ $widthModal: 250px;
     @content;
   }
 }
+.isUserLogin {
+  &:hover {
+    background-color: rgba(204, 204, 204, 1);
+    cursor: pointer;
+  }
+}
 .listEmoji__emoji {
   .infoEmoji {
     display: flex;
     height: 60px;
     align-items: center;
-    cursor: pointer;
+
     transition: 0.1s ease-in;
     padding: 0 10px;
     border-radius: 10px;
     position: relative;
-    &:hover {
-      background-color: rgba(204, 204, 204, 1);
-    }
+
     // background-color: #8f97a4;
     .avata {
       width: 40px;
