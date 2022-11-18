@@ -120,62 +120,40 @@ function ControlMessage({
   }, [currentMessage]);
 
   const handleSendEmoji = (typeEmojy) => {
+    const typeEmoji = ["haha", "tym", "wow", "sad", "angry", "like"];
+
     let searchIdInEmoji = false;
     let typeEmojiCurrentByUserLogin = "";
-    currentEmoji.tym.forEach((emojiId, i) => {
-      if (emojiId === userLogin.uid) {
-        searchIdInEmoji = true;
-        typeEmojiCurrentByUserLogin = "tym";
-        currentEmoji.tym.splice(i, 1);
+    const newEmojis = {
+      haha: [],
+      tym: [],
+      wow: [],
+      sad: [],
+      like: [],
+      angry: [],
+    };
+    for (let i = 0; i < typeEmoji.length; i++) {
+      for (let j = 0; j < currentEmoji[typeEmoji[i]].length; j++) {
+        if (userLogin.uid !== currentEmoji[typeEmoji[i]][j]) {
+          newEmojis[typeEmoji[i]].push(currentEmoji[typeEmoji[i]][j]);
+        } else {
+          searchIdInEmoji = true;
+          typeEmojiCurrentByUserLogin = typeEmoji[i];
+        }
       }
-    });
-    currentEmoji.haha.forEach((emojiId, i) => {
-      if (emojiId === userLogin.uid) {
-        searchIdInEmoji = true;
-        typeEmojiCurrentByUserLogin = "haha";
-        currentEmoji.haha.splice(i, 1);
-      }
-    });
-    currentEmoji.wow.forEach((emojiId, i) => {
-      if (emojiId === userLogin.uid) {
-        searchIdInEmoji = true;
-        typeEmojiCurrentByUserLogin = "wow";
-        currentEmoji.wow.splice(i, 1);
-      }
-    });
-    currentEmoji.like.forEach((emojiId, i) => {
-      if (emojiId === userLogin.uid) {
-        searchIdInEmoji = true;
-        typeEmojiCurrentByUserLogin = "like";
-        currentEmoji.like.splice(i, 1);
-      }
-    });
-    currentEmoji.angry.forEach((emojiId, i) => {
-      if (emojiId === userLogin.uid) {
-        searchIdInEmoji = true;
-        typeEmojiCurrentByUserLogin = "angry";
-        currentEmoji.angry.splice(i, 1);
-      }
-    });
-    currentEmoji.sad.forEach((emojiId, i) => {
-      if (emojiId === userLogin.uid) {
-        searchIdInEmoji = true;
-        typeEmojiCurrentByUserLogin = "sad";
-        currentEmoji.sad.splice(i, 1);
-      }
-    });
+    }
 
     if (
       searchIdInEmoji === false ||
       typeEmojy !== typeEmojiCurrentByUserLogin
     ) {
-      currentEmoji[typeEmojy].push(userLogin.uid);
+      newEmojis[typeEmojy].push(userLogin.uid);
     }
     const allmessageRoom = allMess.map((message) => {
       if (message.id === currentMessage.id) {
         return {
           ...message,
-          emoji: currentEmoji,
+          emoji: newEmojis,
         };
       }
       return message;
