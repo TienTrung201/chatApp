@@ -895,6 +895,7 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                         />
                         <p className={cx("content", "imageHover")}>
                           Xem thành viên
+                          {" " + "(" + currentUserRoom.length + ")"}
                         </p>
                       </div>
                       <AnimatePresence>
