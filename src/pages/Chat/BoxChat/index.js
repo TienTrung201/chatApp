@@ -228,7 +228,10 @@ function BoxChat({
               opacity: 0,
             }}
             onClick={() => {
-              boxMessage.current.scrollTop = boxMessage.current.clientHeight;
+              boxMessage.current.scroll({
+                top: 0,
+                behavior: "smooth",
+              });
             }}
             className={cx("buttomScrollTop")}
           >
