@@ -1,7 +1,13 @@
 import styles from "./BoxChat.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClose, faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowDown,
+  faClose,
+  faEllipsis,
+} from "@fortawesome/free-solid-svg-icons";
+import { motion, AnimatePresence } from "framer-motion";
+
 import {
   useCallback,
   useEffect,
@@ -186,9 +192,53 @@ function BoxChat({
     setCurrentIndexMessage(20);
   }, [roomChatInfo]);
   //scroll infinite
+  const [isOpenScrollTop, setIsOpenScrollTop] = useState(true);
+
+  useEffect(() => {
+    const scrollMessage = boxMessage.current;
+    console.log(boxMessage.current.scrollTop);
+    const handleScroll = () => {
+      if (boxMessage.current.scrollTop < -100) {
+        setIsOpenScrollTop(true);
+      } else {
+        setIsOpenScrollTop(false);
+      }
+    };
+    scrollMessage.addEventListener("scroll", handleScroll);
+
+    return () => {
+      scrollMessage.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <div className={cx("wrapper")}>
+      <AnimatePresence>
+        {isOpenScrollTop && (
+          <motion.button
+            initial={{ y: 50, opacity: 0, x: -20 }}
+            animate={{
+              transition: { stiffness: 300 },
+              opacity: 1,
+              y: 0,
+            }}
+            exit={{
+              y: 50,
+              transition: { duration: 0.1 },
+              opacity: 0,
+            }}
+            onClick={() => {
+              boxMessage.current.scrollTop = boxMessage.current.clientHeight;
+            }}
+            className={cx("buttomScrollTop")}
+          >
+            <FontAwesomeIcon className={cx("icon")} icon={faArrowDown} />
+          </motion.button>
+        )}
+      </AnimatePresence>
+
+      {/* cách 2 */}
+
       <div
         onClick={() => {
           if (window.innerWidth < 739) {
@@ -299,7 +349,10 @@ function BoxChat({
                 return false;
               }
               for (let j = 0; j < messages.length; j++) {
-                if (messages[i - 1] === undefined) {
+                if (
+                  messages[i - 1] === undefined ||
+                  messages[i - 1].type === "notification" // sửa hình dạng tinn nhắn
+                ) {
                   if (messages[i + 1] === undefined) {
                     break;
                   }

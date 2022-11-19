@@ -145,6 +145,7 @@
     }
 
     .optionTextMessage {
+      z-index: 1;
       position: absolute;
       right: 100%;
       // width: 50px;
@@ -255,6 +256,7 @@
     width: fit-content;
     position: relative;
     .optionTextMessage {
+      z-index: 1;
       left: 100%;
       width: 65px;
       margin: 0 5px;
@@ -334,7 +336,7 @@
     // overflow: hidden;
     border: 1px solid rgba($color: #808080, $alpha: 0.1);
     border-radius: 10px;
-    margin-top: 1px;
+    margin-top: 3px;
     position: relative;
     // display: flex;
     // flex-direction: row-reverse;
@@ -418,6 +420,8 @@
   }
   .imgMessage {
     // background-color: #000;
+    margin-top: 3px;
+    z-index: 0;
     position: relative;
     .emojiImage {
       position: absolute;

@@ -9,6 +9,7 @@
   }
 }
 $active--Color: #31a24c;
+
 .wrapper {
   padding: 33.3px 15px 0px 15px;
   display: flex;
@@ -16,6 +17,32 @@ $active--Color: #31a24c;
   flex: 1;
   justify-content: space-between;
   overflow: hidden;
+  position: relative;
+  .buttomScrollTop {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--backGround--page2--white);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #d6d6d6;
+      transition: 0.2s ease-in-out;
+    }
+    .icon {
+      font-size: 16px;
+      color: var(--backGround-App);
+    }
+  }
   @include mobile {
     padding: 16px 5px 0px 5px;
   }

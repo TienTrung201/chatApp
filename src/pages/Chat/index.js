@@ -19,6 +19,7 @@ import {
 } from "@/components/redux/selector";
 import userSlice from "../Login/UserSlice";
 import {
+  arrayUnion,
   doc,
   getDoc,
   serverTimestamp,
@@ -205,6 +206,15 @@ function Chat() {
           },
         ],
         [idRoom + ".type"]: "group",
+      });
+      await updateDoc(doc(db, "chats", idRoom), {
+        messages: arrayUnion({
+          id: uuid(),
+          text: ` đã tạo nhóm  nhóm`,
+          senderId: user.uid,
+          createdAt: Timestamp.now(),
+          type: "notification",
+        }),
       });
     } catch (e) {
       console.log(e);
