@@ -192,11 +192,11 @@ function BoxChat({
     setCurrentIndexMessage(20);
   }, [roomChatInfo]);
   //scroll infinite
-  const [isOpenScrollTop, setIsOpenScrollTop] = useState(true);
+  const [isOpenScrollTop, setIsOpenScrollTop] = useState(false);
 
   useEffect(() => {
     const scrollMessage = boxMessage.current;
-    console.log(boxMessage.current.scrollTop);
+
     const handleScroll = () => {
       if (boxMessage.current.scrollTop < -100) {
         setIsOpenScrollTop(true);

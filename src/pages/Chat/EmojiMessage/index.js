@@ -57,7 +57,7 @@ function EmojiMessageModal({
             handleActiveLine(e);
             setTypeListEmoji("all");
           }}
-          className={cx("emoji")}
+          className={cx("emoji", typeListEmoji === "all" ? "selected" : "")}
         >
           Tất cả {countEmoji}
         </li>
@@ -70,7 +70,10 @@ function EmojiMessageModal({
                   handleActiveLine(e);
                   setTypeListEmoji(emoji);
                 }}
-                className={cx("emoji")}
+                className={cx(
+                  "emoji",
+                  typeListEmoji === emoji ? "selected" : ""
+                )}
               >
                 {emoji === "haha" ? (
                   <img

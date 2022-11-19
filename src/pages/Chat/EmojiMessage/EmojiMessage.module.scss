@@ -8,6 +8,9 @@
     @content;
   }
 }
+.selected {
+  color: var(--backGround-App);
+}
 .wrapperEmojiMessage {
   padding: 16px;
   padding-top: 10px;
@@ -17,7 +20,7 @@
     position: relative;
 
     @include mobile {
-      height: 30px;
+      height: 50px;
     }
     align-items: center;
     .line {
@@ -28,6 +31,9 @@
       border-radius: 5px;
       bottom: 0;
       transition: 0.15s linear;
+      @include mobile {
+        width: 20%;
+      }
     }
     .emoji {
       width: 14.28%;
@@ -36,9 +42,10 @@
       display: flex;
       justify-content: center;
       align-items: center;
-
+      font-weight: 600;
       @include mobile {
-        font-size: 12px;
+        width: 20%;
+        font-size: 14px;
         text-align: center;
       }
       img {
