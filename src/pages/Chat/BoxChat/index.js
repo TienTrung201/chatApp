@@ -215,7 +215,7 @@ function BoxChat({
     <div className={cx("wrapper")}>
       <AnimatePresence>
         {isOpenScrollTop && (
-          <motion.button
+          <motion.div
             initial={{ y: 50, opacity: 0, x: -20 }}
             animate={{
               transition: { stiffness: 300 },
@@ -233,7 +233,7 @@ function BoxChat({
             className={cx("buttomScrollTop")}
           >
             <FontAwesomeIcon className={cx("icon")} icon={faArrowDown} />
-          </motion.button>
+          </motion.div>
         )}
       </AnimatePresence>
 
