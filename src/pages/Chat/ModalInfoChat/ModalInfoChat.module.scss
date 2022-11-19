@@ -12,6 +12,7 @@ $widthModal: 250px;
     @content;
   }
 }
+
 .wrapper {
   background-color: var(--backGround--page2--white);
   border-radius: 30px;
@@ -264,6 +265,7 @@ $widthModal: 250px;
       .replaceImage {
         &:hover {
           color: #c383a5;
+          border: none;
         }
         .icon {
           color: #c383a5;
@@ -618,5 +620,18 @@ $widthModal: 250px;
   h1 {
     text-align: center;
     font-size: 20px;
+  }
+}
+.childrentControl {
+  background-color: transparent;
+  &:hover {
+    background-color: transparent;
+  }
+}
+.userItem,
+.childrentControl {
+  &:hover {
+    border: none;
+    background-color: transparent !important;
   }
 }

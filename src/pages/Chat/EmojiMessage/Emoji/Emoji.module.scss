@@ -45,8 +45,9 @@ $widthModal: 250px;
       display: flex;
       flex-direction: column;
 
-      p {
+      h3 {
         @include mobile {
+          font-weight: 200;
           width: 130px;
           overflow: hidden;
           white-space: nowrap;
@@ -63,6 +64,10 @@ $widthModal: 250px;
       right: 20px;
       width: 28px;
       height: 28px;
+      @include mobile {
+        width: 24px;
+        height: 24px;
+      }
       .emojiImg {
         width: 100%;
         height: 100%;

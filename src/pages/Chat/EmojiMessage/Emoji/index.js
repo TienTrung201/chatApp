@@ -20,7 +20,9 @@ function Emoji({ user, type, isUserLogin }) {
           />
         </div>
         <div className={cx("nameUser")}>
-          <p>{user.nickName}</p>
+          {/* <p>{user.nickName}</p> */}
+          <h4>{user.nickName}</h4>
+
           {/* {isUserLogin && <span>Nhấp để gỡ</span>} */}
         </div>
         <div className={cx("emojiByUser")}>
