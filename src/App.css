@@ -32,3 +32,80 @@ input[type="range"] {
   color: #fff;
   font-size: 16px;
 }
+
+.center .slick-prev::before {
+  display: none;
+}
+.imgSelected {
+}
+.imgSelected button {
+  width: 38px;
+  height: 38px;
+  /* background-color: aqua; */
+}
+
+.slick-next {
+  right: -40px !important;
+}
+.slick-prev {
+  left: -40px !important;
+}
+.slick-prev:before,
+.slick-next:before {
+  display: none;
+
+  font-size: 20px;
+  font-size: 40px !important;
+}
+
+.slick-slide > div {
+  margin: 0 2px;
+}
+.slick-slide {
+  display: flex !important;
+  justify-content: center;
+  /* margin: 0 -10px; */
+}
+.slick-dots {
+  display: none;
+  opacity: 0;
+}
+.center .slick-slide {
+  opacity: 0.3;
+}
+.slick-slide img {
+  cursor: pointer;
+}
+.slick-center {
+  opacity: 1 !important;
+}
+.slick-slide:hover {
+  opacity: 1 !important;
+}
+.slick-current {
+  opacity: 1 !important;
+}
+
+@media screen and (max-width: 739px) {
+  .slick-next {
+    right: -20px !important;
+  }
+  .slick-prev {
+    left: -20px !important;
+  }
+  .slick-slide {
+    max-width: calc(100% - 40px) !important;
+  }
+  .slick-prev:before,
+  .slick-next:before {
+    /* display: none; */
+
+    font-size: 26px !important;
+  }
+  .imgSelected button {
+    width: 30px;
+    height: 30px;
+    display: none !important;
+    /* background-color: aqua; */
+  }
+}

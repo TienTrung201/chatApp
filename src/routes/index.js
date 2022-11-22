@@ -3,6 +3,7 @@ import Chat from "@/pages/Chat";
 // import Music from "@/pages/Music";
 import Login from "@/pages/Login";
 import LayoutLogin from "@/components/Layout/DefaultLayout/LoginLayout";
+import Media from "@/pages/Media";
 
 // Public routes
 // const publicRoutes = [
@@ -16,6 +17,7 @@ const publicRoutes = [
   { path: "/chat", component: Chat, active: "Chat" },
   { path: "/music", component: Chat, active: "Music" },
   { path: "/login", component: Login, layout: LayoutLogin },
+  { path: "/Media", component: Media, layout: LayoutLogin },
 ];
 
 const privateRoutes = [];

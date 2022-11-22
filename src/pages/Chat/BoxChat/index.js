@@ -35,6 +35,7 @@ import NoMessage from "@/components/NoMessage";
 import InfiniteScroll from "react-infinite-scroll-component";
 import boxChatSlice from "./BoxChatSlice";
 import userSlice from "@/pages/Login/UserSlice";
+import mediaSlide from "@/pages/Media/MediaSlide";
 
 const cx = classNames.bind(styles);
 
@@ -210,6 +211,22 @@ function BoxChat({
       scrollMessage.removeEventListener("scroll", handleScroll);
     };
   }, []);
+  useEffect(() => {
+    const getMessageTypeImage = [];
+    if (messages) {
+      messages.forEach((message) => {
+        if (
+          message.type !== "remove" &&
+          message.type !== "sticker" &&
+          message.image
+        ) {
+          getMessageTypeImage.push(message.image.url);
+        }
+      });
+    }
+
+    Dispatch(mediaSlide.actions.setArrayMessageImg(getMessageTypeImage));
+  }, [Dispatch, messages]);
 
   return (
     <div className={cx("wrapper")}>

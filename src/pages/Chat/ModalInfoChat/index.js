@@ -17,7 +17,7 @@ import {
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   isSelectedMusic,
   userChat,
@@ -44,9 +44,12 @@ import {
 } from "firebase/storage";
 import ControlUsers from "./ControlUsers";
 
+import mediaSlide from "@/pages/Media/MediaSlide";
+
 const cx = classNames.bind(styles);
 
 function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
+  const Dispatch = useDispatch();
   let user = useSelector(userLogin);
   const userId = user.uid;
   const [searchUser, setSearchUser] = useState("");
@@ -386,6 +389,9 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
       return roomChat.nickName;
     }
   }, [roomChat, findCurrentRoom, roomChatInfo.user.displayName]);
+
+  // click Xem file ảnh
+
   return (
     <>
       {findCurrentRoom !== undefined ? (
@@ -986,6 +992,9 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                   )}
 
                   <li
+                    onClick={() => {
+                      Dispatch(mediaSlide.actions.setIsOpenMedia(true));
+                    }}
                     className={cx(
                       "controlItem",
                       "image",

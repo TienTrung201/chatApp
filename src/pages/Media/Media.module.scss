@@ -1,0 +1,79 @@
+@mixin mobile {
+  @media screen and (max-width: 739px) {
+    @content;
+  }
+}
+@mixin tablet {
+  @media screen and (min-width: 740px) and (max-width: 1023px) {
+    @content;
+  }
+}
+
+.wrapperMedia {
+  background-color: rgb(104, 102, 102);
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  .close {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    background-color: rgba($color: #000000, $alpha: 0.2);
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 2;
+
+    .icon {
+      font-size: 20px;
+      color: #ccc;
+    }
+  }
+  .selectedImage {
+    z-index: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    // align-items: center;
+    height: 500px;
+    width: 90%;
+    margin: auto;
+
+    .image {
+      width: 500px !important;
+      overflow: hidden;
+      @include mobile() {
+        width: 300px !important;
+      }
+      img {
+        width: 100%;
+      }
+    }
+  }
+  .wrapperListEmage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .image {
+      // height: 100%;
+      // background-color: aqua;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      height: 80px;
+      display: flex !important;
+      justify-content: center;
+      overflow: hidden;
+      img {
+        height: 100%;
+      }
+    }
+  }
+}

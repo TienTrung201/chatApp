@@ -25,3 +25,6 @@ export const urlImageAnsered = (state) => state.userChat.urlImageAnsered;
 export const typeSticker = (state) => state.sticker.typeSticker;
 export const listSticker = (state) => state.sticker.stickers;
 export const isOpenSticker = (state) => state.sticker.isOpenSticker;
+export const currentIndexImage = (state) => state.mediaSlide.currentIndexImage;
+export const arrayMessageImg = (state) => state.mediaSlide.arrayMessageImg;
+export const isOpenMedia = (state) => state.mediaSlide.isOpenMedia;

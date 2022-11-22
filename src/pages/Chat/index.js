@@ -12,6 +12,7 @@ import ModalInfoChat from "./ModalInfoChat";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  isOpenMedia,
   isSelectedMusic,
   typeModalGroupAndEmoji,
   userChat,
@@ -36,6 +37,7 @@ import Modal from "@/components/Modal";
 import { v4 as uuid } from "uuid";
 import chatSlice from "./ChatSlice";
 import EmojiMessageModal from "./EmojiMessage";
+import Media from "../Media";
 const cx = classNames.bind(styles);
 
 function Chat() {
@@ -366,6 +368,7 @@ function Chat() {
     }
   }, [volumeKeyboard, isCheckedMusic]);
   // âm thanh gõ phím
+  const isOpenListMedia = useSelector(isOpenMedia);
 
   return (
     <section
@@ -375,6 +378,8 @@ function Chat() {
         isCheckedMusic === true ? "backgroundTransparentApp" : ""
       )}
     >
+      {isOpenListMedia && <Media />}
+
       <Modal
         visible={visibleModal && typeModal === "group"}
         seiVisible={setVisibleModal}

@@ -1,9 +1,11 @@
 import { userChat, userLogin } from "@/components/redux/selector";
+import mediaSlide from "@/pages/Media/MediaSlide";
 
 import classNames from "classnames/bind";
 import { useMemo, useState } from "react";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 import ControlMessage from "./ControlMessage";
 import Emoji from "./Emoji";
 import styles from "./Message.module.scss";
@@ -24,6 +26,8 @@ function Message({
   setVisibleModalEmoji,
   nickNameFriend,
 }) {
+  const Dispatch = useDispatch();
+
   const userLoginChat = useSelector(userLogin);
   const userId = userLoginChat.uid;
   const roomChatInfo = useSelector(userChat);
@@ -141,6 +145,39 @@ function Message({
       }
     }
   }, [currentUsersRoom, data.senderId, roomChatInfo, nickNameFriend, userId]);
+  // chọn ảnh trong tin nhắn
+
+  const handleSelectedImg = (data) => {
+    const getMessageTypeImage = [];
+
+    if (data.type !== "remove" && data.type !== "sticker" && data.image) {
+      Dispatch(mediaSlide.actions.setIsOpenMedia(true));
+    }
+
+    allMessage.forEach((message) => {
+      if (
+        message.type !== "remove" &&
+        message.type !== "sticker" &&
+        message.image
+      ) {
+        getMessageTypeImage.push(message.image.url);
+      }
+    });
+    let index = getMessageTypeImage.length;
+    allMessage.forEach((message) => {
+      if (
+        message.type !== "remove" &&
+        message.type !== "sticker" &&
+        message.image
+      ) {
+        index -= 1;
+        if (data.image.url === message.image.url) {
+          // console.log(index);
+          Dispatch(mediaSlide.actions.setCurrentIndexImage(index));
+        }
+      }
+    });
+  };
 
   return (
     <>
@@ -240,6 +277,9 @@ function Message({
                           className={cx(
                             data.type === "sticker" ? "styleSticker" : ""
                           )}
+                          onClick={() => {
+                            handleSelectedImg(data);
+                          }}
                           style={styleImage}
                           src={data.image.url}
                           alt=""
@@ -588,6 +628,9 @@ function Message({
                               "imgMessageSending",
                               data.type === "sticker" ? "stickerMes" : ""
                             )}
+                            onClick={() => {
+                              handleSelectedImg(data);
+                            }}
                             style={styleImage}
                             src={data.image.url}
                             alt=""
