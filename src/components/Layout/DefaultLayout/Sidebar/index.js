@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SidebarSlide from "./SideBarSlice";
 import {
   isNight,
+  isOpenMedia,
   isRainy,
   isSelectedMusic,
   volumeRain,
@@ -61,8 +62,12 @@ function Sidebar({ activeNav }) {
     rainAudio.current.volume = e.target.value / 100;
     Dispatch(SidebarSlide.actions.setVolumeRain(e.target.value));
   };
+  const isOpenListMedia = useSelector(isOpenMedia);
+
   return (
-    <article className={cx("wrapper")}>
+    <article
+      className={cx("wrapper", isOpenListMedia === true ? "zIndex0" : "")}
+    >
       {isCheckedMusic === true ? <MusicPlayer /> : false}
       <div className={cx("logoApp", "autoCenter")}>
         {isRain === true && isCheckedMusic === true ? (
