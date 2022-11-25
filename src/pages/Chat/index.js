@@ -800,18 +800,18 @@ export function lastSendMessage(timeNow, timeSendMessage) {
     Number(houreSent) * 3600 +
     Number(daySent) * 86400 +
     Number(monthSent) * 2592000 +
-    Number(yearSent) * 3110400;
+    Number(yearSent) * 31104000;
   const presentTime =
     Number(curentMinutes) * 60 +
     Number(curentHours) * 3600 +
     Number(curentDay) * 86400 +
     Number(curentMonth) * 2592000 +
-    Number(curentYear) * 3110400;
+    Number(curentYear) * 31104000;
 
   const result = presentTime - sendingTime;
 
-  if (result / 3110400 >= 1) {
-    return parseInt(result / 3110400) + "năm";
+  if (result / 31104000 >= 1) {
+    return parseInt(result / 31104000) + "năm";
   } else if (result / 2592000 >= 1) {
     return parseInt(result / 2592000) + "tháng";
   } else if (result / 86400 >= 1) {

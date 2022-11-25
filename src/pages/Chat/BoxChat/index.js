@@ -580,18 +580,19 @@ export function checkActiveUser(timeActive) {
     Number(activeHours) * 3600 +
     Number(activeDay) * 86400 +
     Number(activeMonth) * 2592000 +
-    Number(activeYear) * 3110400;
+    Number(activeYear) * 31104000;
   const presentTime =
     Number(curentSeconds) +
     Number(curentMinutes) * 60 +
     Number(curentHours) * 3600 +
     Number(curentDay) * 86400 +
     Number(curentMonth) * 2592000 +
-    Number(curentYear) * 3110400;
+    Number(curentYear) * 31104000;
 
   const result = presentTime - sendingTime;
-  if (result / 3110400 >= 1) {
-    return "Hoạt động " + parseInt(result / 3110400) + " năm trước";
+
+  if (result / 31104000 >= 1) {
+    return "Hoạt động " + parseInt(result / 31104000) + " năm trước";
   } else if (result / 2592000 >= 1) {
     return "Hoạt động " + parseInt(result / 2592000) + " tháng trước";
   } else if (result / 86400 >= 1) {
