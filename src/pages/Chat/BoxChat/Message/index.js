@@ -77,6 +77,12 @@ function Message({
           : `${data.image.height}px`
         : heightImageScroll,
     maxHeight: window.innerHeight < 420 ? "80px" : heightImageScroll,
+    // maxWidth:
+    //   window.innerWidth < 550
+    //     ? "100px !important"
+    //     : window.innerWidth < 1024
+    //     ? "200px"
+    //     : "300px",
   };
 
   if (data.type === "sticker") {
@@ -275,7 +281,7 @@ function Message({
 
                         <img
                           className={cx(
-                            data.type === "sticker" ? "styleSticker" : ""
+                            data.type === "sticker" ? "styleSticker" : "pointer"
                           )}
                           onClick={() => {
                             handleSelectedImg(data);
@@ -626,7 +632,7 @@ function Message({
                           <img
                             className={cx(
                               "imgMessageSending",
-                              data.type === "sticker" ? "stickerMes" : ""
+                              data.type === "sticker" ? "stickerMes" : "pointer"
                             )}
                             onClick={() => {
                               handleSelectedImg(data);

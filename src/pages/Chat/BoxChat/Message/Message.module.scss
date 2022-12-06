@@ -8,6 +8,9 @@
     @content;
   }
 }
+.pointer {
+  cursor: pointer;
+}
 .mgBt_20px {
   margin-bottom: 20px;
 }
@@ -220,22 +223,38 @@
     @include tablet {
       // max-width: 40%;
     }
-
     .imgMessageSending {
-      width: max-content;
-      max-width: 60%;
-      max-height: 200px;
-      min-height: 150px !important; //bug
       border-radius: 10px;
       object-fit: cover;
-      cursor: pointer;
+      max-width: 300px !important;
       @include mobile {
-        max-height: 100px;
+        // max-height: 150px;
+        max-width: 150px !important;
+      }
+      @media screen and (max-width: 400px) {
+        // max-width: 200px;
       }
       @include tablet {
-        max-width: 100%;
+        max-width: 200px !important;
       }
+      // cursor: pointer;
     }
+    // fixbug
+    // .imgMessageSending {
+    //   width: max-content;
+    //   max-width: 60%;
+    //   max-height: 200px;
+    //   // min-height: 150px !important; //bug
+    //   border-radius: 10px;
+    //   object-fit: cover;
+    //   cursor: pointer;
+    //   @include mobile {
+    //     max-height: 100px;
+    //   }
+    //   @include tablet {
+    //     max-width: 100%;
+    //   }
+    // }
     .stickerMes {
       min-height: 100px !important; //bug
     }
@@ -349,24 +368,18 @@
     // display: flex;
 
     img {
-      // width: max-content;
-      // max-width: 60%;
-      // max-height: 200px;
-      // width: 100%;
       border-radius: 10px;
       object-fit: cover;
-
-      // min-height: 150px !important;
+      max-width: 300px !important;
       @include mobile {
         // max-height: 150px;
-        // width: 150px;
-        // height: 80px;
+        max-width: 150px !important;
       }
       @media screen and (max-width: 400px) {
-        max-width: 200px;
+        // max-width: 200px;
       }
       @include tablet {
-        max-width: 100%;
+        max-width: 200px !important;
       }
     }
     .imgMessageOptions {

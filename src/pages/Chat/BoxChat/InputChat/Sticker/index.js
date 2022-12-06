@@ -9,13 +9,26 @@ import {
 } from "@/components/redux/selector";
 import { db } from "@/firebase/config";
 import { useState } from "react";
-import { arrayUnion, doc, Timestamp, updateDoc } from "firebase/firestore";
+import {
+  arrayUnion,
+  doc,
+  serverTimestamp,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { v4 as uuid } from "uuid";
 import StickerSlice from "../StickerSlice";
 import boxChatSlice from "../../BoxChatSlice";
 
 const cx = classNames.bind(styles);
-function Sticker({ idRoom, userId }) {
+function Sticker({
+  idRoom,
+  userId,
+  typeRoom,
+  currentUsersRoom,
+  senderName,
+  idFriend,
+}) {
   const typeStickerApp = useSelector(typeSticker);
   const listStickerApp = useSelector(listSticker);
   const [typeStickers, setTypeStickers] = useState("dog");
@@ -45,7 +58,36 @@ function Sticker({ idRoom, userId }) {
           userIdReply: userId,
         }),
       });
-    } catch {}
+
+      if (typeRoom === "group") {
+        currentUsersRoom.forEach(async (user) => {
+          await updateDoc(doc(db, "userChats", user.uid), {
+            [idRoom + ".lastMessage"]: {
+              text: "Đã gửi 1 nhãn dán",
+              sender: senderName,
+            },
+            [idRoom + ".createdAt"]: serverTimestamp(),
+          });
+        });
+      } else {
+        await updateDoc(doc(db, "userChats", idFriend), {
+          [idRoom + ".lastMessage"]: {
+            text: "Đã gửi 1 nhãn dán",
+            sender: senderName,
+          },
+          [idRoom + ".createdAt"]: serverTimestamp(),
+        });
+        await updateDoc(doc(db, "userChats", userId), {
+          [idRoom + ".lastMessage"]: {
+            text: "Đã gửi 1 nhãn dán",
+            sender: senderName,
+          },
+          [idRoom + ".createdAt"]: serverTimestamp(),
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

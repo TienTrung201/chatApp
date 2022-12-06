@@ -80,12 +80,12 @@ function BoxChat({
   //scroll
 
   useEffect(() => {
-    if (boxMessage.current.scrollTop > -70) {
+    if (boxMessage.current.scrollTop > -220) {
       boxMessage.current.scrollTop = boxMessage.current.clientHeight;
     }
   }, [isSendMessage, messages]);
   //scroll
-
+  //isSendMessage nếu là người dùng gửi tin nhắn thì tự động lướt xuống
   //get message
   useEffect(() => {
     if (roomChatInfo.chatId === "") {
@@ -199,7 +199,7 @@ function BoxChat({
     const scrollMessage = boxMessage.current;
 
     const handleScroll = () => {
-      if (boxMessage.current.scrollTop < -100) {
+      if (boxMessage.current.scrollTop < -150) {
         setIsOpenScrollTop(true);
       } else {
         setIsOpenScrollTop(false);

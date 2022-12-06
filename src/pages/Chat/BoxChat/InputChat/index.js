@@ -171,7 +171,7 @@ function InputChat({ myNickNameChat, listUserChat }) {
         currentUserRoom.forEach(async (user) => {
           await updateDoc(doc(db, "userChats", user.uid), {
             [roomChatInfo.chatId + ".lastMessage"]: {
-              text: valueInput,
+              text: imgFile ? "Đã gửi 1 ảnh" : valueInput,
               sender: myNickNameChat,
             },
             [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
@@ -180,14 +180,14 @@ function InputChat({ myNickNameChat, listUserChat }) {
       } else {
         await updateDoc(doc(db, "userChats", roomChatInfo.user.uid), {
           [roomChatInfo.chatId + ".lastMessage"]: {
-            text: valueInput,
+            text: imgFile ? "Đã gửi 1 ảnh" : valueInput,
             sender: myNickNameChat,
           },
           [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
         });
         await updateDoc(doc(db, "userChats", user.uid), {
           [roomChatInfo.chatId + ".lastMessage"]: {
-            text: valueInput,
+            text: imgFile ? "Đã gửi 1 ảnh" : valueInput,
             sender: myNickNameChat,
           },
           [roomChatInfo.chatId + ".createdAt"]: serverTimestamp(),
@@ -239,7 +239,14 @@ function InputChat({ myNickNameChat, listUserChat }) {
           interactive="true" // cho phep hanh dong tren ket qua
           content={
             isOpenStickerApp && (
-              <Sticker idRoom={roomChatInfo.chatId} userId={user.uid} />
+              <Sticker
+                senderName={myNickNameChat}
+                idFriend={roomChatInfo.user.uid}
+                currentUsersRoom={currentUserRoom}
+                typeRoom={roomChatInfo.user.type}
+                idRoom={roomChatInfo.chatId}
+                userId={user.uid}
+              />
             )
           }
         >

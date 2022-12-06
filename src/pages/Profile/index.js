@@ -2,7 +2,7 @@ import styles from "./Profile.module.scss";
 import classNames from "classnames/bind";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faIdCard, faMusic, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faIdCard, faUser } from "@fortawesome/free-solid-svg-icons";
 import { memo, useEffect, useRef, useState } from "react";
 // import MyProfile from "./MyProfile";
 import { useSelector } from "react-redux";
@@ -77,7 +77,7 @@ function Profile() {
                 Edit Profile
               </Link>
             </li>
-            <li
+            {/* <li
               onClick={(e) => {
                 handleActiveLine(e);
                 setNavProfile("/mymusic");
@@ -91,7 +91,7 @@ function Profile() {
                 <FontAwesomeIcon className={cx("iconMyMusic")} icon={faMusic} />
                 My Music
               </Link>
-            </li>
+            </li> */}
             <div style={styleLine} className={cx("line")}></div>
           </ul>
         </div>
