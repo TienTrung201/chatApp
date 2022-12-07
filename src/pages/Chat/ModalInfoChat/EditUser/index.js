@@ -19,6 +19,7 @@ function EditUser({
   listUserRoom,
   uidSender,
   userLoginGroup,
+  userLogin,
 }) {
   const input = useRef();
   const isCheckedMusic = useSelector(isSelectedMusic);
@@ -73,6 +74,17 @@ function EditUser({
     }
     return true;
   }, [nameValue]);
+  const nickNameEditSender = useCallback(() => {
+    if (!group) {
+      if (substituteUserEdit === undefined) {
+        return userEdit.displayName;
+      } else if (substituteUserEdit.nickName.trim(" ") === "") {
+        return substituteUserEdit.displayName;
+      } else {
+        return substituteUserEdit.nickName;
+      }
+    }
+  }, [group, substituteUserEdit, userEdit]);
 
   const nickName = useCallback(() => {
     if (!group) {
@@ -94,6 +106,27 @@ function EditUser({
       }
     }
   }, [substituteUserEdit, group, userEdit]);
+  const senderName = useCallback(() => {
+    if (!group) {
+      if (
+        substituteUserRemain === undefined ||
+        substituteUserEdit === undefined
+      ) {
+        return userLogin.displayName;
+      }
+      let senderName;
+      if (substituteUserRemain.uid === uidSender) {
+        senderName = substituteUserRemain;
+      } else {
+        senderName = substituteUserEdit;
+      }
+      if (substituteUserRemain.nickName.trim(" ") === "") {
+        return senderName.displayName;
+      } else {
+        return senderName.nickName;
+      }
+    }
+  }, [substituteUserRemain, substituteUserEdit, uidSender, group, userLogin]);
   //  lưu biệt danh
   const handleEditNickName = async () => {
     if (!group) {
@@ -135,8 +168,9 @@ function EditUser({
         messages: arrayUnion({
           id: uuid(),
           // ${remainUser.displayName}
-          text: `đã đặt biệt danh cho ${userEdit.displayName} là ${nameValue}`,
-          senderId: remainUser.uid,
+          text: `đã đặt biệt danh cho ${nickNameEditSender()} là ${nameValue}`,
+          senderId: uidSender,
+          senderName: senderName(),
           createdAt: Timestamp.now(),
           type: "notification",
         }),
@@ -162,8 +196,9 @@ function EditUser({
         messages: arrayUnion({
           id: uuid(),
           // ${userLoginGroup.nickName}
-          text: `đã đặt biệt danh cho ${userEdit.displayName} là ${nameValue}`,
+          text: `đã đặt biệt danh cho ${userEdit.nickName} là ${nameValue}`,
           senderId: uidSender,
+          senderName: userLoginGroup.nickName,
           createdAt: Timestamp.now(),
           type: "notification",
         }),

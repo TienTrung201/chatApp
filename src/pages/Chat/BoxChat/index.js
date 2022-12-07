@@ -83,7 +83,10 @@ function BoxChat({
     if (boxMessage.current.scrollTop > -220) {
       boxMessage.current.scrollTop = boxMessage.current.clientHeight;
     }
-  }, [isSendMessage, messages]);
+  }, [messages]);
+  useEffect(() => {
+    boxMessage.current.scrollTop = boxMessage.current.clientHeight;
+  }, [isSendMessage]);
   //scroll
   //isSendMessage nếu là người dùng gửi tin nhắn thì tự động lướt xuống
   //get message

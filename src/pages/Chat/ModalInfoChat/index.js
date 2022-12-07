@@ -446,10 +446,14 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                         userLoginGroup={userLoginGroup}
                         listUserRoom={listUserChats}
                         remainUser={user}
+                        uidSender={userId}
                         roomId={roomChatInfo.chatId}
                         userEdit={roomChatInfo.user}
+                        userLogin={user}
                       />
                       <EditUser
+                        userLogin={user}
+                        uidSender={userId}
                         userLoginGroup={userLoginGroup}
                         remainUser={roomChatInfo.user}
                         roomId={roomChatInfo.chatId}
@@ -940,7 +944,7 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                                   className={cx(
                                     "userItem",
                                     isCheckedMusic === true
-                                      ? "backgroundTransparent"
+                                      ? "backgroundTransparentNoBorder"
                                       : ""
                                   )}
                                 >

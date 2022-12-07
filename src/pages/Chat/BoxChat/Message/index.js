@@ -142,15 +142,15 @@ function Message({
       if (user.uid === userId) {
         return "Bạn";
       }
-      return user.nickName;
+      return data.senderName;
     } else {
       if (userId === data.senderId) {
         return "Bạn";
       } else {
-        return nickNameFriend;
+        return data.senderName;
       }
     }
-  }, [currentUsersRoom, data.senderId, roomChatInfo, nickNameFriend, userId]);
+  }, [currentUsersRoom, data, roomChatInfo, userId]);
   // chọn ảnh trong tin nhắn
 
   const handleSelectedImg = (data) => {
@@ -184,7 +184,6 @@ function Message({
       }
     });
   };
-
   return (
     <>
       {data.type === "notification" ? (
