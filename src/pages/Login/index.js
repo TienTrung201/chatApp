@@ -10,12 +10,12 @@ import { auth } from "@/firebase/config";
 import { useSelector } from "react-redux";
 import { userLogin } from "@/components/redux/selector";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LoadingLogin from "@/components/Loaddings/LoadingLogin";
 import { setDocument } from "@/firebase/services";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { faKey } from "@fortawesome/free-solid-svg-icons";
+import ForgorPassword from "./ForgorPassword";
+import SigIn from "./SingIn";
+import SignUp from "./SignUp";
 
 // const fbLogin = new FacebookAuthProvider();
 const googleLogin = new GoogleAuthProvider();
@@ -104,6 +104,16 @@ function Login() {
         // ...
       });
   };
+  const [form, setForm] = useState("signIn");
+  const setFormSignIn = () => {
+    setForm("signIn");
+  };
+  const setFormSignUp = () => {
+    setForm("signUp");
+  };
+  const setFormFogotPassword = () => {
+    setForm("forgotPassword");
+  };
   return (
     <section className={cx("wrapper")}>
       {user.displayName === undefined ? <></> : <LoadingLogin />}
@@ -133,35 +143,31 @@ function Login() {
               </div>
             </section>
           </div>
-          <h1 className={cx("Title")}>Welcome to Earth</h1>
+          {form === "forgotPassword" ? (
+            false
+          ) : (
+            <h1 className={cx("Title")}>Welcome to Earth</h1>
+          )}
         </div>
         <div className={cx("body", "autoCenter")}>
-          {/* <div
-            onClick={handleLoginFB}
-            className={cx("signinButton", "autoCenter")}
-          >
-            <img className={cx("icon")} src={images.facebook} alt="Facebook" />
-            <span className={cx("conectTitle")}>Tiếp tục với Facebook</span>
-          </div> */}
-          <div className={cx("signinButton", "autoCenter")}>
-            <FontAwesomeIcon icon={faUser} className={cx("icon")} />
-            <input placeholder="Tài khoản" type="text" />
-          </div>
-          <div className={cx("signinButton", "autoCenter")}>
-            <FontAwesomeIcon icon={faKey} className={cx("icon")} />
+          {form === "signIn" ? (
+            <SigIn
+              setFormSignUp={setFormSignUp}
+              setFormFogotPassword={setFormFogotPassword}
+            />
+          ) : (
+            false
+          )}
+          {form === "forgotPassword" ? (
+            <ForgorPassword
+              setFormSignUp={setFormSignUp}
+              setFormSignIn={setFormSignIn}
+            />
+          ) : (
+            false
+          )}
+          {form === "signUp" ? <SignUp setFormSignIn={setFormSignIn} /> : false}
 
-            <input type="text" placeholder="Mật khẩu" />
-          </div>
-          {/* <div
-            onClick={handleLoginGoogle}
-            className={cx("signinButton", "autoCenter")}
-          >
-            <img className={cx("icon")} src={images.google} alt="Facebook" />
-            <span className={cx("conectTitle")}>Tiếp tục với google</span>
-          </div> */}
-          <div className={cx("account")}>
-            <p>Quên mật khẩu ?</p>
-          </div>
           <div className={cx("logInApp")}>
             <div
               onClick={handleLoginGoogle}
@@ -171,7 +177,9 @@ function Login() {
               <img className={cx("icon")} src={images.google} alt="Facebook" />
             </div>
             <div className={cx("signinButton", "logIn", "autoCenter")}>
-              <p>Đăng nhập</p>
+              {form === "signIn" ? <p>Đăng nhập</p> : false}
+              {form === "signUp" ? <p>Đăng Ký</p> : false}
+              {form === "forgotPassword" ? <p>Xác nhận</p> : false}
             </div>
           </div>
         </div>

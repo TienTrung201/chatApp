@@ -177,7 +177,8 @@
           }
         }
         .logIn {
-          width: 150px;
+          width: 140px;
+          height: 40px;
           cursor: pointer;
           transition: 0.1s ease-in-out;
           margin-top: 0px;
@@ -194,7 +195,16 @@
         font-size: 1.3rem;
         padding: 0 10px;
         padding-top: 10px;
-        text-align: right;
+        display: flex;
+        justify-content: space-between;
+        p {
+          cursor: pointer;
+          &:hover {
+            color: #ccc;
+          }
+        }
+
+        // text-align: right;
       }
     }
   }
