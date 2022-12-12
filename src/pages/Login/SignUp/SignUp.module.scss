@@ -11,13 +11,10 @@
 $color-special: #967acc;
 $color-special-PlaceHoder: #a9a9b8;
 .wrapper {
-  .title {
-    width: 320px;
-    max-width: calc(100% - 10px);
-  }
   .signinButton {
     height: 44px;
     border-radius: 44px;
+    color: #fff;
     // border: 2px solid #dce0e3;
 
     font-weight: 600;
@@ -70,6 +67,8 @@ $color-special-PlaceHoder: #a9a9b8;
       height: 40px;
       cursor: pointer;
       transition: 0.1s ease-in-out;
+      border: 2px solid #dce0e3;
+
       margin-top: 0px;
       font-size: 1.5rem;
       &:hover {

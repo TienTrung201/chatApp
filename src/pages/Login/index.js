@@ -1,6 +1,6 @@
 import styles from "./Login.module.scss";
 import classNames from "classnames/bind";
-import images from "@/assets/images";
+
 import {
   // FacebookAuthProvider,
   signInWithPopup,
@@ -10,7 +10,7 @@ import { auth } from "@/firebase/config";
 import { useSelector } from "react-redux";
 import { userLogin } from "@/components/redux/selector";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import LoadingLogin from "@/components/Loaddings/LoadingLogin";
 import { setDocument } from "@/firebase/services";
 import ForgorPassword from "./ForgorPassword";
@@ -23,9 +23,18 @@ const cx = classNames.bind(styles);
 function Login() {
   const user = useSelector(userLogin);
   const navigate = useNavigate();
+  const [earthSays, setEarthSays] = useState("Hello");
+  const timeRef = useRef();
+  useEffect(() => {
+    clearTimeout(timeRef.current);
+
+    timeRef.current = setTimeout(() => {
+      setEarthSays("");
+    }, 10000);
+  }, [earthSays]);
   useEffect(() => {
     setTimeout(() => {
-      if (user.displayName) {
+      if (user.email) {
         navigate("/");
       }
     }, 1500);
@@ -67,10 +76,7 @@ function Login() {
   const handleLoginGoogle = () => {
     signInWithPopup(auth, googleLogin)
       .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        // const credential = GoogleAuthProvider.credentialFromResult(result);
-        // const token = credential.accessToken;
-        // The signed-in user info.
+        setEarthSays("Đăng nhập...");
         const { user, _tokenResponse } = result;
         console.log("Đăng nhập", { user });
         if (_tokenResponse.isNewUser) {
@@ -91,7 +97,7 @@ function Login() {
       })
       .catch((error) => {
         console.error(error);
-
+        setEarthSays("Email đã được sử dụng");
         // Handle Errors here.
         // const errorCode = error.code;
         // const errorMessage = error.message;
@@ -122,6 +128,17 @@ function Login() {
           <div className={cx("logoApp", "autoCenter")}>
             <section className={cx("wrapperEarth")}>
               <div className={cx("earth")}>
+                {earthSays === "" ? (
+                  false
+                ) : (
+                  <p
+                    style={{ bottom: earthSays === "Hello" ? "10px" : "" }}
+                    className={cx("earthSays")}
+                  >
+                    {"Earth ^-^:  " + earthSays}
+                  </p>
+                )}
+
                 <div className={cx("planet", "mars")}>
                   <img
                     alt="mars"
@@ -152,36 +169,36 @@ function Login() {
         <div className={cx("body", "autoCenter")}>
           {form === "signIn" ? (
             <SigIn
+              earthSays={earthSays}
+              setEarthSays={setEarthSays}
               setFormSignUp={setFormSignUp}
               setFormFogotPassword={setFormFogotPassword}
+              handleLoginGoogle={handleLoginGoogle}
             />
           ) : (
             false
           )}
           {form === "forgotPassword" ? (
             <ForgorPassword
+              earthSays={earthSays}
+              setEarthSays={setEarthSays}
               setFormSignUp={setFormSignUp}
               setFormSignIn={setFormSignIn}
+              handleLoginGoogle={handleLoginGoogle}
             />
           ) : (
             false
           )}
-          {form === "signUp" ? <SignUp setFormSignIn={setFormSignIn} /> : false}
-
-          <div className={cx("logInApp")}>
-            <div
-              onClick={handleLoginGoogle}
-              className={cx("singInGoogle", "autoCenter")}
-            >
-              {" "}
-              <img className={cx("icon")} src={images.google} alt="Facebook" />
-            </div>
-            <div className={cx("signinButton", "logIn", "autoCenter")}>
-              {form === "signIn" ? <p>Đăng nhập</p> : false}
-              {form === "signUp" ? <p>Đăng Ký</p> : false}
-              {form === "forgotPassword" ? <p>Xác nhận</p> : false}
-            </div>
-          </div>
+          {form === "signUp" ? (
+            <SignUp
+              earthSays={earthSays}
+              setEarthSays={setEarthSays}
+              setFormSignIn={setFormSignIn}
+              handleLoginGoogle={handleLoginGoogle}
+            />
+          ) : (
+            false
+          )}
         </div>
       </article>
     </section>

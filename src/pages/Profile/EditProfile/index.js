@@ -48,12 +48,17 @@ function EditProfile() {
   const [email, setEmail] = useState(false);
   const [contact, setContact] = useState(false);
   const [toggle, setToggle] = useState(true);
+
   const [styleButton, setStyleButton] = useState({
     right: "50px",
   });
   const buttonSend = useRef();
   const [imgFile, setImgFile] = useState(null);
-  const [imgUrl, setImgUrl] = useState(userEdit ? userEdit.photoURL : "");
+  const [imgUrl, setImgUrl] = useState(
+    userEdit
+      ? userEdit.photoURL
+      : "https://lh3.googleusercontent.com/pw/AL9nZEWTaeBTLS3G4g_FICuxKoOrmI2W7oenJmGVzvYTXmSBGnfjag9-dAhV6psnywJmKeTgX9AXVzaWVxoQiTPhjlFhRmRshu2SezuRmdSX44497whv285LbYr66VBI3BPTPpfNlDQeUQWkEn_ha2DLAxBp=s625-no"
+  );
 
   const handleChangeImg = (fileimg) => {
     setImgFile(fileimg);
@@ -212,16 +217,7 @@ function EditProfile() {
                   e.target.value = "";
                 }}
               />
-              {imgUrl && (
-                <img
-                  src={
-                    user.photoURL !== null
-                      ? imgUrl
-                      : require("../../../assets/images/avataDefalt.png")
-                  }
-                  alt=""
-                />
-              )}
+              {imgUrl && <img src={imgUrl} alt="" />}
 
               <button
                 onClick={() => {

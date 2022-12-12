@@ -26,7 +26,7 @@ function AppCheckLofgin({ children }) {
       if (user) {
         setCountCheckUser((prev) => prev + 1);
         const { displayName, email, uid, photoURL } = user;
-        console.log("Dispatch user");
+        console.log("Dispatch user", user);
         Dispatch(
           userSlice.actions.setUser({
             displayName,

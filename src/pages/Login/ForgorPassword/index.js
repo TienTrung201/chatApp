@@ -3,10 +3,11 @@ import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
+import images from "@/assets/images";
 
 const cx = classNames.bind(styles);
 
-function ForgorPassword({ setFormSignUp, setFormSignIn }) {
+function ForgorPassword({ handleLoginGoogle, setFormSignUp, setFormSignIn }) {
   return (
     <section className={cx("wrapper")}>
       <h5 className={cx("title")}>Nhập số điện thoại và email đăng ký</h5>
@@ -22,6 +23,20 @@ function ForgorPassword({ setFormSignUp, setFormSignIn }) {
       <div className={cx("account")}>
         <p onClick={setFormSignUp}>Tạo tài khoản</p>
         <p onClick={setFormSignIn}>Đăng nhập</p>
+      </div>
+      <div className={cx("logInApp")}>
+        <div
+          onClick={() => {
+            handleLoginGoogle();
+          }}
+          className={cx("singInGoogle", "autoCenter")}
+        >
+          {" "}
+          <img className={cx("icon")} src={images.google} alt="Facebook" />
+        </div>
+        <button className={cx("signinButton", "logIn", "autoCenter")}>
+          <p>Xác nhận</p>
+        </button>
       </div>
     </section>
   );
