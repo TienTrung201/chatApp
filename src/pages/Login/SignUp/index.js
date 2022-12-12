@@ -129,7 +129,7 @@ export function formSignupValidate(f, type) {
     if (checkNull(f.name.value)) {
       f.name.focus();
 
-      return "Vui lòng nhập tên đăng nhập !";
+      return "Vui lòng nhập tên của bạn !";
     }
     if (f.name.value.length < 3 || f.name.value.length > 20) {
       f.name.value = "";
