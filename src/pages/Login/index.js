@@ -29,7 +29,7 @@ function Login() {
     clearTimeout(timeRef.current);
 
     timeRef.current = setTimeout(() => {
-      setEarthSays("");
+      // setEarthSays("");
     }, 10000);
   }, [earthSays]);
   useEffect(() => {
