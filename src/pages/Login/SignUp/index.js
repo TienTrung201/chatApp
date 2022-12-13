@@ -62,21 +62,32 @@ function SignUp({ setFormSignIn, handleLoginGoogle, earthSays, setEarthSays }) {
   return (
     <section className={cx("wrapper")}>
       <form
+        // autoComplete="off"
         onSubmit={(e) => {
           handleSubmitForm(e);
         }}
       >
         <div className={cx("signinButton", "autoCenter")}>
           <FontAwesomeIcon icon={faSignature} className={cx("icon")} />
-          <input name="name" placeholder="Tên" type="text" />
+          <input autoComplete="off" name="name" placeholder="Tên" type="text" />
         </div>
         <div className={cx("signinButton", "autoCenter")}>
           <FontAwesomeIcon icon={faEnvelope} className={cx("icon")} />
-          <input name="email" placeholder="Email" type="text" />
+          <input
+            autoComplete="off"
+            name="email"
+            placeholder="Email"
+            type="text"
+          />
         </div>
         <div className={cx("signinButton", "autoCenter")}>
           <FontAwesomeIcon icon={faKey} className={cx("icon")} />
-          <input name="password" type="password" placeholder="Mật khẩu" />
+          <input
+            autoComplete="off"
+            name="password"
+            type="password"
+            placeholder="Mật khẩu"
+          />
         </div>
         <div className={cx("signinButton", "autoCenter")}>
           <FontAwesomeIcon icon={faLock} className={cx("icon")} />
@@ -143,9 +154,8 @@ export function formSignupValidate(f, type) {
       f.email.focus();
 
       return "Vui lòng nhập email";
-    }
-    if (!stringMatch(f.email.value, regexEmail)) {
-      f.email.value = "";
+    } else if (!stringMatch(f.email.value, regexEmail)) {
+      // f.email.value = "";
       f.email.focus();
       return "Email sai định dạng !";
     }

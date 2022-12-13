@@ -51,11 +51,21 @@ function SigIn({
       >
         <div className={cx("signinButton", "autoCenter")}>
           <FontAwesomeIcon icon={faEnvelope} className={cx("icon")} />
-          <input name="email" placeholder="Email" type="email" />
+          <input
+            autoComplete="off"
+            name="email"
+            placeholder="Email"
+            type="email"
+          />
         </div>
         <div className={cx("signinButton", "autoCenter")}>
           <FontAwesomeIcon icon={faKey} className={cx("icon")} />
-          <input name="password" type="password" placeholder="Mật khẩu" />
+          <input
+            autoComplete="off"
+            name="password"
+            type="password"
+            placeholder="Mật khẩu"
+          />
         </div>
 
         <div className={cx("account")}>

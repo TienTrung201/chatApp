@@ -24,6 +24,7 @@ function AppCheckLofgin({ children }) {
     }
     const unsubscibed = auth.onAuthStateChanged((user) => {
       if (user) {
+        const providerId = user.providerData[0].providerId;
         setCountCheckUser((prev) => prev + 1);
         const { displayName, email, uid, photoURL } = user;
         console.log("Dispatch user", user);
@@ -33,6 +34,7 @@ function AppCheckLofgin({ children }) {
             email,
             uid,
             photoURL,
+            providerId,
           })
         );
         return;

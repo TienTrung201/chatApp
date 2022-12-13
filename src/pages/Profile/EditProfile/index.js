@@ -9,7 +9,7 @@ import {
   faFileImport,
   faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
-import { db, storage } from "@/firebase/config";
+import { auth, db, storage } from "@/firebase/config";
 import { useCallback, useEffect, useRef, useState } from "react";
 import LoadingProFile from "@/components/Loaddings/LoadingProFile";
 
@@ -22,6 +22,7 @@ import {
 } from "firebase/storage";
 import { useMemo } from "react";
 import { useFireStore } from "@/hooks/useFirestor";
+import { updatePassword } from "firebase/auth";
 
 const cx = classNames.bind(styles);
 
@@ -47,6 +48,7 @@ function EditProfile() {
   const [name, setName] = useState(false);
   const [email, setEmail] = useState(false);
   const [contact, setContact] = useState(false);
+  const [password, setPassord] = useState(false);
   const [toggle, setToggle] = useState(true);
 
   const [styleButton, setStyleButton] = useState({
@@ -71,6 +73,7 @@ function EditProfile() {
     setName(false);
     setEmail(false);
     setContact(false);
+    setPassord(false);
     if (userEdit.fullPath) {
       const desertRef = ref(storage, userEdit.fullPath);
       deleteObject(desertRef)
@@ -87,6 +90,12 @@ function EditProfile() {
         storage,
         `avatarUser/${user.uid}/${imgFile.name}${idRandom}`
       );
+      const userCurrent = auth.currentUser;
+      updatePassword(userCurrent, passwordValue)
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
       uploadBytes(imgRef, imgFile).then((snapshot) => {
         getDownloadURL(snapshot.ref).then((imgurl) => {
           const userUpdate = doc(db, "users", user.uid);
@@ -96,20 +105,37 @@ function EditProfile() {
             photoURL: imgurl,
             fullPath: snapshot.metadata.fullPath,
           });
+          if (userEdit.password) {
+            updateDoc(userUpdate, {
+              password: passwordValue,
+            });
+          }
         });
       });
     } else if (checkPhone() && checkName()) {
       const userUpdate = doc(db, "users", user.uid);
+      const userCurrent = auth.currentUser;
+      updatePassword(userCurrent, passwordValue)
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
       updateDoc(userUpdate, {
         displayName: nameValue,
         contact: contactValue,
       });
+      if (userEdit.password) {
+        updateDoc(userUpdate, {
+          password: passwordValue,
+        });
+      }
     }
   };
 
   const [nameValue, setNameValue] = useState("name");
   const [emailValue, setEmailValue] = useState("");
   const [contactValue, setContactValue] = useState("");
+  const [passwordValue, setPassordValue] = useState("Password");
   useEffect(() => {
     if (userEdit) {
       setNameValue(userEdit.displayName);
@@ -120,11 +146,17 @@ function EditProfile() {
       } else {
         setContactValue("");
       }
+      if (userEdit.password) {
+        setPassordValue(userEdit.password);
+      } else {
+        setPassord("");
+      }
     }
   }, [userEdit]);
 
   const contactRef = useRef();
   const nameRef = useRef();
+  const passwordRef = useRef();
 
   const handleChangeValue = (setValue, e) => {
     setValue(e.target.value);
@@ -150,13 +182,27 @@ function EditProfile() {
     if (!stringMatch(contactValue, /^(\+84|0)[1-9][0-9]{8}$/)) {
       return false;
     }
+
     return true;
   }, [contactValue]);
-
+  const checkPassWord = useCallback(() => {
+    if (user.providerId === "google.com") {
+      return true;
+    }
+    if (!stringMatch(passwordValue, /^([A-Za-z0-9_@!#$%^&*]){6,20}/)) {
+      return false;
+    } else {
+      return true;
+    }
+  }, [passwordValue, user]);
   useEffect(() => {
     let button = buttonSend.current;
     const formError = () => {
-      if (checkName() === false || checkPhone() === false) {
+      if (
+        checkName() === false ||
+        checkPhone() === false ||
+        checkPassWord() === false
+      ) {
         if (toggle === true) {
           setStyleButton({
             right: button.clientWidth + 80,
@@ -183,7 +229,7 @@ function EditProfile() {
         button.removeEventListener("mouseover", formError);
       }
     };
-  }, [styleButton.right, toggle, checkName, checkPhone]);
+  }, [styleButton.right, toggle, checkName, checkPhone, checkPassWord]);
 
   useEffect(() => {
     if (nameRef.current) {
@@ -195,6 +241,11 @@ function EditProfile() {
       contactRef.current.focus();
     }
   }, [contact]);
+  useEffect(() => {
+    if (passwordRef.current) {
+      passwordRef.current.focus();
+    }
+  }, [password]);
   return (
     <section className={cx("wrapper")}>
       {user === undefined ? (
@@ -279,6 +330,7 @@ function EditProfile() {
                 onClick={() => {
                   setName(!name);
                   setEmail(false);
+                  setPassord(false);
                   setContact(false);
                 }}
                 className={cx("replace", "autoCenter")}
@@ -318,6 +370,7 @@ function EditProfile() {
                   setName(false);
                   // setEmail(false)
                   setContact(false);
+                  setPassord(false);
                 }}
                 className={cx("replace", "autoCenter", "noScale")}
               >
@@ -360,6 +413,7 @@ function EditProfile() {
                   setName(false);
                   setEmail(false);
                   setContact(!contact);
+                  setPassord(false);
                 }}
                 className={cx("replace", "autoCenter")}
               >
@@ -369,16 +423,72 @@ function EditProfile() {
                 />
               </button>
             </div>
+
+            {user.providerId === "password" ? (
+              <div className={cx("myProfileContent__Property")}>
+                <p className={cx("PropertyName")}>password</p>
+                {password === true ? (
+                  <input
+                    ref={passwordRef}
+                    spellCheck="false"
+                    type="text"
+                    placeholder="password"
+                    value={passwordValue}
+                    className={cx(
+                      "Property--content",
+                      "borderInput",
+                      checkPassWord() === false ? "error" : "successful"
+                    )}
+                    onChange={(e) => {
+                      handleChangeValue(setPassordValue, e);
+                    }}
+                  />
+                ) : (
+                  <input
+                    disabled
+                    type="text"
+                    placeholder="password"
+                    value={passwordValue}
+                    className={cx(
+                      "Property--content",
+                      checkPassWord() === false ? "error" : "successful"
+                    )}
+                    name="name"
+                  />
+                )}
+
+                <button
+                  onClick={() => {
+                    setName(false);
+                    setEmail(false);
+                    setContact(false);
+                    setPassord(!password);
+                  }}
+                  className={cx("replace", "autoCenter")}
+                >
+                  <FontAwesomeIcon
+                    className={cx("iconReplace")}
+                    icon={faPenToSquare}
+                  />
+                </button>
+              </div>
+            ) : (
+              false
+            )}
             <div className={cx("logout")}>
               <button
                 style={styleButton}
                 ref={buttonSend}
                 className={cx(
                   "buttonLogout",
-                  checkPhone() === false || checkName() === false
+                  checkPhone() === false ||
+                    checkName() === false ||
+                    checkPassWord() === false
                     ? "opacity05"
                     : "opacity1 poiter",
-                  checkPhone() === false || checkName() === false
+                  checkPhone() === false ||
+                    checkName() === false ||
+                    checkPassWord() === false
                     ? ""
                     : "poiter"
                 )}
