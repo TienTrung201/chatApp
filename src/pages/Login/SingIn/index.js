@@ -55,7 +55,7 @@ function SigIn({
             autoComplete="off"
             name="email"
             placeholder="Email"
-            type="email"
+            type="text"
           />
         </div>
         <div className={cx("signinButton", "autoCenter")}>
