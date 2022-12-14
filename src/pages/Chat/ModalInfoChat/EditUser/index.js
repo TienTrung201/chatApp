@@ -20,6 +20,7 @@ function EditUser({
   uidSender,
   userLoginGroup,
   userLogin,
+  allUser,
 }) {
   const input = useRef();
   const isCheckedMusic = useSelector(isSelectedMusic);
@@ -177,11 +178,18 @@ function EditUser({
       });
     } else {
       let listUserRoomAdd = [];
+      const userEditGroup = allUserApp.find(
+        (user) => userEdit.uid === user.uid
+      );
       listUserRoom.forEach((user) => {
         if (user.uid === userEdit.uid) {
           listUserRoomAdd.push({
             ...user,
-            nickName: nameValue.trim(" ") === "" ? user.displayName : nameValue,
+            displayName: userEditGroup.displayName,
+            nickName:
+              nameValue.trim(" ") === ""
+                ? userEditGroup.displayName
+                : nameValue,
           });
         } else {
           listUserRoomAdd.push(user);
@@ -196,7 +204,11 @@ function EditUser({
         messages: arrayUnion({
           id: uuid(),
           // ${userLoginGroup.nickName}
-          text: `đã đặt biệt danh cho ${userEdit.nickName} là ${nameValue}`,
+
+          text:
+            nameValue.trim(" ") === ""
+              ? `đã xóa biệt danh của ${userEdit.displayName}`
+              : `đã đặt biệt danh cho ${userEdit.nickName} là ${nameValue}`,
           senderId: uidSender,
           senderName: userLoginGroup.nickName,
           createdAt: Timestamp.now(),

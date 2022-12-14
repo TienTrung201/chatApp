@@ -436,6 +436,7 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                             roomId={roomChatInfo.chatId}
                             group={true}
                             userEdit={user}
+                            allUser={allUsers}
                           />
                         );
                       })}
@@ -443,6 +444,7 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                   ) : (
                     <div className={cx("editNickName")}>
                       <EditUser
+                        allUser={allUsers}
                         userLoginGroup={userLoginGroup}
                         listUserRoom={listUserChats}
                         remainUser={user}
@@ -452,6 +454,7 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                         userLogin={user}
                       />
                       <EditUser
+                        allUser={allUsers}
                         userLogin={user}
                         uidSender={userId}
                         userLoginGroup={userLoginGroup}
