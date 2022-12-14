@@ -212,7 +212,8 @@ function Chat() {
       await updateDoc(doc(db, "chats", idRoom), {
         messages: arrayUnion({
           id: uuid(),
-          text: ` đã tạo nhóm  nhóm`,
+          text: `đã tạo nhóm  nhóm`,
+          senderName: user.displayName,
           senderId: user.uid,
           createdAt: Timestamp.now(),
           type: "notification",

@@ -40,6 +40,8 @@ function ControlUsers({
                     // text: `${userLoginGroup.nickName} đã xóa ${controlledUser.nickName} khỏi nhóm`,
                     text: `đã xóa ${controlledUser.nickName} khỏi nhóm`,
                     senderId: userLoginGroup.uid,
+                    senderName: userLoginGroup.nickName,
+
                     createdAt: Timestamp.now(),
                     type: "notification",
                   }),
@@ -57,8 +59,9 @@ function ControlUsers({
                   messages: arrayUnion({
                     id: uuid(),
                     // text: `${userLoginGroup.nickName} đã thêm ${controlledUser.nickName} làm quản trị viên`,
-                    text: `đã thêm ${controlledUser.nickName} làm quản trị viên`,
+                    text: `đã chỉ định ${controlledUser.nickName} làm quản trị viên`,
                     senderId: userLoginGroup.uid,
+                    senderName: userLoginGroup.nickName,
                     createdAt: Timestamp.now(),
                     type: "notification",
                   }),

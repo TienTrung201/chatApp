@@ -96,8 +96,10 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
       await updateDoc(doc(db, "chats", roomChatInfo.chatId), {
         messages: arrayUnion({
           id: uuid(),
-          text: `${userLoginGroup.nickName} đã thay đổi tên nhóm thành ${nameGroup}`,
+          // ${userLoginGroup.nickName}
+          text: `đã thay đổi tên nhóm thành ${nameGroup}`,
           senderId: user.uid,
+          senderName: userLoginGroup.nickName,
           createdAt: Timestamp.now(),
           type: "notification",
         }),
@@ -208,6 +210,7 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
           // ${userLoginGroup.nickName}
           text: `đã thêm ${listNewUser.slice(1, listNewUser.length)} vào nhóm`,
           senderId: user.uid,
+          senderName: userLoginGroup.nickName,
           createdAt: Timestamp.now(),
           type: "notification",
         }),
@@ -319,6 +322,8 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
         // ${userLoginGroup.nickName}
         text: `đã thay đổi ảnh nhóm`,
         senderId: user.uid,
+        senderName: userLoginGroup.nickName,
+
         createdAt: Timestamp.now(),
         type: "notification",
       }),
@@ -818,6 +823,9 @@ function ModalInfoChat({ modal, setModal, listUserChats, allUsers }) {
                                               id: uuid(),
                                               text: `${userLoginGroup.nickName} đã rời khỏi nhóm`,
                                               senderId: user.uid,
+                                              senderName:
+                                                userLoginGroup.nickName,
+
                                               createdAt: Timestamp.now(),
                                               type: "notification",
                                             }),
