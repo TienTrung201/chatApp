@@ -16,6 +16,7 @@ import {
 // import CafeNight from "../../../assets/video/CafeNight.mp4";
 // import CafeRainyNight from "../../../assets/video/CafeRainyNight.mp4";
 import CafeDayChill from "./CafeDay";
+import { Helmet } from "react-helmet";
 const cx = classNames.bind(styles);
 
 function DefaultLayout({ children, active }) {
@@ -28,6 +29,11 @@ function DefaultLayout({ children, active }) {
   });
   return (
     <section ref={scrollBottom} className={cx("wrapper")}>
+      <Helmet>
+        <title>Earth chat</title>
+        <meta name="description" content="ChatApp" />
+        <meta name="keywords" content="Earth chat" />
+      </Helmet>
       <Sidebar activeNav={active} />
       <article className={cx("container")}>
         <div className={cx("content")}>{children}</div>
