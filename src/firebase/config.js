@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
+import { getAnalytics, logEvent } from "firebase/analytics";
 import { connectStorageEmulator, getStorage } from "firebase/storage";
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 import { connectAuthEmulator, getAuth } from "firebase/auth";
@@ -15,8 +15,8 @@ const firebaseConfig = {
 // import { getAuth } from "firebase/auth";
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
-
+const analytics = getAnalytics(app);
+logEvent(analytics, "notification_received");
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage();
